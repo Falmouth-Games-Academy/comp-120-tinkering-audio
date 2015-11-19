@@ -7,7 +7,7 @@ import wave
 
 
 class Sound(object):
-    def __init__(self, filename, channels=1, sample_width=2, sampling_rate=44100):
+    def __init__(self, filename, samples=None, channels=1, sample_width=2, sampling_rate=44100):
         """Initialises the fields and sets up an empty wav file
 
         Arguments:
@@ -18,7 +18,7 @@ class Sound(object):
         sampling_rate -- samples per second. Defaults to 44100 (CD quality)
         """
         self.sound = wave.open(filename, 'wb')
-        self.samples = None
+        self.samples = samples
         self.sample_width = sample_width
         self.channels = channels
         self.sampling_rate = sampling_rate
@@ -78,67 +78,100 @@ class Sound(object):
     def add_sample(self, value):
         self.samples.append(value)
 
+    def combine_sample(self, index, value):
+        self.samples[index] += value
+
     def __add__(self, other):
         size = min(len(self.samples), len(other.samples))
         for i in range(size):
-            self.samples[i] += other.samples[i]
-        return self.samples
+            sample = self.samples[i] + other.samples[i]
+            yield sample
 
 
-class Tone:
-    def generate(self, filename):
+class Tone(object):
+    def __init__(self, note, amplitude, seconds):
+        """Initialises the fields for Tone and its subclasses.
+        Arguments:
+        Note -- An integer representing the number of semitones away
+        from the A above middle C
+        Amplitude -- An integer defining the volume
+        Seconds -- A float or integer defining how long the tone will be
+        """
+        self.note = note
+        self.amplitude = amplitude
+        self.seconds = seconds
+
+    @property
+    def frequency(self):
+        return self.__frequency
+
+    @property
+    def note(self):
+        return self.__note
+
+    @note.setter
+    def note(self, value):
+        self.__note = value
+        self.__frequency = self.__convert_note_to_freq(self.note)
+
+    def __convert_note_to_freq(self, n):
+        base_frequency = 440
+        interval = 2.0**(1.0/12.0)
+        note = base_frequency * interval**n
+        return note
+
+    def generate(self, sound):
+        sample_number = int(sound.sampling_rate * self.seconds)
+        for i in xrange(sample_number):
+            sample = self._create_sample(sound.sampling_rate, i)
+            sound.add_sample(sample)
+
+    def _create_sample(self, sound, index):
         raise NotImplementedError
 
 
 class SineTone(Tone):
-    def __init__(self, frequency, amplitude, seconds):
-        self.frequency = frequency
-        self.amplitude = amplitude
-        self.seconds = seconds
-
-    def generate(self, sound):
+    def _create_sample(self, sampling_rate, index):
         seconds_per_cycle = 1.0/self.frequency
-        samples_per_cycle = seconds_per_cycle * sound.sampling_rate
-        max_cycle = 2 * math.pi
-
-        for i in xrange(sound.sampling_rate * self.seconds):
-            sample = int((math.sin((i / samples_per_cycle) * max_cycle)) * self.amplitude)
-            sound.add_sample(sample)
+        samples_per_cycle = seconds_per_cycle * sampling_rate
+        cycle_size = 2 * math.pi
+        sample = int((math.sin((index / samples_per_cycle) * cycle_size)) * self.amplitude)
+        return sample
 
 
 class SquareTone(Tone):
-    def __init__(self, frequency, amplitude, seconds):
-        self.frequency = frequency
-        self.amplitude = amplitude
-        self.seconds = seconds
-
-    def generate(self, sound):
-        interval = 1.0/self.frequency
-        samples_per_cycle = interval * sound.sampling_rate
-
-        sample = self.amplitude
-        position = 0
-        for i in xrange(sound.sampling_rate * self.seconds):
-            if position > int(samples_per_cycle/2):
-                sample *= -1
-                position = 0
-            sound.add_sample(sample)
-            position += 1
+    def _create_sample(self, sampling_rate, index):
+        seconds_per_cycle = 1.0/self.frequency
+        samples_per_cycle = seconds_per_cycle * sampling_rate
+        cycle_size = 2 * math.pi
+        sinewave = math.sin(index / samples_per_cycle * cycle_size)
+        if sinewave != 0:
+            # Because a sign function doesn't exist in Python
+            sample = int(self.amplitude * math.copysign(1, sinewave))
+        else:
+            sample = 0
+        return sample
 
 
 def test():
-    sine = SineTone(880, 2000, 5)
-    sine_tone = Sound("foo.wav")
-    sine.generate(sine_tone)
+    sine_tone = SineTone(0, 2000, 0.5)
+    square_tone = SquareTone(0, 2000, 0.5)
+    upscale = Sound("up.wav")
+    downscale = Sound("down.wav")
 
-    square = SquareTone(440, 2000, 5)
-    square_tone = Sound("bar.wav")
-    square.generate(square_tone)
+    for i in range(13):
+        square_tone.note = i
+        square_tone.generate(upscale)
 
-    square_tone + sine_tone
-    new_sound = Sound("bah.wav")
-    new_sound.samples = square_tone + sine_tone
-    new_sound.save()
+    for i in range(0, -13, -1):
+        sine_tone.note = i
+        sine_tone.generate(downscale)
+
+    scale = Sound("scale.wav")
+    scale.samples = upscale + downscale
+    upscale.save()
+    downscale.save()
+    scale.save()
 
 
 test()
