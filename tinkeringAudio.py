@@ -55,5 +55,5 @@ def audioSplice(tone1, tone2, seconds):
    value = getSampleValueAt(tone2, source)
    setSampleValueAt(spliced, index, value)
    index = index + 1
- explore(spliced)
+ play(spliced)
  return spliced
