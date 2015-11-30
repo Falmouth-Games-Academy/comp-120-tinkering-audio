@@ -1,6 +1,6 @@
 # comp-120-tinkering-audio
 
-####Part A
+####Part A - In JES
  | Algorithm | Done
 --- | --- | ---
 1 | tone generation | Y
