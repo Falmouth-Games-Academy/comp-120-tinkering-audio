@@ -37,3 +37,23 @@ def combineTone2(tone1, tone2, tone3, sampleRate):
     thirdTone = getSampleValueAt(tone3, i) 
     setSampleValueAt(outTone, i, int(firstTone + secondTone + thirdTone))
   explore(outTone)
+  
+  
+#Algorithm Three: Audio Splice and Swap
+#This algorithm will splice difference tones
+def audioSplice(tone1, tone2, seconds):
+ spliced = makeEmptySound(seconds * 22050)
+ index = 0
+ for source in range(0, getLength(tone1)):
+   value = getSampleValueAt(tone1, source)
+   setSampleValueAt(spliced, index, value)
+   index = index + 1
+ for source in range(0, int(0.1*getSamplingRate(spliced))):
+   setSampleValueAt(spliced, index, 0)
+   index = index + 1
+ for source in range(0, getLength(tone2)):
+   value = getSampleValueAt(tone2, source)
+   setSampleValueAt(spliced, index, value)
+   index = index + 1
+ explore(spliced)
+ return spliced
