@@ -20,4 +20,26 @@ def shift(source, factor):
   play(target)
   return target
 
+def sine():
 
+  sineWave(440, 2000, 1)
+
+  sineWave(880, 4000, 1)
+  sineWave(1760, 8000, 1)
+
+def sineWave(freq, amplitude, length):
+  # Create a blank sound
+  buildSin = makeEmptySoundBySeconds(length)
+  # Set constants
+  samplingRate = getSamplingRate(buildSin)
+  interval = 1.0 / freq
+  samplesPerCycle = interval * samplingRate
+  maxCycle = 2 * pi
+  # Generate the sound
+  for pos in range(getLength(buildSin)):
+    rawSample = sin((pos / samplesPerCycle) * maxCycle)
+    sampleVal = int(amplitude * rawSample)
+    setSampleValueAt(buildSin, pos, sampleVal)
+  explore(buildSin)
+  return buildSin
+  
