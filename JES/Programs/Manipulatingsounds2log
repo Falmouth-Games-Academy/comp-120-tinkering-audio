@@ -1,0 +1,119 @@
+<file_created time="Mon Nov 30 14:44:05 UTC 2015">
+<menu_button time="Mon Nov 30 14:45:33 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 14:46:04 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Nov 30 14:46:18 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 14:46:19 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Nov 30 14:46:31 UTC 2015">Undo</menu_button>
+<menu_button time="Mon Nov 30 14:46:31 UTC 2015">Undo</menu_button>
+<menu_button time="Mon Nov 30 14:46:31 UTC 2015">Undo</menu_button>
+<menu_button time="Mon Nov 30 14:46:32 UTC 2015">Undo</menu_button>
+<menu_button time="Mon Nov 30 14:46:32 UTC 2015">Undo</menu_button>
+<menu_button time="Mon Nov 30 14:46:32 UTC 2015">Undo</menu_button>
+<menu_button time="Mon Nov 30 14:46:40 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 14:46:41 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Nov 30 14:47:56 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 14:47:57 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Nov 30 14:48:05 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 14:48:06 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Nov 30 14:48:16 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 14:48:17 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Nov 30 14:48:44 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 14:48:45 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Nov 30 14:49:13 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 14:49:15 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Nov 30 14:49:29 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 14:49:30 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Mon Nov 30 14:49:35 UTC 2015">test()></command_run>
+<menu_button time="Mon Nov 30 14:50:10 UTC 2015">Undo</menu_button>
+<menu_button time="Mon Nov 30 14:51:00 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 14:51:01 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Nov 30 14:51:11 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 14:51:12 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Mon Nov 30 14:51:32 UTC 2015">sndFile = makeSound(pickAFile())></command_run>
+<command_run time="Mon Nov 30 14:51:41 UTC 2015">echo()></command_run>
+<command_run time="Mon Nov 30 14:51:49 UTC 2015">echo(sndFile, 5000)></command_run>
+<menu_button time="Mon Nov 30 14:54:58 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 14:54:59 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Nov 30 14:55:22 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 14:55:23 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Nov 30 14:57:04 UTC 2015">Save Program</menu_button>
+<file_saved time="Mon Nov 30 14:57:04 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Nov 30 14:57:12 UTC 2015">Load Program</menu_button>
+<menu_button time="Mon Nov 30 14:57:27 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 14:57:28 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Nov 30 14:57:38 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 14:57:39 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Nov 30 14:58:10 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 14:58:12 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Mon Nov 30 14:58:16 UTC 2015">test()></command_run>
+<menu_button time="Mon Nov 30 14:58:59 UTC 2015">Load Program</menu_button>
+<command_run time="Mon Nov 30 14:59:14 UTC 2015">sndFile = makeSound(pickAFile())></command_run>
+<command_run time="Mon Nov 30 14:59:29 UTC 2015">twoEcho></command_run>
+<command_run time="Mon Nov 30 14:59:38 UTC 2015">twoEcho()></command_run>
+<command_run time="Mon Nov 30 14:59:47 UTC 2015">twoEcho(sndFile, 2000)></command_run>
+<menu_button time="Mon Nov 30 15:00:01 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 15:00:02 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Nov 30 15:00:17 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 15:00:18 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Nov 30 15:00:34 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 15:00:35 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Nov 30 15:00:41 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 15:00:42 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Mon Nov 30 15:00:54 UTC 2015">twoEcho></command_run>
+<command_run time="Mon Nov 30 15:01:03 UTC 2015">twoEcho(sndFile, 2000)></command_run>
+<menu_button time="Mon Nov 30 15:04:53 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 15:04:54 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Mon Nov 30 15:07:30 UTC 2015">sndFile = makeSound("test1.wav")></command_run>
+<menu_button time="Mon Nov 30 15:07:40 UTC 2015">Load Program</menu_button>
+<command_run time="Mon Nov 30 15:07:42 UTC 2015">></command_run>
+<command_run time="Mon Nov 30 15:07:49 UTC 2015">sndFile = makeSound("./test1.wav")></command_run>
+<command_run time="Mon Nov 30 15:07:54 UTC 2015">sndFile = makeSound("./sounds/test1.wav")></command_run>
+<command_run time="Mon Nov 30 15:08:05 UTC 2015">play(sndFile)></command_run>
+<command_run time="Mon Nov 30 15:08:10 UTC 2015">play(sndFile)></command_run>
+<command_run time="Mon Nov 30 15:08:14 UTC 2015">play(sndFile)></command_run>
+<command_run time="Mon Nov 30 15:08:22 UTC 2015">sndFile = makeSound("./sounds/shortWAV.wav")></command_run>
+<command_run time="Mon Nov 30 15:08:23 UTC 2015">play(sndFile)></command_run>
+<command_run time="Mon Nov 30 15:08:36 UTC 2015">twoEcho(sndFile, 1000)></command_run>
+<menu_button time="Mon Nov 30 15:08:56 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 15:08:57 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Nov 30 15:09:19 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 15:09:21 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Mon Nov 30 15:09:39 UTC 2015">double(sndFile)></command_run>
+<command_run time="Mon Nov 30 15:09:47 UTC 2015">double(sndFile)></command_run>
+<command_run time="Mon Nov 30 15:09:58 UTC 2015">hello = makeSound("./sounds/shortWAV.wav")></command_run>
+<command_run time="Mon Nov 30 15:10:04 UTC 2015">double(hello)></command_run>
+<menu_button time="Mon Nov 30 15:10:05 UTC 2015">Load Program</menu_button>
+<command_run time="Mon Nov 30 15:10:06 UTC 2015">double(hello)></command_run>
+<menu_button time="Mon Nov 30 15:11:09 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 15:11:11 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Nov 30 15:11:57 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 15:11:58 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Nov 30 15:13:02 UTC 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 30 15:13:04 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>

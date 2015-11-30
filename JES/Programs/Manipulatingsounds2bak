@@ -1,0 +1,23 @@
+def double(source):
+  len = getLength(source) / 2 + 1
+  target = makeEmptySound(len)
+  targetIndex = 0
+  for sourceIndex in range(0, getLength( source), 2):
+    value = getSampleValueAt( source, sourceIndex)
+    setSampleValueAt( target, targetIndex, value)
+    targetIndex = targetIndex + 1
+  play(target)
+  return target
+
+
+def shift(source, factor):
+  target = makeEmptySound(getLength(source))
+  sourceIndex = 0
+  for targetIndex in range(0, getLength( target)):
+    value = getSampleValueAt(source, int(sourceIndex))
+    setSampleValueAt( target, targetIndex, value)
+    sourceIndex = sourceIndex + factor
+  play(target)
+  return target
+
+
