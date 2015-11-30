@@ -1,3 +1,4 @@
+import random
 def double(source):
   len = getLength(source) / 2 + 1
   target = makeEmptySound(len)
@@ -9,6 +10,11 @@ def double(source):
   play(target)
   return target
 
+def addSoundInto(sound1, sound2):
+ for sampleNmr in range(0, getLength(sound1)): 
+   sample1 = getSampleValueAt(sound1, sampleNmr) 
+   sample2 = getSampleValueAt(sound2, sampleNmr)
+   setSampleValueAt(sound2, sampleNmr, sample1 + sample2)
 
 def shift(source, factor):
   target = makeEmptySound(getLength(source))
@@ -20,12 +26,14 @@ def shift(source, factor):
   play(target)
   return target
 
-def sine():
+def sine(sound1, sound2):
 
   sineWave(440, 2000, 1)
+  sound1 = sineWave(880, 4000, 1)
+  sound2 = sineWave(1760, 8000, 1)
+  addSoundInto(sound1, sound2)
+  play(sound2)
 
-  sineWave(880, 4000, 1)
-  sineWave(1760, 8000, 1)
 
 def sineWave(freq, amplitude, length):
   # Create a blank sound
@@ -42,4 +50,40 @@ def sineWave(freq, amplitude, length):
     setSampleValueAt(buildSin, pos, sampleVal)
   explore(buildSin)
   return buildSin
+  
+
+
+def sineWaveADSR(freq, volume, length, attack_time, sustain_time, release_time):
+  # Create a blank sound
+  buildSin = makeEmptySoundBySeconds(length)
+  # Set constants
+  attack_time = int(length * 0.4 * samplingRate)
+  sustain_time = int(length * 0.4 * samplingRate)
+  release_time = int(length * 0.6 * samplingRate)
+    
+  samplingRate = getSamplingRate(buildSin)
+  interval = 1.0 / freq
+  samplesPerCycle = interval * samplingRate
+  maxCycle = 2 * pi
+  # Generate the sound
+  for pos in range(getLength(buildSin)):
+    rawSample = sin((pos / samplesPerCycle) * maxCycle)
+    sampleVal = int(volume * rawSample)
+    setSampleValueAt(buildSin, pos, sampleVal)
+  explore(buildSin)
+  return buildSin
+
+def parser():
+  noteNum = {'e4': +4, 'g2': -3, 'A1': 0} #dictionary
+  
+  
+import random def makeNoise(amplitude, length): 
+  # Create a blank sound 
+  buildNoise = makeEmptySoundBySeconds(length) 
+  # Make some noise! 
+  for pos in range(getLength(buildNoise)): 
+    rawSample = random.uniform(-1, 1) 
+    sampleVal = int(amplitude * rawSample)
+    setSampleValueAt(buildNoise, pos, sampleVal) 
+  return buildNoise
   
