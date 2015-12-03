@@ -221,4 +221,42 @@
 </file_created>
 <menu_button time="Mon Nov 30 17:00:26 UTC 2015">Save Program</menu_button>
 <file_saved time="Mon Nov 30 17:00:26 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+<file_opened time="Thu Dec 03 15:41:35 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_opened>
+<menu_button time="Thu Dec 03 15:41:43 UTC 2015">Load Program</menu_button>
+<menu_button time="Thu Dec 03 15:41:51 UTC 2015">Load Program</menu_button>
+<file_saved time="Thu Dec 03 15:41:53 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Thu Dec 03 15:42:35 UTC 2015">sineWave(440, 1000, 2)></command_run>
+<command_run time="Thu Dec 03 15:45:14 UTC 2015">sineWave(44100, 1000, 2)></command_run>
+<menu_button time="Thu Dec 03 15:45:28 UTC 2015">Load Program</menu_button>
+<command_run time="Thu Dec 03 15:45:31 UTC 2015">sineWave(44100, 1000, 2)></command_run>
+<command_run time="Thu Dec 03 15:45:37 UTC 2015">sineWave(44, 1000, 2)></command_run>
+<menu_button time="Thu Dec 03 15:45:54 UTC 2015">Load Program</menu_button>
+<file_saved time="Thu Dec 03 15:45:55 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Thu Dec 03 15:45:56 UTC 2015">sineWave(44, 1000, 2)></command_run>
+<command_run time="Thu Dec 03 15:46:06 UTC 2015">sineWave(4400, 1000, 2)></command_run>
+<command_run time="Thu Dec 03 15:46:14 UTC 2015">sineWave(2400, 1000, 2)></command_run>
+<command_run time="Thu Dec 03 15:46:21 UTC 2015">sineWave(2000, 1000, 2)></command_run>
+<menu_button time="Thu Dec 03 16:02:56 UTC 2015">Load Program</menu_button>
+<file_saved time="Thu Dec 03 16:02:58 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Thu Dec 03 16:03:16 UTC 2015">Load Program</menu_button>
+<file_saved time="Thu Dec 03 16:03:18 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Thu Dec 03 16:03:26 UTC 2015">sineWave(2000, 1000, 2)></command_run>
+<menu_button time="Thu Dec 03 16:04:14 UTC 2015">Load Program</menu_button>
+<file_saved time="Thu Dec 03 16:04:15 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Thu Dec 03 16:04:58 UTC 2015">source = makeSound("./sounds/test1.wav")></command_run>
+<command_run time="Thu Dec 03 16:05:31 UTC 2015">shift(source, 10)></command_run>
+<command_run time="Thu Dec 03 16:06:03 UTC 2015">shift(source, 100)></command_run>
+<menu_button time="Thu Dec 03 16:07:16 UTC 2015">Save Program</menu_button>
+<file_saved time="Thu Dec 03 16:07:16 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Thu Dec 03 16:07:26 UTC 2015">Save Program</menu_button>
+<file_saved time="Thu Dec 03 16:07:26 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Thu Dec 03 16:14:38 UTC 2015">Save Program</menu_button>
+<file_saved time="Thu Dec 03 16:14:38 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
 </file_created>
