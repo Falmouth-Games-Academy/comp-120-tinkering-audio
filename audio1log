@@ -1,0 +1,79 @@
+<file_created time="Mon Nov 16 15:07:03 GMT 2015">
+<menu_button time="Mon Nov 16 15:10:53 GMT 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 16 15:11:12 GMT 2015">X:\Audio\audio1</file_saved>
+</file_created>
+<menu_button time="Mon Nov 16 15:15:35 GMT 2015">Load Program</menu_button>
+<command_run time="Mon Nov 16 15:15:48 GMT 2015">Play()></command_run>
+<menu_button time="Mon Nov 16 15:15:51 GMT 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 16 15:15:52 GMT 2015">X:\Audio\audio1</file_saved>
+<file_opened time="Mon Nov 16 15:17:42 GMT 2015">X:\Audio\audio1</file_opened>
+<menu_button time="Mon Nov 16 15:17:57 GMT 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 16 15:17:58 GMT 2015">X:\Audio\audio1</file_saved>
+<file_opened time="Mon Nov 16 15:31:42 GMT 2015">X:\Audio\audio1</file_opened>
+<menu_button time="Mon Nov 16 15:41:43 GMT 2015">Load Program</menu_button>
+<command_run time="Mon Nov 16 15:41:51 GMT 2015">Play()></command_run>
+<command_run time="Mon Nov 16 15:42:47 GMT 2015">print getSampleValueAt(sound, 1)></command_run>
+<menu_button time="Mon Nov 16 15:43:19 GMT 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 16 15:43:20 GMT 2015">X:\Audio\audio1</file_saved>
+</file_created>
+<command_run time="Mon Nov 16 15:43:21 GMT 2015">print getSampleValueAt(sound, 1)></command_run>
+<command_run time="Mon Nov 16 15:43:24 GMT 2015">print getSampleValueAt(sound, 1)></command_run>
+<command_run time="Mon Nov 16 15:43:29 GMT 2015">Play()></command_run>
+<menu_button time="Mon Nov 16 15:44:04 GMT 2015">blockingPlay</menu_button>
+<menu_button time="Mon Nov 16 15:45:43 GMT 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 16 15:45:44 GMT 2015">X:\Audio\audio1</file_saved>
+</file_created>
+<command_run time="Mon Nov 16 15:45:53 GMT 2015">playTwice()></command_run>
+<menu_button time="Mon Nov 16 15:46:48 GMT 2015">duplicateSound</menu_button>
+<menu_button time="Mon Nov 16 15:47:49 GMT 2015">Undo</menu_button>
+<menu_button time="Mon Nov 16 15:47:50 GMT 2015">Undo</menu_button>
+<menu_button time="Mon Nov 16 15:47:51 GMT 2015">Undo</menu_button>
+<menu_button time="Mon Nov 16 15:47:51 GMT 2015">Undo</menu_button>
+<menu_button time="Mon Nov 16 15:47:51 GMT 2015">Undo</menu_button>
+<menu_button time="Mon Nov 16 15:48:23 GMT 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 16 15:48:24 GMT 2015">X:\Audio\audio1</file_saved>
+</file_created>
+<menu_button time="Mon Nov 16 15:48:28 GMT 2015">getDuration</menu_button>
+<menu_button time="Mon Nov 16 15:48:44 GMT 2015">getLength</menu_button>
+<menu_button time="Mon Nov 16 15:49:12 GMT 2015">getNumSamples</menu_button>
+<menu_button time="Mon Nov 16 15:49:22 GMT 2015">getNumSamples</menu_button>
+<menu_button time="Mon Nov 16 15:49:42 GMT 2015">getSampleObjectAt</menu_button>
+<menu_button time="Mon Nov 16 15:49:59 GMT 2015">makeEmptySoundBySeconds</menu_button>
+<menu_button time="Mon Nov 16 15:50:29 GMT 2015">playNote</menu_button>
+<menu_button time="Mon Nov 16 15:52:01 GMT 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 16 15:52:02 GMT 2015">X:\Audio\audio1</file_saved>
+</file_created>
+<command_run time="Mon Nov 16 15:52:07 GMT 2015">playScale()></command_run>
+<menu_button time="Mon Nov 16 15:52:35 GMT 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 16 15:52:36 GMT 2015">X:\Audio\audio1</file_saved>
+</file_created>
+<command_run time="Mon Nov 16 15:52:37 GMT 2015">playScale()></command_run>
+<command_run time="Mon Nov 16 15:52:42 GMT 2015">playScale()></command_run>
+<menu_button time="Mon Nov 16 15:53:27 GMT 2015">openSoundTool</menu_button>
+<menu_button time="Mon Nov 16 15:53:41 GMT 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 16 15:53:42 GMT 2015">X:\Audio\audio1</file_saved>
+</file_created>
+<menu_button time="Mon Nov 16 15:53:52 GMT 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 16 15:53:53 GMT 2015">X:\Audio\audio1</file_saved>
+</file_created>
+<menu_button time="Mon Nov 16 15:54:32 GMT 2015">writeSoundTo</menu_button>
+<menu_button time="Mon Nov 16 15:54:46 GMT 2015">Program Area + Interactions Area</menu_button>
+<menu_button time="Mon Nov 16 16:07:10 GMT 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 16 16:07:11 GMT 2015">X:\Audio\audio1</file_saved>
+</file_created>
+<command_run time="Mon Nov 16 16:07:18 GMT 2015">file=pickAFile()></command_run>
+<command_run time="Mon Nov 16 16:07:26 GMT 2015">s=makeSound(file)></command_run>
+<command_run time="Mon Nov 16 16:07:33 GMT 2015">increaseVolume(s)></command_run>
+<command_run time="Mon Nov 16 16:07:57 GMT 2015">play(s)></command_run>
+<menu_button time="Mon Nov 16 16:12:18 GMT 2015">play</menu_button>
+<menu_button time="Mon Nov 16 16:24:14 GMT 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 16 16:24:15 GMT 2015">X:\Audio\audio1</file_saved>
+</file_created>
+<command_run time="Mon Nov 16 16:24:25 GMT 2015">sineWave()></command_run>
+<menu_button time="Mon Nov 16 16:24:50 GMT 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 16 16:24:50 GMT 2015">X:\Audio\audio1</file_saved>
+</file_created>
+<command_run time="Mon Nov 16 16:24:52 GMT 2015">sineWave()></command_run>
+<menu_button time="Mon Nov 16 16:25:18 GMT 2015">Load Program</menu_button>
+<file_saved time="Mon Nov 16 16:25:18 GMT 2015">X:\Audio\audio1</file_saved>
+</file_created>
