@@ -1,0 +1,96 @@
+def sound():  
+  
+  #source=pickAFile()
+  sound = makeSound("./sounds/disconnect.wav")
+  mirrorSound(sound)
+  play(sound)
+  
+
+ #DIFFERENT FUNCTIONS
+   # print sound
+  #Sound of length 421109
+  #samples=getSamples(sound)
+  #print samples
+ #Samples, length 421109
+ # print getSampleValueAt(sound,1)
+  #36
+  #print getSampleValueAt(sound,2)
+  #29
+  #explore(sound)
+  
+
+def increasevolume():
+  sound = makeSound("./sounds/ShortWAV.wav")
+  
+  for sample in getSamples(sound):
+    value = getSampleValue(sample)
+    for x in getSamples(sound):
+      setSampleValue(sample,x)
+  play(sound)
+  
+def normalize(sound):
+ largest = 0
+ for s in getSamples(sound):
+   largest = max(largest, getSampleValue(s))
+   amplification = 32767.0 / largest
+
+
+
+bitDepth = 2000
+sampleRate = 44100
+seconds = 3
+volume = 0.5
+hert = 2 * pi
+def tone1():
+  tone = makeEmptySoundBySeconds(seconds)
+  for x in range(0, getLength(tone)):
+    setSampleValueAt(tone, x, int(bitDepth*sin(x)))
+  explore(tone)
+
+def tone2():
+  tone = makeEmptySoundBySeconds(seconds)
+  for x in range(0, getLength(tone)):
+    setSampleValueAt(tone, x, int(bitDepth*sin(x*2)))
+  explore(tone)
+  
+def source():
+  source = makeEmptySoundBySeconds(seconds)
+  for x in range(0, getLength(source)):
+    setSampleValueAt(source, x, int(bitDepth*sin(x*2)))
+  play(source)
+  explore(source)
+  
+    
+    
+def combine(tone1,tone2):
+  outTone = makeEmptySound(int(samplerate * seconds), sampleRate)
+  for i in range(0, getLength(tone1)):
+    firstTone = getSampleValueAt(tone1, i)
+    secondTone = getSampleValueAt(tone2, i)
+    newSample = firstTone + secondTone
+    setSampleValueAt(outTone, i, newsample)
+    
+    
+
+def reverse(source):
+  target = makeEmptySound(getLength(source))
+  sourceIndex = getLength(source) - 1 # start at end
+  for targetIndex in range(0, getLength(target)):
+    value = getSampleValueAt(source, sourceIndex)
+    setSampleValueAt(target, targetIndex, value)
+    sourceIndex = sourceIndex - 1 # move backwards
+  normalize(target)
+  play(target)
+  explore(target)
+
+
+def mirrorSound(sound):
+  len = getLength(sound)
+  mirrorpoint = len/2
+  for index in range(0, mirrorpoint):
+    left = getSampleObjectAt(sound, index)
+    right = getSampleObjectAt(sound, len-index-1)
+    value = getSampleValue(left)
+    setSampleValue(right, value)
+
+
