@@ -159,4 +159,23 @@
 <menu_button time="Mon Nov 30 13:00:55 GMT 2015">Load Program</menu_button>
 <menu_button time="Mon Nov 30 13:03:05 GMT 2015">Save Program</menu_button>
 <file_saved time="Mon Nov 30 13:03:05 GMT 2015">C:\Users\tardistraveller95\Documents\COMP120\comp-120-tinkering-audio\tinkeringAudio.py</file_saved>
+<file_opened time="Fri Dec 04 09:30:33 GMT 2015">C:\Users\tardistraveller95\Documents\COMP120\comp-120-tinkering-audio\tinkeringAudio.py</file_opened>
+<menu_button time="Fri Dec 04 09:31:02 GMT 2015">Load Program</menu_button>
+<command_run time="Fri Dec 04 09:31:24 GMT 2015">toneGen(440, 4000, 2)></command_run>
+<command_run time="Fri Dec 04 09:31:27 GMT 2015">toneGen(440, 4000, 2)></command_run>
+<command_run time="Fri Dec 04 09:31:37 GMT 2015">x = toneGen(440, 4000, 2)></command_run>
+<command_run time="Fri Dec 04 09:31:39 GMT 2015">play(x)></command_run>
+<command_run time="Fri Dec 04 09:31:58 GMT 2015">y = toneGen(880, 4000, 2)></command_run>
+<command_run time="Fri Dec 04 09:32:01 GMT 2015">play(y)></command_run>
+<command_run time="Fri Dec 04 09:32:13 GMT 2015">></command_run>
+<command_run time="Fri Dec 04 09:32:34 GMT 2015">z = audioSplice(x, y, 4)></command_run>
+<command_run time="Fri Dec 04 09:32:43 GMT 2015">z = audioSplice(x, y, 5)></command_run>
+<menu_button time="Fri Dec 04 09:32:59 GMT 2015">Save Program</menu_button>
+<file_saved time="Fri Dec 04 09:32:59 GMT 2015">C:\Users\tardistraveller95\Documents\COMP120\comp-120-tinkering-audio\tinkeringAudio.py</file_saved>
+</file_created>
+<menu_button time="Fri Dec 04 09:33:39 GMT 2015">Save Program</menu_button>
+<file_saved time="Fri Dec 04 09:33:39 GMT 2015">C:\Users\tardistraveller95\Documents\COMP120\comp-120-tinkering-audio\tinkeringAudio.py</file_saved>
+</file_created>
+<menu_button time="Fri Dec 04 09:34:17 GMT 2015">Save Program</menu_button>
+<file_saved time="Fri Dec 04 09:34:17 GMT 2015">C:\Users\tardistraveller95\Documents\COMP120\comp-120-tinkering-audio\tinkeringAudio.py</file_saved>
 </file_created>

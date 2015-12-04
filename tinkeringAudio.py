@@ -40,7 +40,7 @@ def combineTone2(tone1, tone2, tone3, sampleRate):
   
   
 #Algorithm Three: Audio Splice and Swap
-#This algorithm will splice difference tones
+#This algorithm plays one tone after the other
 def audioSplice(tone1, tone2, seconds):
  spliced = makeEmptySound(seconds * 22050)
  index = 0
@@ -57,3 +57,8 @@ def audioSplice(tone1, tone2, seconds):
    index = index + 1
  play(spliced)
  return spliced
+ 
+ 
+#Algorithm ThreeB: Audio Splice and Swap
+#This algorithm splices one tone into another
+
