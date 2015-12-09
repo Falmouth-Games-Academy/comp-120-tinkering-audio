@@ -1,18 +1,17 @@
 __author__ = 'Hat'
 
 
-import array
-import math
-import wave
-
 import tone
 import melody
 import sound
 
 
 def test():
-    sine_tone = tone.SineTone(0, 2000, 0.25)
+    sine_tone = tone.SineTone(0, 2000, 0.5)
     square_tone = tone.SquareTone(0, 2000, 0.5)
+    saw_tone = tone.HarmonicSawTone(0, 2000, 0.5, 10)
+
+
     upscale = sound.Sound()
     downscale = sound.Sound()
 
@@ -36,11 +35,16 @@ def test():
 
     tune = melody.Melody(240, '12/8')
     high = tune.create_melody("E:5:4 B:4:4 D:5:4 A:4:4 " +
-                              "E:5:4 B:4:4 D:5:2", square_tone)
-    low = tune.create_melody("E:4:8 B:3:8 D:4:8 A:3:8 " +
-                             "E:4:8 B:3:8 D:4:4", sine_tone)
+                              "E:5:4 B:4:4 D:5:2", saw_tone)
+    low = tune.create_melody("E:4:4 B:3:4 D:4:4 A:3:4 " +
+                             "E:4:4 B:3:4 D:4:2", saw_tone)
 
-    thing = low + high
-    thing.save("thing.wav")
+    song = low + high
+    song.save("thing.wav")
+
+    low.save("test.wav")
+
+
+
 
 test()

@@ -1,4 +1,4 @@
-__author__ = 'Hat'
+"""Module for tone classes. Tones can be seen as 'instruments'"""
 
 import math
 
@@ -34,13 +34,19 @@ class Tone(object):
         self.__note = value
         self.__frequency = self.__convert_note_to_freq(self.note)
 
-    def __convert_note_to_freq(self, n):
-        base_frequency = 440
-        interval = 2.0**(1.0/12.0)
-        note = base_frequency * interval**n
-        return note
+    def __convert_note_to_freq(self, note):
+        """Convert an integer note number to a frequency value.
+        Return frequency as a float.
+        """
+        # The A above middle C
+        BASE_FREQUENCY = 440
+        INTERVAL = 2.0**(1.0/12.0)
+        frequency = BASE_FREQUENCY * INTERVAL ** note
+        return frequency
 
     def __convert_secs_to_samples(self, sound, seconds):
+        """Convert seconds into sample numbers. Return number of samples
+        as an int"""
         return int(sound.sampling_rate * seconds)
 
     def __generate(self, sound):
@@ -52,51 +58,108 @@ class Tone(object):
             yield sample
 
     def add_tone(self, sound):
-        """Add a tone to the given Sound object instance"""
+        """Add a tone to the end of given Sound object instance"""
         for sample in self.__generate(sound):
             sound.add_sample(sample)
 
-    def layer_tone(self, sound, start_position):
+    def combine_tone(self, sound, start_position):
+        """Combine the tone with the given Sound object instance,
+        starting at the given time.
+
+        Arguments:
+        sound -- Sound object instance
+        start_position -- start position in seconds
+        """
         index = self.__convert_secs_to_samples(sound, start_position)
         for sample in self.__generate(sound):
             if index < len(sound.samples):
                 sound.combine_sample(index, sample)
             else:
-                return
+                sound.add_sample(sample)
             index += 1
 
-    # def harmonise(self, sound, levels):
-    #     initial_frequency = self.frequency
-    #     for i in range(levels):
-    #         for sample in self.generate(sound):
-    #             sound.add_sample(sample)
-    #         self.frequency += initial_frequency * i
-    #     self.note = self.note
+    # This function doesn't really work in a sensible way, as I
+    # was using it for testing. But I decided to leave it in
+    # because it creates some interesting sounds
+    def harmonise(self, sound, levels):
+        """Add harmonic frequencies to the tone and layer
+        the result on the beginning of the sound"""
+        fundamental_frequency = self.frequency
+        initial_amplitude = self.amplitude
+        for i in xrange(1, levels + 1):
+            index = 0
+            self.amplitude = float(initial_amplitude) / i
+            for sample in self.__generate(sound):
+                sound.combine_sample(index, sample)
+                index += 1
+            self.frequency += fundamental_frequency
+        # Ensure frequency is reset to match the note on finish
+        self.note = self.note
 
     def _create_sample(self, sound, index):
         raise NotImplementedError("Subclasses must implement _create_sample")
 
 
 class SineTone(Tone):
-    def _create_sample(self, sampling_rate, index):
+    def _create_sample(self, sampling_rate, sample_index):
         """Create a sample using a sine wave and returns it as an integer"""
         seconds_per_cycle = 1.0/self.frequency
         samples_per_cycle = seconds_per_cycle * sampling_rate
         cycle_size = 2 * math.pi
-        sample = int((math.sin((index / samples_per_cycle) * cycle_size)) * self.amplitude)
+        sample = int((math.sin((sample_index / samples_per_cycle) * cycle_size)) * self.amplitude)
         return sample
 
 
 class SquareTone(Tone):
-    def _create_sample(self, sampling_rate, index):
+    def _create_sample(self, sampling_rate, sample_index):
         """Create a sample using a square wave and returns it as an integer"""
         seconds_per_cycle = 1.0/self.frequency
         samples_per_cycle = seconds_per_cycle * sampling_rate
         cycle_size = 2 * math.pi
-        sinewave = math.sin(index / samples_per_cycle * cycle_size)
+        sinewave = math.sin(sample_index / samples_per_cycle * cycle_size)
         if sinewave != 0:
             # Because a sign function doesn't exist in Python
             sample = int(self.amplitude * math.copysign(1, sinewave) )
         else:
             sample = 0
         return sample
+
+
+class HarmonicSawTone(Tone):
+    """Class that has methods to create a sawtooth tone through layering sine waves."""
+    def __init__(self, note, amplitude, seconds, levels):
+        """Initialises the fields for the class. Takes one more argument than
+        the other Tone subclasses.
+        Arguments:
+        Note -- an integer representing the number of semitones away
+                from the a above middle C
+        Amplitude -- an integer defining the volume
+        Seconds -- a float or integer defining how long the tone will be
+        Levels -- the number of harmonics
+        """
+        super(HarmonicSawTone, self).__init__(note, amplitude, seconds)
+        self.levels = levels
+
+    def _create_sample(self, sampling_rate, sample_index):
+        """Create a sawtooth wave sample using harmonic
+        sine waves and return it as an integer
+        """
+        sample = 0
+        frequency = self.frequency
+
+        # To levels + 1, as range stops before it. Start at 1 for calculations.
+        for i in xrange(1, self.levels + 1):
+            # Divide amplitude by harmonic number
+            amplitude = float(self.amplitude) / i
+            sample += self.__get_sine_sample(frequency, amplitude, sampling_rate, sample_index)
+            frequency += self.frequency
+        return sample
+
+    def __get_sine_sample(self, frequency, amplitude, sampling_rate, sample_index):
+        """Return sine wave sample of given frequency and amplitude
+        corresponding the current sample number.
+        """
+        seconds_per_cycle = 1.0/frequency
+        samples_per_cycle = seconds_per_cycle * sampling_rate
+        cycle_size = 2 * math.pi
+        return int((math.sin((sample_index / samples_per_cycle) * cycle_size)) * amplitude)

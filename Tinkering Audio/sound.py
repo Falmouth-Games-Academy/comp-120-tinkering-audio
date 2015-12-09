@@ -93,6 +93,7 @@ class Sound(object):
         self.samples.reverse()
 
     def copy(self):
+        """Return a copy of the sound object as a new instance"""
         sound = Sound()
         sound.samples = self.samples
         sound.channels = self.channels
