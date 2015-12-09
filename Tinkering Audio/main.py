@@ -28,16 +28,19 @@ def test():
     scale.echo(10000)
     scale.save("scale.wav")
 
-    bah = melody.Melody(120, '4/4')
-    birthday = bah.create_melody("C:8 C:8 D:4 C:4 F:4 E:2 " +
-                               "C:8 C:8 D:4 C:4 G:4 F:2 " +
-                               "C:8 C:8 c:4 A:4 F:4 E:4 D:2", square_tone)
-    birthday.save("bd.wav")
+    # bah = melody.Melody(120, '4/4')
+    # birthday = bah.create_melody("C:4:8 C:4:8 D:4:4 C:4:4 F:4:4 E:4:2 " +
+    #                            "C:4:8 C:4:8 D:4:4 C:4:4 G:4:4 F:4:2 " +
+    #                            "C:4:8 C:4:8 C:5:4 A:4:4 F:4:4 E:4:4 D:4:2", square_tone)
+    # birthday.save("bd.wav")
 
     tune = melody.Melody(240, '12/8')
-    thing = tune.create_melody("e:4 B:4 d:4 A:4 " +
-                               "e:4 B:4 d:2", square_tone)
+    high = tune.create_melody("E:5:4 B:4:4 D:5:4 A:4:4 " +
+                              "E:5:4 B:4:4 D:5:2", square_tone)
+    low = tune.create_melody("E:4:8 B:3:8 D:4:8 A:3:8 " +
+                             "E:4:8 B:3:8 D:4:4", sine_tone)
 
+    thing = low + high
     thing.save("thing.wav")
 
 test()

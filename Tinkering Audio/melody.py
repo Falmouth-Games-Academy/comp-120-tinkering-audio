@@ -1,4 +1,4 @@
-__author__ = 'Hat'
+"""This module includes a class for creating melodies from strings"""
 
 import sound
 
@@ -55,14 +55,20 @@ class Melody(object):
         """Parse the note string and return the note values and lengths
 
         Arguments:
-        note_string -- string in the format notename:notetype, separated by spaces
+        note_string -- string in the format notename:octave:notetype, separated by spaces.
+                       Octave 4 starts from middle C.
         """
-        notes = {'C': -9, 'D': -7, 'E': -5, 'F': -4, 'G': -2, 'A': 0, 'B': 2,
-                 'c': 3, 'd': 5, 'e': 7, 'f':8, 'g': 10, 'a': 12, 'b': 14}
+        BASE_OCTAVE = 4
+        NOTES_IN_OCTAVE = 12
+        notes = {'C': -9, 'C#': -8, 'Db': -8, 'D': -7, 'D#': -6, 'Eb': -6,
+                 'E': -5, 'F': -4, 'F#': -3, 'Gb': -3, 'G': -2, 'G#': -1,
+                 'Ab': -1, 'A': 0, 'A#': 1, 'Bb': 1, 'B': 2}
         note_values = []
+
         for note in note_string.split(' '):
-            note_value, length = note.split(':')
-            note_value = notes[note_value]
+            note_value, octave, length = note.split(':')
+            octave_shift = NOTES_IN_OCTAVE * (int(octave) - BASE_OCTAVE)
+            note_value = notes[note_value] + octave_shift
             note_length = self.bar_length / float(length)
             note_values.append((note_value, note_length))
         return note_values
@@ -73,7 +79,7 @@ class Melody(object):
 
         Arguments:
         tone -- Tone object that the melody will be made from
-        note_string --  string in the format notename:notetype, separated by spaces
+        note_string --  string in the format notename:octave:notetype, separated by spaces
         """
         melody = sound.Sound()
         note_values = self.parse_notes(note_string)

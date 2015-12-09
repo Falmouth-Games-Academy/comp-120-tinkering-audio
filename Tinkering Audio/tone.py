@@ -65,6 +65,14 @@ class Tone(object):
                 return
             index += 1
 
+    # def harmonise(self, sound, levels):
+    #     initial_frequency = self.frequency
+    #     for i in range(levels):
+    #         for sample in self.generate(sound):
+    #             sound.add_sample(sample)
+    #         self.frequency += initial_frequency * i
+    #     self.note = self.note
+
     def _create_sample(self, sound, index):
         raise NotImplementedError("Subclasses must implement _create_sample")
 
