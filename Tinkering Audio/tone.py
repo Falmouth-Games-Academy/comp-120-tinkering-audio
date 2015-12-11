@@ -3,19 +3,22 @@
 import math
 
 import sound
+import envelope
 
 class Tone(object):
-    def __init__(self, note, amplitude, seconds):
+    def __init__(self, note, amplitude, seconds, envelope=None):
         """Initialises the fields for Tone and its subclasses.
         Arguments:
         Note -- An integer representing the number of semitones away
         from the A above middle C
         Amplitude -- An integer defining the volume
         Seconds -- A float or integer defining how long the tone will be
+        Envelope -- Envelope that will be applied to the tone's amplitude
         """
         self.note = note
         self.amplitude = amplitude
         self.seconds = seconds
+        self.envelope = envelope
 
     @property
     def frequency(self):
@@ -33,6 +36,13 @@ class Tone(object):
     def note(self, value):
         self.__note = value
         self.__frequency = self.__convert_note_to_freq(self.note)
+
+
+    def _get_amplitude(self, sampling_rate, sample_index):
+        if self.envelope != None:
+            return self.envelope.get_value(self.amplitude, sample_index, (self.seconds * sampling_rate))
+        else:
+            return self.amplitude
 
     def __convert_note_to_freq(self, note):
         """Convert an integer note number to a frequency value.
@@ -56,6 +66,8 @@ class Tone(object):
         for i in xrange(sample_number):
             sample = self._create_sample(sound.sampling_rate, i)
             yield sample
+
+
 
     def add_tone(self, sound):
         """Add a tone to the end of given Sound object instance"""
@@ -106,7 +118,8 @@ class SineTone(Tone):
         seconds_per_cycle = 1.0/self.frequency
         samples_per_cycle = seconds_per_cycle * sampling_rate
         cycle_size = 2 * math.pi
-        sample = int((math.sin((sample_index / samples_per_cycle) * cycle_size)) * self.amplitude)
+        amplitude = self._get_amplitude(sampling_rate, sample_index)
+        sample = int((math.sin((sample_index / samples_per_cycle) * cycle_size)) * amplitude)
         return sample
 
 
@@ -117,9 +130,10 @@ class SquareTone(Tone):
         samples_per_cycle = seconds_per_cycle * sampling_rate
         cycle_size = 2 * math.pi
         sinewave = math.sin(sample_index / samples_per_cycle * cycle_size)
+        amplitude = self._get_amplitude(sampling_rate, sample_index)
         if sinewave != 0:
             # Because a sign function doesn't exist in Python
-            sample = int(self.amplitude * math.copysign(1, sinewave) )
+            sample = int(amplitude * math.copysign(1, sinewave) )
         else:
             sample = 0
         return sample
@@ -127,7 +141,7 @@ class SquareTone(Tone):
 
 class HarmonicSawTone(Tone):
     """Class that has methods to create a sawtooth tone through layering sine waves."""
-    def __init__(self, note, amplitude, seconds, levels):
+    def __init__(self, note, amplitude, seconds, levels, envelope=None):
         """Initialises the fields for the class. Takes one more argument than
         the other Tone subclasses.
         Arguments:
@@ -136,8 +150,9 @@ class HarmonicSawTone(Tone):
         Amplitude -- an integer defining the volume
         Seconds -- a float or integer defining how long the tone will be
         Levels -- the number of harmonics
+        Envelope -- Envelope that will be applied to the tone's amplitude
         """
-        super(HarmonicSawTone, self).__init__(note, amplitude, seconds)
+        super(HarmonicSawTone, self).__init__(note, amplitude, seconds, envelope)
         self.levels = levels
 
     def _create_sample(self, sampling_rate, sample_index):
@@ -150,10 +165,13 @@ class HarmonicSawTone(Tone):
         # To levels + 1, as range stops before it. Start at 1 for calculations.
         for i in xrange(1, self.levels + 1):
             # Divide amplitude by harmonic number
-            amplitude = float(self.amplitude) / i
+            amplitude = self._get_amplitude(sampling_rate, sample_index)
+            amplitude = float(amplitude) / i
             sample += self.__get_sine_sample(frequency, amplitude, sampling_rate, sample_index)
             frequency += self.frequency
         return sample
+
+
 
     def __get_sine_sample(self, frequency, amplitude, sampling_rate, sample_index):
         """Return sine wave sample of given frequency and amplitude

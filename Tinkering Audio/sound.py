@@ -78,6 +78,10 @@ class Sound(object):
         """Add the sample to the end of the sound"""
         self.samples.append(value)
 
+    def append_sound(self, sound):
+        for sample in sound.samples:
+            self.samples.append(sample)
+
     def set_sample_at_index(self, value, index):
         """Set the sample at the specified index"""
         self.samples[index] = value
