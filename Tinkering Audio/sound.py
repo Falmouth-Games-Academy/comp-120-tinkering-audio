@@ -82,6 +82,14 @@ class Sound(object):
         for sample in sound.samples:
             self.samples.append(sample)
 
+    def insert_sound_at_time(self, sound, seconds):
+        start_position = seconds * self.sampling_rate
+        print start_position
+        print len(sound.samples)
+        for i in range(start_position, start_position + len(sound.samples)):
+            self.samples.insert(i, sound.samples[i-start_position])
+            print len(self.samples)
+
     def set_sample_at_index(self, value, index):
         """Set the sample at the specified index"""
         self.samples[index] = value
