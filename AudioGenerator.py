@@ -2,6 +2,7 @@ import math
 import wave
 import struct
 import os
+import random
 
 numChannels = 1                                                        # Decides whether your in mono or stereo
 audioHz = 44100                                                        # Sample rate
@@ -23,8 +24,14 @@ def makeSin(audioHz, frequency, numSample, maxAmp, amplitude):
         elif sampleValue < -1:
             sampleValue = -1
         sinWave.append(sampleValue)
-
     return sinWave
+
+def makeNoise (numSample, maxAmp):
+    noiseList = []
+    for index in range(0, numSample):
+        sample = random.randint(maxAmp * -1, maxAmp) / float(maxAmp)
+        noiseList.append(sample)
+    return noiseList
 
 def writeToFile(sinSound, fileName, numChannels, maxAmp):
     struct.pack('h', 1000)
@@ -40,25 +47,47 @@ def writeToFile(sinSound, fileName, numChannels, maxAmp):
 #finds and plays a file in your OS's default media player
 def playFile(fileName):
     fileLocation = str(__file__)
-    fileLocation = fileLocation.replace('AudioGenerator.py', '', 1)
-    fileLocation = fileLocation + str(fileName) + '.wav'
+    fileLocation = fileLocation.replace('AudioGenerator.py', str(fileName) + '.wav', 1)
     os.system('start ' + fileLocation)
     return fileLocation
 
-def mergeSin(list1, list2, startPoint):                                # list 1 should be the larger sin list
+def mergeSound(list1, list2, startPoint):                              # list 1 should be the larger sin list
     for sample in range(startPoint, len(list1)):
-        newSample = list1[sample] + list2[sample]
-        newSample = newSample / 2
-        list1[sample] = newSample
+        if sample < len(list2):
+            newSample = list1[sample] + list2[sample]
+            newSample = newSample / 2
+            list1[sample] = newSample
+        else:
+            break
     return list1
 
-print 'generating first sin...'
-sin1 = makeSin(audioHz, 440, 3*audioHz, maxAmp, amplitude)
-print 'generating second sin...'
-sin2 = makeSin(audioHz, 220, 3*audioHz, maxAmp, amplitude)
-print 'merging sin waves...'
-sin1 = mergeSin(sin1, sin2, 0)
-print 'writing file...'
-sound = writeToFile(sin1, 'mySound', numChannels, maxAmp)
-print 'finding and playing file...'
-playFile(sound)
+def loadFile(fileName):                                                # Must be mono and have a 16 bit depth
+    file = wave.open(fileName + '.wav', 'r')
+    sampleList = []
+    numSamples = file.getnframes()
+    for sample in range(0, numSamples):
+        rawData = file.readframes(1)
+        data = struct.unpack('<h', rawData)
+        sampleList.append(data[0]/32767.0)
+    return sampleList
+
+def stringSound(sound1,sound2):                                        # strings one sound onto the end of another
+    for sample in range(0, len(sound2)):
+        sound1.append(sound2[sample])
+    return sound1
+
+#test code
+print "loading files..."
+clock = loadFile('testClock')
+print 'making sounds...'
+sin1 = makeSin(audioHz, 220, 3*audioHz, maxAmp, amplitude)
+sin2 = makeSin(audioHz, 440, 3*audioHz, maxAmp, amplitude)
+noise = makeNoise(3*audioHz, maxAmp)
+print 'merging...'
+clock = mergeSound(clock, sin1, 1*audioHz)
+clock = mergeSound(clock, sin2, 2*audioHz)
+clock = stringSound(clock, noise)
+print 'saving...'
+sound = writeToFile(clock, 'testOutput', numChannels, maxAmp)
+print 'playing...'
+playFile('testOutput')
