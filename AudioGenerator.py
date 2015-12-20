@@ -52,10 +52,10 @@ def playFile(fileName):
     return fileLocation
 
 def mergeSound(list1, list2, startPoint):                              # list 1 should be the larger sin list
-    for sample in range(startPoint, len(list1)):
-        if sample < len(list2):
+    for sample in range(startPoint, len(list1)):                       # currently has a bug where you must merge
+        if sample < len(list2):                                        #  with a sin wave for the code to work
             newSample = list1[sample] + list2[sample]
-            newSample = newSample / 2
+            newSample = newSample / 2.0
             list1[sample] = newSample
         else:
             break
@@ -76,18 +76,39 @@ def stringSound(sound1,sound2):                                        # strings
         sound1.append(sound2[sample])
     return sound1
 
+def echoSound(soundList, numEcho, sampleGap, volumeDecrease):
+    for echo in range(1, numEcho + 1):
+        sampleDifference = (echo + 1) * sampleGap
+        for sample in range(sampleDifference, len(soundList)):
+                newSample = soundList[sample] + soundList[sample - sampleDifference]
+                volumeChange = volumeDecrease * echo
+                if volumeChange <= 1 and volumeChange >= 0:
+                    newSample = (newSample * volumeChange) / 2
+                    soundList[sample] = newSample
+    return soundList
+
+#sound = loadFile(sound3)
+#sound = echoSound(sound, 60, 1000)
+#writeToFile(sound,)
+
+
+
+
 #test code
-print "loading files..."
+print "Loading files..."
 clock = loadFile('testClock')
-print 'making sounds...'
+print 'Making sounds...'
 sin1 = makeSin(audioHz, 220, 3*audioHz, maxAmp, amplitude)
 sin2 = makeSin(audioHz, 440, 3*audioHz, maxAmp, amplitude)
 noise = makeNoise(3*audioHz, maxAmp)
-print 'merging...'
+print 'Merging...'
 clock = mergeSound(clock, sin1, 1*audioHz)
 clock = mergeSound(clock, sin2, 2*audioHz)
 clock = stringSound(clock, noise)
-print 'saving...'
-sound = writeToFile(clock, 'testOutput', numChannels, maxAmp)
-print 'playing...'
+print 'Adding echo...'
+clock = echoSound(clock, 10, audioHz, 0.8)
+print 'Saving '+str(len(clock))+' samples...'
+print 'This may take a while'
+writeToFile(clock, 'testOutput', numChannels, maxAmp)
+print 'Playing...'
 playFile('testOutput')
