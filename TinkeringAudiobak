@@ -1,0 +1,188 @@
+#To play main so far type  testb()
+# TEST TEST TEST section that i test code in
+#zzzzzzzzzzzzzzzz section is the code that works and will be in main code
+#currently not working is stuff that is not working atm
+
+
+
+
+
+#Gets the Sound information
+def soundInformation():
+  file=pickAFile()
+  pac=makeSound(file)
+  print "Information about pac", pac
+  print "Getting First Sample:", getSampleValueAt(pac, 0)
+  print "Getting the Length:", getLength(pac)
+  print "Getting Sampling Rate:", getSamplingRate(pac)
+  return pac
+
+#Plays a sound
+def playSound():
+  file = pickAFile()
+  sound=makeSound(file)
+  play(sound)
+  
+def ca():
+  play("C:\Users\Dean\Documents\A University Work\COMP120Tinkering Audio\a-team_cryin_x.wav")
+
+
+ 
+#reverse
+def reverse(source):
+ target = makeEmptySound(getLength(source))
+ sourceIndex = getLength(source) - 1 # start at end
+ for targetIndex in range(0, getLength(target)):
+   value = getSampleValueAt(source, sourceIndex)
+   setSampleValueAt(target, targetIndex, value)
+   sourceIndex = sourceIndex - 1 # move backwards
+ return target
+#mirror sond 
+def mirrorSound(sound):
+ len = getLength(sound)
+ mirrorpoint = len/2
+ for index in range(0, mirrorpoint):
+   left = getSampleObjectAt(sound, index)
+   right = getSampleObjectAt(sound, len-index-1)
+   value = getSampleValue(left)
+   setSampleValue(right, value)
+   
+
+#half frequenxt
+def halfFrequency(sound):
+ numSamples = getNumSamples(sound)
+ newSound = makeEmptySound(numSamples * 2)
+ index = 0
+ for newIndex in range(numSamples * 2):
+   val = getSampleValueAt(sound, int(index))
+ setSampleValueAt(newSound, newIndex, val)
+ index = index + .5
+ return newSound
+ 
+#currently not working currently not working currently not working currently not working currently not working currently not working 
+
+def fadeOut( snd1, delay, num ) :
+ s1rate = getSamplingRate(snd1)
+ ends1 = getLength( snd1 )
+ snd2 = makeEmptySound( ends1 * (num + 1) + num * int(delay * s1rate) )
+ ends2 = getLength( snd2 )
+ fadeAmplitude = 1.0
+ posn2 = 0
+ for echoCount in range( 0, num + 1 ) :
+   for posn1 in range( 0, ends1-1 ) :
+    values1 = getSampleValueAt( snd1, posn1) * fadeAmplitude
+    setSampleValueAt( snd2, posn2, values1 )
+    posn2 = posn2 + 1
+   if (echoCount < num):
+    for pause in range(0, int(s1rate * delay)):
+     setSampleValueAt( snd2, posn2, 0 )
+     posn2 = posn2 + 1
+   fadeAmplitude = fadeAmplitude * 0.9 #<---How much it fades out
+ return snd2
+
+def spliceTeam():
+ file = getMediaPath('C:\Users\Dean\Documents\A University Work\COMP120Tinkering Audio')
+ source = makeSound(file)
+ target = makeSound(file) # This will be the newly spliced sound
+ targetIndex =17408 # targetIndex starts at just after "We the" in the new sound
+ for sourceIndex in range( 100, 123): # Where the word "United" is in the sound
+   setSampleValueAt(target, targetIndex, getSampleValueAt(source, sourceIndex))
+   targetIndex = targetIndex + 1
+ for sourceIndex in range(17408, 22726): # Where the word "People" is in the sound
+   setSampleValueAt(target , targetIndex, getSampleValueAt(source, sourceIndex))
+   targetIndex = targetIndex + 1
+ for index in range(0, 1000): #Stick some quiet space after that
+   setSampleValueAt(target, targetIndex, 0)
+   targetIndex = targetIndex + 1
+ play(target) #Let's hear and return the result
+ return target
+
+#currently not working currently not working currently not working currently not working currently not working currently not working 
+
+
+#zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+#Clipping(maximum)
+def maximize(sound):
+ for sample in getSamples(sound):
+   value = getSampleValue(sample)
+   if value > 0:
+     setSampleValue(sample, 32767)
+   if value < 0:
+     setSampleValue(sample, -32768) 
+
+#Increasing sound 
+def increaseVolume(sound):
+ for sample in getSamples(sound):
+   value = getSample(sample)
+   setSample(sample,value * 1.2)
+   
+#ECHO ECHO
+def echo(sound, delay):
+  s1 = makeSound("C:\Users\Dean\Documents\A University Work\COMP120Tinkering Audio\pacman_beginning.wav")
+  s2 = makeSound("C:\Users\Dean\Documents\A University Work\COMP120Tinkering Audio\pacman_beginning.wav")
+  for index in range(delay, getLength(s1)):
+    echo = 0.6*getSampleValueAt(s2, index-delay)
+    combo = getSampleValueAt(s1, index) + echo
+    setSampleValueAt(s1, index, combo)
+  play(s1)
+  return s1
+
+#mirrors the sound, plays half then half backwards
+def mirrorSound(sound):
+ len = getLength(sound)
+ mirrorpoint = len/2
+ for index in range(0, mirrorpoint):
+   left = getSampleObjectAt(sound, index)
+   right = getSampleObjectAt(sound, len-index-1)
+   value = getSampleValue(left)
+   setSampleValue(right, value)
+#zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+
+#TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST 
+def test():
+  spliceTeam()
+  play(sound)
+ 
+def testb():
+  sound=makeSound("C:\Users\Dean\Documents\A University Work\COMP120Tinkering Audio\pacman_beginning.wav")
+  halfFrequency(sound)
+  mirrorSound(sound)
+  echo(sound, 4)
+  increaseVolume(sound)
+  play(sound)
+  
+
+
+
+
+#TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST TEST 
+
+#THIS IS WHERE YOU USE MULITPLE DEF
+def abc():
+  soundInformation()
+  playSound()
+  echo(sound,100)
+  
+
+def get():
+  file=pickAFile()
+  sound=makeSound(file)
+  play(sound)
+
+def bob():
+  pac = makeSound("C:\Users\Dean\Documents\A University Work\COMP120Tinkering Audio\pacman_beginning.wav")
+  print pac
+  samples=getSamples(pac)
+  print samples
+  print getSampleValueAt(pac,1)
+  print getSampleValueAt(pac,2)
+  explore(pac)
+  print getLength(pac)
+  print getSamplingRate(pac)
+  print getsampleValueAt(pac, 22000)
+
+
+
+
+
+
