@@ -6,7 +6,7 @@ import wave
 
 
 class Sound(object):
-    def __init__(self, channels=1, sample_width=2, sampling_rate=44100):
+    def __init__(self, channels=1, sample_width=2, sampling_rate=44100, samples=None):
         """Initialises the fields and sets up an empty wav file
 
         Arguments:
@@ -15,7 +15,7 @@ class Sound(object):
         sample_width -- sample width in bytes. Defaults to 2 (16-bit)
         sampling_rate -- samples per second. Defaults to 44100 (CD quality)
         """
-        self.samples = None
+        self.samples = samples
         self.sample_width = sample_width
         self.channels = channels
         self.sampling_rate = sampling_rate
@@ -37,8 +37,7 @@ class Sound(object):
         # Array of signed short ints
         samples = array.array('h')
         if data != None:
-            for sample in data:
-                samples.append(sample)
+            samples.extend(data)
         self.__samples = samples
 
     @property
@@ -79,16 +78,19 @@ class Sound(object):
         self.samples.append(value)
 
     def append_sound(self, sound):
-        for sample in sound.samples:
-            self.samples.append(sample)
+        self.samples.extend(sound.samples)
 
     def insert_sound_at_time(self, sound, seconds):
         start_position = seconds * self.sampling_rate
-        print start_position
-        print len(sound.samples)
         for i in range(start_position, start_position + len(sound.samples)):
             self.samples.insert(i, sound.samples[i-start_position])
-            print len(self.samples)
+
+    def layer_sound_at_time(self, sound, seconds):
+        start_position = int(seconds * self.sampling_rate)
+        print seconds, start_position
+        print len(self.samples)
+        for i in range(start_position, start_position + len(sound.samples)):
+            self.combine_sample(i, sound.samples[i-start_position])
 
     def set_sample_at_index(self, value, index):
         """Set the sample at the specified index"""
@@ -100,6 +102,11 @@ class Sound(object):
             self.samples[index] += value
         else:
             self.add_sample(value)
+
+    def repeat(self, repeats):
+        original_sound = self.copy()
+        for i in range(repeats):
+            self.append_sound(original_sound)
 
     def reverse(self):
         self.samples.reverse()

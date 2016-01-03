@@ -4,19 +4,32 @@ from enum import Enum
 import time
 
 class Envelope(object):
-    def __init__(self, attack_length, decay_length, sustain_level, sustain_length, release_length):
+    def __init__(self, type, attack_length, decay_length, sustain_level, sustain_length, release_length):
+        """Initialise the fields.
+
+        Arguments:
+        type: the type of the envelope (frequency or amplitude) as an EnvelopeType
+        attack_length: the length of the attack as a float representing the proportion of the sound
+        decay_length: the length of the decay as a float representing the proportion of the sound
+        sustain level: the sustain level. Use the absolute value for amplitude, or the number of
+        semitones difference for frequency
+        sustain_length: the length of the sustain as a float representing the proportion of the sound
+        release_length: the length of the release as a float representing the proportion of the sound
+        """
+        self.type = type
         self.attack_length = attack_length
         self.decay_length = decay_length
         self.sustain_level = sustain_level
         self.sustain_length = sustain_length
         self.release_length = release_length
 
-    def get_value(self, default_amplitude, sample_index, number_of_samples):
+    def get_value(self, default_value, sample_index, number_of_samples):
         """Return the appropriate amplitude value according to the envelope  phase times
         Arguments:
-        default_amplitude -- the default amplitude of the tone
+        default value -- the default amplitude or frequency of the tone
         sample_index -- the index of the sample the envelope will be applied to
-        number_of_samples -- the total number of samples in the tone"""
+        number_of_samples -- the total number of samples in the tone
+        """
         attack_length = self.attack_length * number_of_samples
         decay_length = self.decay_length * number_of_samples
         sustain_length =  self.sustain_length * number_of_samples
@@ -27,74 +40,38 @@ class Envelope(object):
 
         phase = self.get_phase(sample_index, number_of_samples)
 
-        if self.sustain_level == 0:
-            self.sustain_level = default_amplitude
-
-        if phase == EnvelopePhase.attack:
-            envelope = float(sample_index / float(attack_length))
-            amplitude = default_amplitude * envelope
-            return amplitude
-
-        if phase == EnvelopePhase.decay:
-            envelope = 1.0 - (float(sample_index - decay_start) / float(decay_length))
-            amplitude = default_amplitude * envelope
-            if amplitude < self.sustain_level:
-                return self.sustain_level
+        if self.type == EnvelopeType.amplitude:
+            if self.sustain_level == 0:
+                sustain_level = default_value
             else:
-                return amplitude
-
-        if phase == EnvelopePhase.sustain:
-            amplitude = self.sustain_level
-            return amplitude
-
-        if phase == EnvelopePhase.release:
-            envelope = 1.0 - (float(sample_index - release_start) / float(release_length))
-            amplitude = envelope * self.sustain_level
-            return amplitude
-
-    def get_freq(self, default_frequency, sample_index, number_of_samples):
-        """Return the appropriate amplitude value according to the envelope  phase times
-        Arguments:
-        default_amplitude -- the default amplitude of the tone
-        sample_index -- the index of the sample the envelope will be applied to
-        number_of_samples -- the total number of samples in the tone"""
-        attack_length = self.attack_length * number_of_samples
-        decay_length = self.decay_length * number_of_samples
-        sustain_length =  self.sustain_length * number_of_samples
-        release_length =  self.release_length * number_of_samples
-
-        decay_start = attack_length
-        release_start = attack_length + decay_length + sustain_length
-
-        phase = self.get_phase(sample_index, number_of_samples)
-
-        sustain_level = self.get_frequency_sustain_level(default_frequency)
+                sustain_level = self.sustain_level
+        else:
+            sustain_level = self.get_frequency_sustain_level(default_value)
 
         if phase == EnvelopePhase.attack:
             envelope = float(sample_index / float(attack_length))
-            frequency = default_frequency * envelope
-            if frequency == 0:
+            new_value = default_value * envelope
+            if self.type == EnvelopeType.frequency and new_value == 0:
                 return 1
             else:
-                return frequency
+                return new_value
 
         if phase == EnvelopePhase.decay:
             envelope = 1.0 - (float(sample_index - decay_start) / float(decay_length))
-            frequency = default_frequency * envelope
-            if frequency < sustain_level:
+            new_value = default_value * envelope
+            if new_value < sustain_level:
                 return sustain_level
             else:
-                return frequency
+                return new_value
 
         if phase == EnvelopePhase.sustain:
-            frequency = sustain_level
-            return frequency
+            new_value = sustain_level
+            return new_value
 
         if phase == EnvelopePhase.release:
             envelope = 1.0 - (float(sample_index - release_start) / float(release_length))
-            frequency = envelope * sustain_level
-            return frequency
-
+            new_value = envelope * sustain_level
+            return new_value
 
     def get_frequency_sustain_level(self, default_frequency):
         if self.sustain_level == 0:
@@ -130,3 +107,8 @@ class EnvelopePhase(Enum):
     decay = 1
     sustain = 2
     release = 3
+
+class EnvelopeType(Enum):
+    """Enum for different envelope types"""
+    amplitude = 0
+    frequency = 1

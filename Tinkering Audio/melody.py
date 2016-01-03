@@ -45,13 +45,31 @@ class Melody(object):
     @property
     def beats_per_minute(self):
         return self.__beats_per_minute
+
     @beats_per_minute.setter
     def beats_per_minute(self, value):
         self.__beats_per_minute = value
         self.__beat_length = 60.0 / self.beats_per_minute
 
+    def create_melody(self, note_string, tone):
+        """Create a melody from a string and return it as a Sound object
 
-    def parse_notes(self, note_string):
+        Arguments:
+        tone -- Tone object that the melody will be made from
+        note_string --  string in the format notename:octave:notetype, separated by spaces
+        """
+        melody = sound.Sound()
+        note_values = self.__parse_notes(note_string)
+        print note_values
+        for note in note_values:
+            tone.note, tone.seconds = note
+            tone.add_tone(melody)
+        return melody
+
+    def get_time_at_beat(self, beat_number):
+        return self.bar_length / self.default_note * beat_number
+
+    def __parse_notes(self, note_string):
         """Parse the note string and return the note values and lengths
 
         Arguments:
@@ -74,17 +92,5 @@ class Melody(object):
         return note_values
 
 
-    def create_melody(self, note_string, tone):
-        """Create a melody from a string and return it as a Sound object
 
-        Arguments:
-        tone -- Tone object that the melody will be made from
-        note_string --  string in the format notename:octave:notetype, separated by spaces
-        """
-        melody = sound.Sound()
-        note_values = self.parse_notes(note_string)
-        print note_values
-        for note in note_values:
-            tone.note, tone.seconds = note
-            tone.add_tone(melody)
-        return melody
+
