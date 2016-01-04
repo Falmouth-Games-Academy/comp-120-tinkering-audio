@@ -6,7 +6,7 @@ import tone
 import melody
 import sound
 
-
+# Temporary function for testing purposes and experimentation
 def test():
     my_env = envelope.Envelope(0.25, 0.25, 500, 0.25, 0.25)
 
@@ -85,6 +85,6 @@ def make_song():
     song = intro.copy()
     song.append_sound(main_part)
 
-    song.save("thing.wav")
+    song.save("song.wav")
 
 make_song()

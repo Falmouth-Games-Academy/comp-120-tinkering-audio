@@ -23,19 +23,31 @@ class Melody(object):
         return self.__beats_per_bar
 
     @property
-    def default_note(self):
-        return self.__note_type
+    def default_note_type(self):
+        return self.__default_note_type
 
     @property
     def bar_length(self):
         return self.__bar_length
 
     @time_sig.setter
-    def time_sig(self, sig):
-        self.__time_sig = sig
-        beats_per_bar, note_type = sig.split('/')
+    def time_sig(self, time_sig):
+        """Set the time signature and related properties.
+
+        Set up the time signature and related properties including beats
+        per bar, default note type, and the length of the bar (in seconds).
+        Default note type is given in terms of musical value, derived from the
+        time signature, e.g. a crotchet is 4, a quaver is 8.
+        Beats per bar is the number of this note type in a bar, similarly derived
+        from the time signature.
+
+        Arguments:
+        time_sig -- time signature as a string, e.g. '4/4'
+        """
+        self.__time_sig = time_sig
+        beats_per_bar, default_note_type = time_sig.split('/')
         self.__beats_per_bar = int(beats_per_bar)
-        self.__note_type = int(note_type)
+        self.__default_note_type = int(default_note_type)
         self.__bar_length = self.beat_length * self.beats_per_bar
 
     @property
@@ -48,6 +60,11 @@ class Melody(object):
 
     @beats_per_minute.setter
     def beats_per_minute(self, value):
+        """Set the beats per minute and beat length
+
+        Set the beats per minute property and the beat length in seconds.
+        The beat length will consequently be the length of the default note type.
+        """
         self.__beats_per_minute = value
         self.__beat_length = 60.0 / self.beats_per_minute
 
@@ -67,7 +84,8 @@ class Melody(object):
         return melody
 
     def get_time_at_beat(self, beat_number):
-        return self.bar_length / self.default_note * beat_number
+        """Return the time in seconds of a given beat."""
+        return self.bar_length / self.default_note_type * beat_number
 
     def __parse_notes(self, note_string):
         """Parse the note string and return the note values and lengths

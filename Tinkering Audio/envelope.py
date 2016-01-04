@@ -25,6 +25,7 @@ class Envelope(object):
 
     def get_value(self, default_value, sample_index, number_of_samples):
         """Return the appropriate amplitude value according to the envelope  phase times
+
         Arguments:
         default value -- the default amplitude or frequency of the tone
         sample_index -- the index of the sample the envelope will be applied to
