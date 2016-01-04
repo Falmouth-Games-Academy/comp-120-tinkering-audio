@@ -259,4 +259,77 @@
 </file_created>
 <menu_button time="Thu Dec 03 16:14:38 UTC 2015">Save Program</menu_button>
 <file_saved time="Thu Dec 03 16:14:38 UTC 2015">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+<file_opened time="Mon Jan 04 01:51:48 UTC 2016">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_opened>
+<menu_button time="Mon Jan 04 01:52:15 UTC 2016">Load Program</menu_button>
+<command_run time="Mon Jan 04 01:53:00 UTC 2016">sindWaveADSR ()></command_run>
+<command_run time="Mon Jan 04 01:53:12 UTC 2016">sineWaveADSR ()></command_run>
+<command_run time="Mon Jan 04 01:54:51 UTC 2016">sineWaveADSR (2*pi,volume,seconds,1,1,1)></command_run>
+<menu_button time="Mon Jan 04 01:55:42 UTC 2016">Load Program</menu_button>
+<file_saved time="Mon Jan 04 01:55:43 UTC 2016">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Mon Jan 04 01:55:43 UTC 2016">sineWaveADSR (2*pi,volume,seconds,1,1,1)></command_run>
+<command_run time="Mon Jan 04 01:56:38 UTC 2016">sineWaveADSR (hert,volume,seconds,1.0,1.0,1.0)></command_run>
+<menu_button time="Mon Jan 04 01:56:51 UTC 2016">Load Program</menu_button>
+<file_saved time="Mon Jan 04 01:56:52 UTC 2016">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Mon Jan 04 01:56:52 UTC 2016">sineWaveADSR (hert,volume,seconds,1.0,1.0,1.0)></command_run>
+<command_run time="Mon Jan 04 01:57:14 UTC 2016">sineWaveADSR (hert,100,seconds,1.0,1.0,1.0)></command_run>
+<command_run time="Mon Jan 04 01:57:22 UTC 2016">sineWaveADSR (hert,1000,seconds,1.0,1.0,1.0)></command_run>
+<command_run time="Mon Jan 04 01:57:36 UTC 2016">sineWaveADSR (hert,10000,seconds,1.0,1.0,1.0)></command_run>
+<command_run time="Mon Jan 04 01:57:48 UTC 2016">sineWaveADSR (hert,100000,seconds,1.0,1.0,1.0)></command_run>
+<command_run time="Mon Jan 04 01:58:05 UTC 2016">sineWaveADSR (hert,60000,seconds,1.0,1.0,1.0)></command_run>
+<command_run time="Mon Jan 04 01:58:21 UTC 2016">sineWaveADSR (hert,30000,seconds,1.0,1.0,1.0)></command_run>
+<command_run time="Mon Jan 04 01:58:32 UTC 2016">sineWaveADSR (hert,3000,seconds,1.0,1.0,1.0)></command_run>
+<command_run time="Mon Jan 04 01:58:40 UTC 2016">sineWaveADSR (hert,50000,seconds,1.0,1.0,1.0)></command_run>
+<command_run time="Mon Jan 04 01:59:11 UTC 2016">sineWaveADSR (hert,5000,seconds,1.0,1.0,1.0)></command_run>
+<menu_button time="Mon Jan 04 02:08:11 UTC 2016">Load Program</menu_button>
+<file_saved time="Mon Jan 04 02:08:12 UTC 2016">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Mon Jan 04 02:08:19 UTC 2016">sineWaveADSR (hert,5000,seconds)></command_run>
+<command_run time="Mon Jan 04 02:08:34 UTC 2016">sineWaveADSR (hert,volume,seconds)></command_run>
+<command_run time="Mon Jan 04 02:08:46 UTC 2016">sineWaveADSR (hert,50000,seconds)></command_run>
+<menu_button time="Mon Jan 04 02:10:22 UTC 2016">Load Program</menu_button>
+<file_saved time="Mon Jan 04 02:10:23 UTC 2016">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Mon Jan 04 02:10:24 UTC 2016">sineWaveADSR (hert,50000,seconds)></command_run>
+<command_run time="Mon Jan 04 02:10:32 UTC 2016">sineWaveADSR (hert,5000,seconds)></command_run>
+<command_run time="Mon Jan 04 02:10:43 UTC 2016">sineWaveADSR (hert,9000,seconds)></command_run>
+<menu_button time="Mon Jan 04 02:11:20 UTC 2016">Load Program</menu_button>
+<file_saved time="Mon Jan 04 02:11:21 UTC 2016">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Mon Jan 04 02:11:22 UTC 2016">sineWaveADSR (hert,9000,seconds)></command_run>
+<menu_button time="Mon Jan 04 02:11:58 UTC 2016">Load Program</menu_button>
+<file_saved time="Mon Jan 04 02:11:59 UTC 2016">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Mon Jan 04 02:11:59 UTC 2016">sineWaveADSR (hert,9000,seconds)></command_run>
+<menu_button time="Mon Jan 04 02:12:49 UTC 2016">Load Program</menu_button>
+<file_saved time="Mon Jan 04 02:12:49 UTC 2016">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Mon Jan 04 02:12:50 UTC 2016">sineWaveADSR (hert,9000,seconds)></command_run>
+<menu_button time="Mon Jan 04 02:14:28 UTC 2016">Load Program</menu_button>
+<file_saved time="Mon Jan 04 02:14:29 UTC 2016">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Mon Jan 04 02:14:35 UTC 2016">sineWaveADSR (hert,volume,seconds)></command_run>
+<menu_button time="Mon Jan 04 03:14:17 UTC 2016">Load Program</menu_button>
+<file_saved time="Mon Jan 04 03:14:19 UTC 2016">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<menu_button time="Mon Jan 04 03:14:45 UTC 2016">Load Program</menu_button>
+<file_saved time="Mon Jan 04 03:14:46 UTC 2016">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Mon Jan 04 03:15:06 UTC 2016">makeNoise(100, 3)></command_run>
+<menu_button time="Mon Jan 04 03:15:22 UTC 2016">Load Program</menu_button>
+<file_saved time="Mon Jan 04 03:15:22 UTC 2016">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Mon Jan 04 03:15:23 UTC 2016">makeNoise(100, 3)></command_run>
+<menu_button time="Mon Jan 04 03:15:32 UTC 2016">Load Program</menu_button>
+<file_saved time="Mon Jan 04 03:15:33 UTC 2016">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Mon Jan 04 03:15:34 UTC 2016">makeNoise(100, 3)></command_run>
+<command_run time="Mon Jan 04 03:15:40 UTC 2016">makeNoise(3000, 3)></command_run>
+<menu_button time="Mon Jan 04 03:16:05 UTC 2016">Load Program</menu_button>
+<file_saved time="Mon Jan 04 03:16:06 UTC 2016">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
+</file_created>
+<command_run time="Mon Jan 04 03:16:06 UTC 2016">makeNoise(3000, 3)></command_run>
+<menu_button time="Mon Jan 04 03:42:08 UTC 2016">Load Program</menu_button>
+<file_saved time="Mon Jan 04 03:42:09 UTC 2016">C:\Users\Alastair\Documents\GitHub\comp-120-tinkering-audio\JES\Programs\Manipulatingsounds2</file_saved>
 </file_created>

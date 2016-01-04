@@ -2,8 +2,9 @@ def sound():
   
   #source=pickAFile()
   sound = makeSound("./sounds/disconnect.wav")
-  mirrorSound(sound)
-  play(sound)
+  reverse(sound)
+  #explore(sound)
+  #play(sound)
   
 
  #DIFFERENT FUNCTIONS
@@ -59,9 +60,10 @@ def source():
     setSampleValueAt(source, x, int(bitDepth*sin(x*2)))
   play(source)
   explore(source)
+  return(source)
   
     
-    
+
 def combine(tone1,tone2):
   outTone = makeEmptySound(int(samplerate * seconds), sampleRate)
   for i in range(0, getLength(tone1)):
