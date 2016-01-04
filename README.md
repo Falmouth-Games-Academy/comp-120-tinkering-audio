@@ -1,5 +1,8 @@
 # COMP120 Tinkering Audio
 
+##Additional Libraries Used
+[enum34](https://pypi.python.org/pypi/enum34)
+
 ##Locations of Algorithms Required for Assignment
 
 ###Tone Generation
