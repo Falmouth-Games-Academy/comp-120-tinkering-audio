@@ -1,8 +1,6 @@
 #function for generating a tone.
-def toneGeneration():
-    secs = 5                                                  #setting the length, frequencey and amplitude of the clip.
-    freq = 150
-    amplitude = 3000
+
+def toneGeneration(sec, freq, amplitude):
     buildSin = makeEmptySoundBySeconds(secs)                  #building the clip
     sampleRate = getSamplingRate(buildSin)
     interval = 1.0/freq
@@ -11,6 +9,6 @@ def toneGeneration():
     for pos in range (0,getLength(buildSin)):
         rawSample = sin((pos / samplesPerCycle) * maxCycle)   
         sampleValue = int(amplitude * rawSample)              #gets the value of the sample.
-        setSampleValueAt(buildSin, pos, sampleValue)          #sets that value to be played for the length of the clip.
+        setSampleValueAt(buildSin, pos, sampleValue)          #sets the value of the tone.
     play(buildSin)
     
