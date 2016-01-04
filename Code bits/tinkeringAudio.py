@@ -1,9 +1,7 @@
 #Algorithm One: Tone Generation
-#This algorithm generates a tone from a sin wave from the users specifed frequency, amplitude and length in seconds.
+#This algorithm generates a tone from a sin wave from the users specified frequency, amplitude and length in seconds.
 def toneGen(freq, amplitude, length):
- # Create a blank sound
  makeTone = makeEmptySoundBySeconds(length)
- # Set constants
  samplingRate = getSamplingRate(makeTone)
  interval = 1.0 / freq
  samplesPerCycle = interval * samplingRate
@@ -61,4 +59,19 @@ def audioSplice(tone1, tone2, seconds):
  
 #Algorithm ThreeB: Audio Splice and Swap
 #This algorithm splices one tone into another
+
+#Algorithm Four A: Envelope 
+
+#Algorithm Four B: Echo
+def echo(sound1, sound2, second_delay):
+  for i in range(second_delay, getLength(sound1)):
+    echo = 0.6*getSampleValueAt(sound2, i-second_delay)
+    combo = getSampleValueAt(sound1, i) + echo
+    setSampleValueAt(sound1, i, combo)
+  play(sound1)
+  return sound1
+
+
+
+ 
 

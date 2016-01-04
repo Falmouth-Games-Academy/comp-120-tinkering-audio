@@ -1,0 +1,1 @@
+# Will use parsing tokens into audio algorithm as a base and then randomly choose notes from a list and play them back
