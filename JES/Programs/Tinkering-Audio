@@ -6,21 +6,17 @@ sampleRate = 44100
 seconds = 3
 volume = 0.5
 frequency = 1000
+getSamplingRate
 
 setMediaFolder("./sounds")
 LongSound = makeSound("LongWAV.wav")
 DisconnectSound = makeSound("disconnect.wav")
 
-#Other sound Functions
-def normalize(sound):
- largest = 0
- for s in getSamples(sound):
-   largest = max(largest, getSampleValue(s))
- amplification = 32767.0 / largest
-
 #Tone Generation
 def tone1():
   tone = makeEmptySoundBySeconds(seconds)
+  r= random.randrange(10,100)
+  print r
   for x in range(0, getLength(tone)):
     setSampleValueAt(tone, x, int(bitDepth*sin(x)))
   explore(tone)
@@ -129,45 +125,42 @@ def Envelope(tone, length, frequency, volume): #Envelope(tone1(), 3, frequency, 
     sampleVal = int(volume * rawSample)
     setSampleValueAt(tone, pos, sampleVal)
   
-  normalize(tone)
+
   explore(tone)
   play(tone)
   
 
   
 #Parsing tokens into audio
-def parser(volume,bitDepth):
+def parser(bitDepth):
   noteiteration = 0
-  notes = requestString("Please enter some notes such as; C, D, E, F, G, B, A, C")  
+  notes = requestString("Please enter some notes such as; C, D, E, F, G, B, A, C") 
+  
   for x in notes:
     notes.split(' ')
     frequency = search(noteNum, '%s' % notes[noteiteration])
     noteiteration = noteiteration +1
-    print frequency
-    
-  
-  
-  
+ 
   interval = 1.0 / frequency
   samplesPerCycle = interval * sampleRate
   maxCycle = 2 * pi
-  melody = makeEmptySoundBySeconds(10)
-  targetIndex = 1
+  melody = makeEmptySoundBySeconds(10)                                     #all the tones are put into the melody
+  targetIndex = 0  
+  ToneLength = 1                                                          #set all the tones to a length of 1 sec
+  
   
   for x in notes:
-    tone = makeEmptySoundBySeconds(1)
+    tone = makeEmptySoundBySeconds(ToneLength)
     for x in range(0, getLength(tone)):
-      setSampleValueAt(melody, targetIndex, int(bitDepth*sin(x)* frequency/100))
+      setSampleValueAt(melody, targetIndex, int(sin(x / samplesPerCycle * maxCycle) * frequency*10))
       targetIndex = targetIndex +1
-    play(tone)
-    
   explore(melody)
+    
 
-
-  
 #dictionary of notes
-noteNum = {'C': 440, 'C#': 445,'D': 450, 'D#': 460,'E': 465, 'F': 470,'F#': 475, 'G': 480,'G#': 485, 'A': 490,'A#': 495, 'B': 500}  
+noteNum = {'C': 440, 'C#': 450,'D': 500, 'D#': 550,'E': 600, 'F': 650,'F#': 700, 'G': 750,'G#': 800, 'A': 850,'A#': 900, 'B': 950}  
 
+#searches the notes to see if the numbers inputted are the same as any in the dictionary.
 def search(noteNum, searchfor):
   for key, value in noteNum.items():
     for v in key:
@@ -175,21 +168,18 @@ def search(noteNum, searchfor):
         return value
  
   
-
+#Random tone generation
+def Randtone():
+  frequency = random.randrange(500, 1500)
+  targetIndex = 0
+  interval = 1.0 / frequency
+  samplesPerCycle = interval * sampleRate
+  maxCycle = 2 * pi
+  randtone = makeEmptySoundBySeconds(1)
+  samplerate = getSamplingRate(randtone)
   
-
-
- # for x in notes:
- #   notes.split(' ')
- #   notes[noteiteration]
- #   noteiteration = noteiteration +1
- #   for keys in noteNum:
- #     if notes[noteiteration] == keys:
- #       print key in noteNum
-        
-  #print 'hi: %s' % notes 
-  
-  #if noteNum.key
-  
- # for keys,values in noteNum.items():
- #   print (values)
+  print frequency
+  for x in range(0, getLength(randtone)):
+    setSampleValueAt(randtone, targetIndex, int(sin(x / samplesPerCycle * maxCycle) * frequency*10))
+    targetIndex = targetIndex +1
+  play(randtone)
