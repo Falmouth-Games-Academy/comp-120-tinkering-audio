@@ -1,0 +1,25 @@
+<file_created time="Sat Jan 09 11:22:39 GMT 2016">
+<Could not find G:\Documents\GitHub\COMP120\comp-120-tinkering-audio\2_tone_combination.pylog, creating a new logfile>
+<menu_button time="Sat Jan 09 11:22:45 GMT 2016">Load Program</menu_button>
+<command_run time="Sat Jan 09 11:22:57 GMT 2016">toneGen(440, 2000, 1)></command_run>
+<menu_button time="Sat Jan 09 11:23:14 GMT 2016">Load Program</menu_button>
+<file_saved time="Sat Jan 09 11:23:15 GMT 2016">G:\Documents\GitHub\COMP120\comp-120-tinkering-audio\2_tone_combination.py</file_saved>
+</file_created>
+<command_run time="Sat Jan 09 11:23:24 GMT 2016">t1 = toneGen(440, 2000, 1)></command_run>
+<command_run time="Sat Jan 09 11:23:35 GMT 2016">play(t1)></command_run>
+<command_run time="Sat Jan 09 11:23:44 GMT 2016">t2 = toneGen(880, 2000, 1)></command_run>
+<command_run time="Sat Jan 09 11:23:47 GMT 2016">play(t2)></command_run>
+<command_run time="Sat Jan 09 11:24:07 GMT 2016">combineTone(t1,t2, 44100)></command_run>
+<menu_button time="Sat Jan 09 11:52:03 GMT 2016">Load Program</menu_button>
+<command_run time="Sat Jan 09 11:52:06 GMT 2016">combineTone(t1,t2, 44100)></command_run>
+<menu_button time="Sat Jan 09 11:52:18 GMT 2016">Load Program</menu_button>
+<file_saved time="Sat Jan 09 11:52:19 GMT 2016">G:\Documents\GitHub\COMP120\comp-120-tinkering-audio\2_tone_combination.py</file_saved>
+</file_created>
+<command_run time="Sat Jan 09 11:52:26 GMT 2016">combineTone(t1,t2, 44100, 1)></command_run>
+<command_run time="Sat Jan 09 11:52:35 GMT 2016">combineTone(t1,t2, 44100, 2)></command_run>
+<command_run time="Sat Jan 09 11:52:53 GMT 2016">t2 = toneGen(880, 2000, 3)></command_run>
+<command_run time="Sat Jan 09 11:53:01 GMT 2016">t1 = toneGen(440, 2000, 3)></command_run>
+<command_run time="Sat Jan 09 11:53:05 GMT 2016">combineTone(t1,t2, 44100, 2)></command_run>
+<menu_button time="Sat Jan 09 11:53:18 GMT 2016">Save Program</menu_button>
+<file_saved time="Sat Jan 09 11:53:18 GMT 2016">G:\Documents\GitHub\COMP120\comp-120-tinkering-audio\2_tone_combination.py</file_saved>
+</file_created>
