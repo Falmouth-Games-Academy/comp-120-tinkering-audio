@@ -15,21 +15,26 @@ def toneGen(freq, amplitude, length):
  return makeTone
  
 def audioSplice(tone1, tone2, seconds):
- spliced = makeEmptySound(int(seconds))
+ spliced_length = (int(getLength(tone1) + getLength(tone2)) + 100)
+ spliced = makeEmptySound(spliced_length)
  index = 0
  for source in range(0, getLength(tone1)):
    value = getSampleValueAt(tone1, source)
    setSampleValueAt(spliced, index, value)
-   index = index + 1
- for source in range(0, int(0.1*getSamplingRate(spliced))):
+   index += 1
+# for source in range(0, int(0.1*getSamplingRate(spliced))):
+#   setSampleValueAt(spliced, index, 0)
+ #  index = index + 1
+ for source in range(0, int(0.1 * 44100)):
    setSampleValueAt(spliced, index, 0)
-   index = index + 1
+   index += 1
  for source in range(0, getLength(tone2)):
    value = getSampleValueAt(tone2, source)
    setSampleValueAt(spliced, index, value)
-   index = index + 1
+   index += 1
  play(spliced)
  return spliced
+ 
 
 #Algorithm 6: Random Audio Generation
 def randomAudio(length):
@@ -38,11 +43,11 @@ def randomAudio(length):
   seconds = 1
   for n in range(length):
     seconds += 1
+    print seconds
     note_number = random.choice(notes)
-    print note_number
     frequency = 440.0 * 2.0 **(note_number / 12.0)
     tone = toneGen(frequency, 2000, 1)    
-    #combine = audioSplice(aTone, tone, seconds)
-    play(tone)
-    time.sleep(0.5)
+    combine = audioSplice(aTone, tone, seconds)
+    aTone = combine
+  play(combine)
   #writeSoundTo(tone, r'G:\Documents\GitHub\COMP120\comp-120-tinkering-audio\n.wav')
