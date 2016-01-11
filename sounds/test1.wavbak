@@ -1,0 +1,16 @@
+def sound():
+
+  filename=pickAFile()
+  print filename
+  
+  sound=makeSound("./sounds/hugeWAV.wav")
+  print sound
+  #Sound of length 421109
+  samples=getSamples(sound)
+  print samples
+  #Samples, length 421109
+  #print getSampleValueAt(sound,1)
+  #36
+  print getSampleValueAt(sound,2)
+  29
+  explore(sound)
