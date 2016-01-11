@@ -1,5 +1,6 @@
 """This module includes a class for creating melodies from strings"""
 
+import random
 import sound
 
 class Melody(object):
@@ -44,6 +45,7 @@ class Melody(object):
         Arguments:
         time_sig -- time signature as a string, e.g. '4/4'
         """
+
         self.__time_sig = time_sig
         beats_per_bar, default_note_type = time_sig.split('/')
         self.__beats_per_bar = int(beats_per_bar)
@@ -60,21 +62,28 @@ class Melody(object):
 
     @beats_per_minute.setter
     def beats_per_minute(self, value):
-        """Set the beats per minute and beat length
+        """Set the beats per minute and beat length.
 
         Set the beats per minute property and the beat length in seconds.
         The beat length will consequently be the length of the default note type.
         """
+
         self.__beats_per_minute = value
         self.__beat_length = 60.0 / self.beats_per_minute
 
     def create_melody(self, note_string, tone):
         """Create a melody from a string and return it as a Sound object
 
+        This method creates a melody from a string and returns it as a
+        Sound object. The notes in the string should be in the form
+        notename:octave:notetype and each note should be separated by a space.
+        The Tone object used for the melody can be seen as the 'instrument'.
+
         Arguments:
         tone -- Tone object that the melody will be made from
         note_string --  string in the format notename:octave:notetype, separated by spaces
         """
+
         melody = sound.Sound()
         note_values = self.__parse_notes(note_string)
         print note_values
@@ -83,17 +92,41 @@ class Melody(object):
             tone.add_tone(melody)
         return melody
 
+    def create_shuffled_melody(self, note_string, tone):
+        """Shuffle a string to create a random melody and return it as a Sound object.
+
+        This method shuffles a string of notes and created a melody which is returned as a
+        Sound object. The notes in the string should be in the form
+        notename:octave:notetype and each note should be separated by a space.
+        The Tone object used for the melody can be seen as the 'instrument'.
+
+        Arguments:
+        tone -- Tone object that the melody will be made from
+        note_string --  string to be shuffled in the format notename:octave:notetype, separated by spaces
+        """
+
+        note_list = note_string.split()
+        random.shuffle(note_list)
+        shuffled_note_string = ' '.join(note_list)
+        return self.create_melody(shuffled_note_string, tone)
+
     def get_time_at_beat(self, beat_number):
         """Return the time in seconds of a given beat."""
         return self.bar_length / self.default_note_type * beat_number
 
     def __parse_notes(self, note_string):
-        """Parse the note string and return the note values and lengths
+        """Parse the note string and return the note values and lengths.
+
+        This method parses a string of notes given in the form
+        notename:octave:notetype, separated by spaces into numbers to be
+        used for frequency conversion. Octave number 4 is middle C.
+        This method returns a list of tuples containing the note value and note
+        length.
 
         Arguments:
         note_string -- string in the format notename:octave:notetype, separated by spaces.
-                       Octave 4 starts from middle C.
         """
+
         BASE_OCTAVE = 4
         NOTES_IN_OCTAVE = 12
         notes = {'C': -9, 'C#': -8, 'Db': -8, 'D': -7, 'D#': -6, 'Eb': -6,

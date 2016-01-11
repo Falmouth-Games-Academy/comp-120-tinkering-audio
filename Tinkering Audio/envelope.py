@@ -4,6 +4,13 @@ from enum import Enum
 import time
 
 class Envelope(object):
+
+    """Store fields and methods relating to audio envelopes.
+
+    This class has fields and methods relating to both amplitude and
+    frequency audio envelopes.
+    """
+
     def __init__(self, type, attack_length, decay_length, sustain_level, sustain_length, release_length):
         """Initialise the fields.
 
@@ -16,6 +23,7 @@ class Envelope(object):
         sustain_length: the length of the sustain as a float representing the proportion of the sound
         release_length: the length of the release as a float representing the proportion of the sound
         """
+
         self.type = type
         self.attack_length = attack_length
         self.decay_length = decay_length

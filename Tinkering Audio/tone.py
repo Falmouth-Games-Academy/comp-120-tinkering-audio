@@ -1,6 +1,7 @@
 """Module for tone classes. Tones can be seen as 'instruments'"""
 
 import math
+import random
 
 import sound
 import envelope
@@ -191,3 +192,7 @@ class HarmonicSawTone(Tone):
             sample += int(sine_value * amplitude)
             frequency += self.frequency
         return sample, phase
+
+class Noise(Tone):
+    def _create_sample(self, sampling_rate, sample_index, previous_phase):
+        return random.randrange(0, 32768), None

@@ -87,4 +87,24 @@ def make_song():
 
     song.save("song.wav")
 
+def make_eating_sound():
+    pass
+
+def make_death_sound():
+    pass
+
+def make_start_sound():
+    pass
+
+def make_powerup_sound():
+    pass
+
+def make_frightened_sound():
+    pass
+
+def make_retreating_sound():
+    pass
+
+
 make_song()
+make_eating_sound()
