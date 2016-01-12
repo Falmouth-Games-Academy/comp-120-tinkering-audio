@@ -1,4 +1,7 @@
-"""This module includes a class for creating melodies from strings"""
+"""Contain a class for creating melodies.
+
+This module contains a class for creating Sound objects containing
+ melodies by parsing strings."""
 
 import random
 import sound
@@ -8,8 +11,7 @@ class Melody(object):
         """Intialise the fields.
 
         Arguments:
-
-        beats -- the number of beats per minute (int)
+        beats_per_minute -- the number of beats per minute (int)
         time_sig -- time signature as a string, e.g. '4/4'
         """
         self.beats_per_minute = beats_per_minute
@@ -65,7 +67,7 @@ class Melody(object):
         """Set the beats per minute and beat length.
 
         Set the beats per minute property and the beat length in seconds.
-        The beat length will consequently be the length of the default note type.
+        The length of the default note type will be equal to the beat length.
         """
 
         self.__beats_per_minute = value

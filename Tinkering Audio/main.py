@@ -1,10 +1,13 @@
 __author__ = 'Hat'
 
+import os
 
 import envelope
-import tone
 import melody
 import sound
+import tone
+
+OUTPUT_DIR = 'output'
 
 # Temporary function for testing purposes and experimentation
 def test():
@@ -44,34 +47,34 @@ def test():
 
 def make_bg_music():
     short_sound_env = envelope.Envelope(envelope.EnvelopeType.amplitude, 0, 0, 0, 0, 1)
-    main_instrument = tone.SquareTone(0, 2000, 0, short_sound_env)
-    little_instrument = tone.SquareTone(0, 2000, 0)
+
+    main_instrument = tone.SquareTone(0, 1000, 0, short_sound_env)
+    little_instrument = tone.SquareTone(0, 1000, 0)
 
     music = melody.Melody(120, '6/8')
 
+    first_bar_string = ("E:3:16 E:3:16 E:3:16 "
+                       "B:2:16 B:2:16 B:2:16 "
+                       "D:3:16 D:3:16 D:3:16 "
+                       "A:2:16 A:2:16 A:2:16 ")
 
-    first_part = music.create_melody("E:3:16 E:3:16 E:3:16 "
-                               "B:2:16 B:2:16 B:2:16 "
-                               "D:3:16 D:3:16 D:3:16 "
-                               "A:2:16 A:2:16 A:2:16 " +
-                               "E:3:16 E:3:16 E:3:16 "
-                               "B:2:16 B:2:16 B:2:16 "
-                               "D:3:16 D:3:16 D:3:16", main_instrument)
+    first_part = music.create_melody(first_bar_string +
+                                     "E:3:16 E:3:16 E:3:16 "
+                                     "B:2:16 B:2:16 B:2:16 "
+                                     "D:3:16 D:3:16 D:3:16", main_instrument)
 
-    second_part = music.create_melody("E:3:16 E:3:16 E:3:16 "
-                               "B:2:16 B:2:16 B:2:16 "
-                               "D:3:16 D:3:16 D:3:16 "
-                               "A:2:16 A:2:16 A:2:16 " +
-                               "A:2:16 Ab:2:16 A:2:16 "
-                               "Ab:2:8 Bb:2:16 B:2:16 "
-                               "Bb:2:16 B:2:16 C:3:8 B:2:16", main_instrument)
+    second_part = music.create_melody(first_bar_string +
+                                      "A:2:16 Ab:2:16 A:2:16 "
+                                      "Ab:2:8 Bb:2:16 B:2:16 "
+                                      "Bb:2:16 B:2:16 C:3:8 B:2:16", main_instrument)
 
-    extra = music.create_melody("E:4:8 D:4:16", little_instrument)
+    extra_bit = music.create_melody("E:4:8 D:4:16", little_instrument)
 
+    # Time that the extra bit should be overlayed
     overlap_time = music.get_time_at_beat(10.5)
 
-    first_part.append_sound(extra)
-    second_part.layer_sound_at_time(extra, overlap_time)
+    first_part.append_sound(extra_bit)
+    second_part.layer_sound_at_time(extra_bit, overlap_time)
 
     intro = first_part.copy()
     intro.repeat(2)
@@ -85,7 +88,8 @@ def make_bg_music():
     song = intro.copy()
     song.append_sound(main_part)
 
-    song.save("song.wav")
+    song.save(os.path.join(OUTPUT_DIR, "song.wav"))
+
 
 def make_eating_sound():
     chomp_fenv = envelope.Envelope(envelope.EnvelopeType.frequency, -5, 0.5, 0.5, 0, 0)
@@ -100,11 +104,9 @@ def make_eating_sound():
     chomp_tone_high.add_tone(chomp_high)
     chomp_tone_low.add_tone(chomp_low)
 
-    chomp_high.save("chomp_high.wav")
-    chomp_low.save("chomp_low.wav")
+    chomp_high.save(os.path.join(OUTPUT_DIR, "chomp_high.wav"))
+    chomp_low.save(os.path.join(OUTPUT_DIR, "chomp_low.wav"))
 
-def make_death_sound():
-    pass
 
 def make_start_sound():
     music = melody.Melody(120, '6/8')
@@ -114,7 +116,11 @@ def make_start_sound():
     jingle = music.create_melody("C:2:8 C:2:16 D:2:8 C:2:16 "
                                  "Eb:2:8 C:2:4 F#:2:6 F#:2:8 G:2:2", instrument)
 
-    jingle.save("jingle.wav")
+    jingle.save(os.path.join(OUTPUT_DIR, "jingle.wav"))
+
+
+def make_death_sound():
+    pass
 
 def make_powerup_sound():
     pass
@@ -126,6 +132,7 @@ def make_retreating_sound():
     pass
 
 
-make_bg_music()
-make_eating_sound()
-make_start_sound()
+if __name__ == '__main__':
+    make_bg_music()
+    make_eating_sound()
+    make_start_sound()

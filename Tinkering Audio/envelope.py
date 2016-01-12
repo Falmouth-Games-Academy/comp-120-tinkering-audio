@@ -10,10 +10,13 @@ from enum import Enum
 
 class Envelope(object):
 
-    """Store fields and methods relating to audio envelopes.
+    """Contain fields and methods relating to audio envelopes.
 
     This class has fields and methods relating to both amplitude and
     frequency audio envelopes.
+
+    Public Methods:
+    get_value -- return the value of the amplitude or frequency after envelope has been applied
     """
 
     def __init__(self, type, sustain_level, attack_length, decay_length, sustain_length, release_length):
@@ -55,7 +58,7 @@ class Envelope(object):
         decay_start = attack_length
         release_start = attack_length + decay_length + sustain_length
 
-        phase = self.get_phase(sample_index, number_of_samples)
+        phase = self.__get_phase(sample_index, number_of_samples)
 
         if self.type == EnvelopeType.amplitude:
             if self.sustain_level == 0:
@@ -63,7 +66,7 @@ class Envelope(object):
             else:
                 sustain_level = self.sustain_level
         else:
-            sustain_level = self.get_frequency_sustain_level(default_value)
+            sustain_level = self.__get_frequency_sustain_level(default_value)
 
         if phase == EnvelopePhase.attack:
             envelope = float(sample_index / float(attack_length))
@@ -90,7 +93,7 @@ class Envelope(object):
             new_value = envelope * sustain_level
             return new_value
 
-    def get_frequency_sustain_level(self, default_frequency):
+    def __get_frequency_sustain_level(self, default_frequency):
         if self.sustain_level == 0:
             return default_frequency
         else:
@@ -98,7 +101,7 @@ class Envelope(object):
             frequency = default_frequency * INTERVAL ** self.sustain_level
             return frequency
 
-    def get_phase(self, sample_index, number_of_samples):
+    def __get_phase(self, sample_index, number_of_samples):
         """Return the envelope phase of the given sample number"""
         attack_end = self.attack_length * number_of_samples
         decay_end = attack_end + self.decay_length * number_of_samples
