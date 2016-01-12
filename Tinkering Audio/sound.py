@@ -132,9 +132,12 @@ class Sound(object):
                 sound.samples[i] += self.samples[i]
         return sound
 
-    def echo(self, delay):
+    def echo(self, delay, vol_reduction):
         echo = Sound()
         echo.samples = self.samples
         for i in range(len(echo.samples)):
-            self.combine_sample(i + delay, int(0.6 * echo.samples[i]))
+            self.combine_sample(i + delay, int(vol_reduction * echo.samples[i]))
 
+    def feedback_echo(self, delay, vol_reduction):
+        for i in range(len(self.samples)):
+            self.combine_sample(i + delay, int(vol_reduction * self.samples[i]))

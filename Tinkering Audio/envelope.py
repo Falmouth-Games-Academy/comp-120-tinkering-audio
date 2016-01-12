@@ -1,7 +1,12 @@
+"""Store classes relating to audio envelopes.
+
+Classes:
+Envelope -- has methods and fields for the application of an envelope
+EnvelopePhase(Enum) -- enum to store which phase the envelope is in
+EnvelopeType(Enum) -- enum to store the type of an envelope
+"""
 
 from enum import Enum
-
-import time
 
 class Envelope(object):
 
@@ -11,15 +16,17 @@ class Envelope(object):
     frequency audio envelopes.
     """
 
-    def __init__(self, type, attack_length, decay_length, sustain_level, sustain_length, release_length):
+    def __init__(self, type, sustain_level, attack_length, decay_length, sustain_length, release_length):
         """Initialise the fields.
+
+        This method initialises the fields for the Envelope class. The sum of attack_length, decay_length,
+        sustain_length and release_length must be 1.
 
         Arguments:
         type: the type of the envelope (frequency or amplitude) as an EnvelopeType
+        sustain level: the sustain level. Absolute value for amplitude, difference in semitones for frequency
         attack_length: the length of the attack as a float representing the proportion of the sound
         decay_length: the length of the decay as a float representing the proportion of the sound
-        sustain level: the sustain level. Use the absolute value for amplitude, or the number of
-        semitones difference for frequency
         sustain_length: the length of the sustain as a float representing the proportion of the sound
         release_length: the length of the release as a float representing the proportion of the sound
         """
@@ -32,13 +39,14 @@ class Envelope(object):
         self.release_length = release_length
 
     def get_value(self, default_value, sample_index, number_of_samples):
-        """Return the appropriate amplitude value according to the envelope  phase times
+        """Return the appropriate amplitude or frequency value according to the envelope phase times
 
         Arguments:
         default value -- the default amplitude or frequency of the tone
         sample_index -- the index of the sample the envelope will be applied to
         number_of_samples -- the total number of samples in the tone
         """
+
         attack_length = self.attack_length * number_of_samples
         decay_length = self.decay_length * number_of_samples
         sustain_length =  self.sustain_length * number_of_samples
@@ -91,7 +99,7 @@ class Envelope(object):
             return frequency
 
     def get_phase(self, sample_index, number_of_samples):
-        """Return the phase of the given sample number"""
+        """Return the envelope phase of the given sample number"""
         attack_end = self.attack_length * number_of_samples
         decay_end = attack_end + self.decay_length * number_of_samples
         sustain_end = decay_end + self.sustain_length * number_of_samples

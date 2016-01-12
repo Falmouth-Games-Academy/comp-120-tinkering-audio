@@ -6,6 +6,8 @@ import random
 import sound
 import envelope
 
+MAX_AMPLITUDE = 32768
+
 class Tone(object):
     def __init__(self, note, amplitude, seconds, amplitude_env=None, frequency_env=None):
         """Initialises the fields for Tone and its subclasses.
@@ -40,12 +42,31 @@ class Tone(object):
         self.__frequency = self.__convert_note_to_freq(self.note)
 
     def _get_amplitude(self, sampling_rate, sample_index):
+        """Return the amplitude after any envelopes have been applied to it.
+
+        This method returns the amplitude for a specific sample
+        after any envelopes have been applied to it.
+
+        Arguments:
+        sampling_rate -- the sampling rate of the sound as an integer
+        sample_index -- the index of the sample that the amplitude should be retrieved
+        """
+
         if self.amplitude_env != None:
             return self.amplitude_env.get_value(self.amplitude, sample_index, (self.seconds * sampling_rate))
         else:
             return self.amplitude
 
     def _get_frequency(self, sampling_rate, sample_index):
+        """Return the frequency after any envelopes have been applied to it.
+
+        This method returns the frequency for a specific sample
+        after any envelopes have been applied to it.
+
+        Arguments:
+        sampling_rate -- the sampling rate of the sound as an integer
+        sample_index -- the index of the sample that the frequency should be retrieved
+        """
         if self.frequency_env != None:
             frequency = self.frequency_env.get_value(self.frequency, sample_index, (self.seconds * sampling_rate))
             return frequency
@@ -53,9 +74,17 @@ class Tone(object):
             return self.frequency
 
     def __convert_note_to_freq(self, note):
-        """Convert an integer note number to a frequency value.
-        Return frequency as a float.
+        """Convert an integer note number to a frequency value and return it.
+
+        This method converts an integer note value to a frequency value. The A
+        above middle C is 0, and each integer above or below is a semitone above
+        or below respectively. Floats can be used to represent intervals smaller
+        than a semitone. Frequency is returned as a float.
+
+        Arguments:
+        note -- the note number to convert to a frequency
         """
+
         # The A above middle C
         BASE_FREQUENCY = 440
         INTERVAL = 2.0**(1.0/12.0)
@@ -63,8 +92,7 @@ class Tone(object):
         return frequency
 
     def __convert_secs_to_samples(self, sound, seconds):
-        """Convert seconds into sample numbers. Return number of samples
-        as an int"""
+        """Convert seconds into sample number and return as an integer."""
         return int(sound.sampling_rate * seconds)
 
     def __generate(self, sound):
@@ -195,4 +223,4 @@ class HarmonicSawTone(Tone):
 
 class Noise(Tone):
     def _create_sample(self, sampling_rate, sample_index, previous_phase):
-        return random.randrange(0, 32768), None
+        return random.randrange(MAX_AMPLITUDE), None

@@ -42,7 +42,7 @@ def test():
     birthday.save("bd.wav")
 
 
-def make_song():
+def make_bg_music():
     short_sound_env = envelope.Envelope(envelope.EnvelopeType.amplitude, 0, 0, 0, 0, 1)
     main_instrument = tone.SquareTone(0, 2000, 0, short_sound_env)
     little_instrument = tone.SquareTone(0, 2000, 0)
@@ -88,13 +88,33 @@ def make_song():
     song.save("song.wav")
 
 def make_eating_sound():
-    pass
+    chomp_fenv = envelope.Envelope(envelope.EnvelopeType.frequency, -5, 0.5, 0.5, 0, 0)
+    chomp_env = envelope.Envelope(envelope.EnvelopeType.amplitude, 0, 0, 0, 0.5, 0.5)
+
+    chomp_high = sound.Sound()
+    chomp_tone_high = tone.SquareTone(-17, 2000, 0.1, chomp_env, chomp_fenv)
+
+    chomp_low = sound.Sound()
+    chomp_tone_low = tone.SquareTone(-22, 2000, 0.1, chomp_env, chomp_fenv)
+
+    chomp_tone_high.add_tone(chomp_high)
+    chomp_tone_low.add_tone(chomp_low)
+
+    chomp_high.save("chomp_high.wav")
+    chomp_low.save("chomp_low.wav")
 
 def make_death_sound():
     pass
 
 def make_start_sound():
-    pass
+    music = melody.Melody(120, '6/8')
+    jingle_env = envelope.Envelope(envelope.EnvelopeType.amplitude, 0, 0, 0, 0, 1)
+    instrument = tone.SquareTone(0, 2000, 0, jingle_env)
+
+    jingle = music.create_melody("C:2:8 C:2:16 D:2:8 C:2:16 "
+                                 "Eb:2:8 C:2:4 F#:2:6 F#:2:8 G:2:2", instrument)
+
+    jingle.save("jingle.wav")
 
 def make_powerup_sound():
     pass
@@ -106,5 +126,6 @@ def make_retreating_sound():
     pass
 
 
-make_song()
+make_bg_music()
 make_eating_sound()
+make_start_sound()
