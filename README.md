@@ -3,7 +3,7 @@
 ##Additional Libraries Used
 [enum34](https://pypi.python.org/pypi/enum34)
 
-##Locations of Algorithms Required for Assignment
+##Locations of Methods Relating to Algorithms Required for Assignment
 
 ###Tone Generation
 |Module|Class|Method(s)|
@@ -25,7 +25,7 @@
 ###Audio Envelopes/Echo
 |Module|Class|Method(s)|
 |---|---|---|
-|sound|Sound|echo|
+|sound|Sound|echo, feedback_echo|
 |envelope|Envelope|all|
 
 ###Parsing Tokens
@@ -36,3 +36,5 @@
 ###Random Audio Generation
 |Module|Class|Method(s)|
 |---|---|---|
+|melody|Melody|create_shuffled_melody|
+|tone|Noise|_create_sample|
