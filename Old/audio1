@@ -1,0 +1,130 @@
+def Play():
+  filename=pickAFile()
+
+  sound=makeSound(filename)
+
+  samples=getSamples(sound)
+
+  explore(sound)
+  
+  print getSampleValueAt(sound, 1)
+  print getSampleValueAt(sound, 2)
+  
+def echo():
+  #play echo
+  delay=100
+  s1 = makeSound(r"X:\Audio\UpbeatFunk.wav")
+  s2 = makeSound(r"X:\Audio\UpbeatFunk.wav")
+  for index in range(delay, getLength(s1)):
+    echo = 0.6 * getSampleValueAt(s2, index-delay)
+    combo = getSampleValueAt(s1, index, combo)
+  play(s1)
+  return s1
+
+def playTwice():
+  #play sound twice
+  sound=makeSound(r"X:\Audio\UpbeatFunk.wav")
+  blockingPlay(sound)
+  blockingPlay(sound)
+  
+def playScale():
+  #play a scale
+  intensity = 64
+  dur = 100
+  for i in range(60, 72):
+    playNote(i, dur, intensity)
+    
+def playScaleTwo():
+  #play a scale of different values
+  intensity = 40
+  dur = 100
+  for i in range(44, 49):
+    playNote(i, dur, intensity)
+    
+def scales():
+  #I wanted to make it so it played these two at the same time, but not sure how to do that
+  playScaleTwo()
+  playScale()
+    
+def increaseVolume(sound):
+  #increase the volume of a sound sample
+  for sample in getSamples(sound):
+    value = getSampleValue(sample)
+    setSampleValue(sample, value *2)
+
+def setVariables():
+  #welcome message
+  freq = requestInteger("What frequency should the first sound be?")
+  print freq
+  
+  amplitude = requestInteger("What amplitude should the first should have?")
+  print amplitude
+  
+  length = requestInteger("What should the length in seconds be?")
+  print length
+  
+def sineWave():
+  # I want setVariables to be called into this as a class or def but can't get it to take the values
+  
+  freq = requestInteger("What frequency should the first sound be?")
+  print freq
+  
+  amplitude = requestInteger("What amplitude should the first should have?")
+  print amplitude
+  
+  length = requestInteger("What should the length in seconds be?")
+  print length
+  
+  #set the variables
+  #freq=440
+  #amplitude=4400
+  #secs=4
+  
+  #create blank sound
+  buildSin = makeEmptySoundBySeconds(length)
+  
+  #set the constant of sampling
+  samplingRate = getSamplingRate(buildSin)
+  interval=1.0/freq
+  samplesPerCycle=interval * samplingRate
+  maxCycle=2*pi
+  
+  #generate the sound
+  for pos in range (getLength(buildSin)):
+    rawSample = sin((pos / samplesPerCycle) * maxCycle)
+    sampleVal = int(amplitude * rawSample)
+    setSampleValueAt(buildSin, pos, sampleVal)
+  
+  play(buildSin)
+  
+def sineWave2(freq, amplitude, length):
+  
+  #set the variables
+  #freq=440
+  #amplitude=4400
+  #secs=4
+  
+  #create blank sound
+  buildSin = makeEmptySoundBySeconds(length)
+  
+  #set the constant of sampling
+  samplingRate = getSamplingRate(buildSin)
+  interval=1.0/freq
+  samplesPerCycle=interval * samplingRate
+  maxCycle=2*pi
+  
+  #generate the sound
+  for pos in range (getLength(buildSin)):
+    rawSample = sin((pos / samplesPerCycle) * maxCycle)
+    sampleVal = int(amplitude * rawSample)
+    setSampleValueAt(buildSin, pos, sampleVal)
+    
+  play(buildSin)
+    
+def musicSine():
+  #I want to not have to define the variables here but allow setVariables set the values and then name the sound to add
+  first_sound = sineWave2(440, 4000, 4)
+  second_sound = sineWave2(140, 4900, 4)
+  
+  addSoundInto(second_sound, first_sound)
+  play(first_sound)

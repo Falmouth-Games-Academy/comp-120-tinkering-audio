@@ -1,0 +1,16 @@
+def sineWave(freq,amplitude,secs):
+
+  tone = makeEmptySoundBySeconds(secs)
+  
+  sampleRate = getSamplingRate(tone)
+  
+  interval = 1.0 / freq
+  samplesPerCycle = interval *sampleRate
+  maxCycle = 2 * pi
+  
+  for i in range (0, getLength(tone)):
+    rawSample = sin((i / samplesPerCycle) * maxCycle)
+    sampleValue = int(amplitude * rawSample)
+    setSampleValueAt(tone, i, sampleValue)
+    
+  return tone

@@ -1,0 +1,247 @@
+#play the sound
+def Play():
+  filename=pickAFile()
+
+  sound=makeSound(filename)
+
+  samples=getSamples(sound)
+
+  explore(sound)
+  
+  print getSampleValueAt(sound, 1)
+  print getSampleValueAt(sound, 2)
+  
+#play the sound twice
+def playTwice():
+  sound=makeSound(r"X:\Audio\UpbeatFunk.wav")
+  blockingPlay(sound)
+  blockingPlay(sound)
+  
+##############################################################
+
+#TONE GENERATION
+def sineWave2(freq, amplitude, length):
+  
+  #set the variables
+  #freq=440
+  #amplitude=4400
+  #secs=4
+  
+  #create blank sound
+  buildSin = makeEmptySoundBySeconds(length)
+  
+  #set the constant of sampling
+  samplingRate = getSamplingRate(buildSin)
+  interval=1.0/freq
+  samplesPerCycle=interval * samplingRate
+  maxCycle=2*pi
+  
+  #generate the sound
+  for pos in range (getLength(buildSin)):
+    rawSample = sin((pos / samplesPerCycle) * maxCycle)
+    sampleVal = int(amplitude * rawSample)
+    setSampleValueAt(buildSin, pos, sampleVal)
+    
+  play(buildSin)
+  
+##################################################################
+
+#I want to not have to define the variables here but allow setVariables set the values and then name the sound to add
+def musicSine():
+  
+  first_sound = sineWave2(440, 4000, 4)
+  second_sound = sineWave2(140, 4900, 4)
+  
+  addSoundInto(second_sound, first_sound)
+  play(first_sound)
+  
+#####################################################################
+  
+#TONE COMBINATION
+#play a scale
+def playScale():
+  intensity = 64
+  dur = 100
+  for i in range(60, 72):
+    playNote(i, dur, intensity)
+  
+#play a scale of different values      
+def playScaleTwo():
+  intensity = 40
+  dur = 100
+  for i in range(44, 49):
+    playNote(i, dur, intensity)
+    
+#I wanted to make it so it played these two at the same time, but not sure how to do that        
+def scale():
+
+  playScaleTwo()
+  playScale()
+  
+##############################################################################################
+
+#REVERSE
+def reverseMain():
+  class reverseSound:
+    def reverse(sound):
+      sound = makeSound(r"C:\Users\home\Desktop\Sam\JES Code\Audio\Airhorn.wav")
+      target = makeEmptySound(getLength(sound))
+      soundIndex = getLength(sound)-1
+      for targetIndex in range(0, getLength(target)):
+        soundValue = getSampleValueAt(sound, soundIndex)
+        setSampleValueAt(target, targetIndex, soundValue)
+        soundIndex = soundIndex -1
+      return target
+    explore(sound)
+    revSound = reverse(sound)
+    explore(revSound)
+  
+#############################################################################################################
+
+#MIRROR - DOESN'T WORK - when I explore sound it says that mirSound isn't a media file
+def mirrorMain():
+  class mirrorSound:
+    def mirror(sound):
+      sound = makeSound(r"C:\Users\home\Desktop\Sam\JES Code\Audio\Airhorn.wav")
+      length = getLength(sound)
+      mirrorPoint = length/2
+      for index in range(0, mirrorPoint):
+        left = getSampleObjectAt(sound, index)
+        right = getSampleObjectAt(sound, length - index - 1)
+        value = getSampleValue(left)
+        setSampleValue(right, value)
+    explore(sound)
+    mirSound = mirror(sound)
+    explore(mirSound)
+
+###################################################################################################################
+
+#ECHO 
+def echo(delay):
+  s1 = makeSound(r"C:\Users\home\Desktop\Sam\JES Code\Audio\Airhorn.wav")
+  s2 = makeSound(r"C:\Users\home\Desktop\Sam\JES Code\Audio\Airhorn.wav")
+  for index in range(delay, getLength(s1)):
+    echo = 0.6 * getSampleValueAt(s2, index-delay)
+    combo = getSampleValueAt(s1, index) + echo
+  play(s1)
+  return s1
+  
+#######################################################################################################
+
+#MERGE - DOESN'T WORK - the value of index is outside of audio clip range
+def merge():
+  Airhorn = makeSound(r"C:\Users\home\Desktop\Sam\JES Code\Audio\Airhorn.wav")
+  Bikehorn = makeSound(r"C:\Users\home\Desktop\Sam\JES Code\Audio\Bikehorn.wav")
+  target = makeEmptySoundBySeconds(2)
+  index = 0
+  for source in range(0, getLength(Airhorn)):
+    value = getSampleValueAt(Airhorn, source)
+    setSampleValueAt(target, index, value)
+    index = index + 1
+  for source in range(0, int(0.1*getSamplingRate(target))):
+    setSampleValueAt(target, index, 0)
+    index = index + 1
+  for source in range(0, getLength(Bikehorn)):
+    value = getSampleValueAt(Bikehorn, source)
+    setSampleValueAt(target, index, value)
+  play(target)
+  return(target)
+
+##############################################################################################
+
+#SPLICING - DOESN'T WORK - there is a problem with the sample numbers
+def splicingSound(sound):
+  sound = makeSound(r"C:\Users\home\Desktop\Sam\JES Code\Audio\UpbeatFunk.wav")
+  explore(sound)
+  target = makeEmptySoundBySeconds(10)
+  targetIndex = 140000
+  #first sound clip for splice
+  for soundIndex in range(240000, 444000):
+    value = getSampleValueAt(sound, soundIndex)
+    setSampleValueAt(target, targetIndex, value)
+    targetIndex = targetIndex + 1
+    #second sound clip for splice
+  for soundIndex in range(940000, 944000):
+    value = getSampleValueAt(sound, soundIndex)
+    setSampleValueAt(target, targetIndex, value)
+    targetIndex = targetIndex + 1
+  #make some gap for silence at the end of the audio
+  for index in range(0, 1000):
+    setSampleValueAt(target, targetIndex, 0)
+    targetIndex = targetIndex + 1
+    
+  play(target)
+  return target
+  splicedSound = splicingSound(sound)
+  explore(splicedSound)
+  
+#SPLICE - Doesn't seem to be shorter
+def spliceSimple():
+  sound = makeSound(r"C:\Users\home\Desktop\Sam\JES Code\Audio\UpbeatFunk.wav")
+  target = makeSound(r"C:\Users\home\Desktop\Sam\JES Code\Audio\UpbeatFunk.wav")
+  targetIndex = 240000
+  for soundIndex in range(290000, 440000):
+    value = getSampleValueAt(sound, soundIndex)
+    setSampleValueAt(target, targetIndex, value)
+    targetIndex = targetIndex + 1
+  explore(target)
+  play(target)
+  return(target)
+
+#############################################################################
+
+#RANDOM NOTE AUDIO GENERATION
+def randomNote():
+  import random
+  intensity = 64
+  dur = 100
+  note = random.randint(44, 99)
+  playNote(note, dur, intensity)
+  
+##############################################################
+
+#welcome message DOESN'T WORK   
+def setVariables():
+
+  freq = requestInteger("What frequency should the first sound be?")
+  print freq
+  
+  amplitude = requestInteger("What amplitude should the first should have?")
+  print amplitude
+  
+  length = requestInteger("What should the length in seconds be?")
+  print length
+  
+#I want setVariables to be called into this as a class or def but can't get it to take the values DOESN'T WORK 
+def sineWave():
+ 
+  freq = requestInteger("What frequency should the first sound be?")
+  print freq
+  
+  amplitude = requestInteger("What amplitude should the first should have?")
+  print amplitude
+  
+  length = requestInteger("What should the length in seconds be?")
+  print length
+  
+  #set the variables
+  #freq=440
+  #amplitude=4400
+  #secs=4
+  
+  #create blank sound
+  buildSin = makeEmptySoundBySeconds(length)
+  
+  #set the constant of sampling
+  samplingRate = getSamplingRate(buildSin)
+  interval=1.0/freq
+  samplesPerCycle=interval * samplingRate
+  maxCycle=2*pi
+  
+  #generate the sound
+  for pos in range (getLength(buildSin)):
+    rawSample = sin((pos / samplesPerCycle) * maxCycle)
+    sampleVal = int(amplitude * rawSample)
+    setSampleValueAt(buildSin, pos, sampleVal)
+  
+  play(buildSin)
