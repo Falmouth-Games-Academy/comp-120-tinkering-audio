@@ -1,0 +1,385 @@
+#time for parsingTokens
+import time
+
+#find the sound folder
+setMediaPath()
+sound=makeSound("Airhorn.wav")
+soundLength=getLength(sound)
+
+#lists for parsing tokens
+notesCombined = [] 
+melody = []
+notesMelody = []
+newParse = []  
+
+#global location for build Sine wave for parsingToken and sineWav  
+length=1
+buildSin = makeEmptySoundBySeconds(length)
+
+#PARSING TOKEN WRITE SONG 5
+def parseToken():
+
+  noteDictionary = {"C3": -9, "C#3": -8, "D3": -7, "D#3":-6, "E3": -5, "F3":-4, "F#3":-3, "G3":-2, "G#3":-1, "A4":0, "A#4":1, "B4":2, "B#4":3}
+  print noteDictionary
+  notes = "C3, C#3, D3, D#3, E3, F3, F#3, G3, G#3, A4, A#4, B4, B#4"  
+  
+  notesRequest = requestString("Enter in notes from " + notes) 
+  melody = notesRequest.split(",")
+  melodyLength = len(melody)
+  
+  targetMelody = makeEmptySoundBySeconds(melodyLength)
+
+  print "The melody notes are", melody
+  print "The melody length is", melodyLength
+  
+  for i in range(0, melodyLength):
+    newNote = melody[i]
+    print "What is [i]?", i
+    print "This is newNote", newNote
+        
+    note_number = noteDictionary.get(newNote)
+    print "What is the note_number?", note_number
+    frequency = 440.0 * 2.0 ** (note_number / 12.0)
+    print "The frequency for ", newNote, " is ", note_number
+    newParse.append(note_number)
+    print "This is the list of frequencies", newParse
+    newMelody = sineWave(frequency, 4000, 1)
+    
+    #start point of the target to copy new sound into
+    lengthMelody = getLength(buildSin)
+    start = (lengthMelody * (i + 1))- lengthMelody
+    print "The length of buildSin is", lengthMelody
+    copy(targetMelody, buildSin, start)
+    
+    time.sleep(0.9)
+    
+  explore(targetMelody)
+  writeSound(targetMelody)
+         
+
+#TONE GENERATION 1
+def sineWave(freq, amplitude, length):
+  
+  #set the variables
+  #freq=440
+  #amplitude=4400
+  #secs=4
+  
+  #create blank sound
+  #buildSin = makeEmptySoundBySeconds(length)
+  
+  #set the constant of sampling
+  samplingRate = getSamplingRate(buildSin)
+  interval=1.0/freq
+  samplesPerCycle=interval * samplingRate
+  maxCycle=2*pi
+  
+  #generate the sound
+  for pos in range (0, getLength(buildSin)):
+    rawSample = sin((pos / samplesPerCycle) * maxCycle)
+    sampleVal = int(amplitude * rawSample)
+    setSampleValueAt(buildSin, pos, sampleVal)
+    
+  play(buildSin)
+  
+#TONE COMBINATION 2
+#play a scale
+def playScale():
+  intensity = 64
+  dur = 100
+  for i in range(60, 72):
+    playNote(i, dur, intensity)
+    
+#TONE COMBINATION  2 
+#chords
+def createChords():
+  sound = makeSound("Airhorn.wav")
+  secondSound = makeSound("Bikehorn.wav")
+  #thirdSound = makeSound("something.wav")
+  chord = makeEmptySound(getLength(secondSound))
+  for index in range(0, getLength(secondSound)):
+    soundValue = getSampleValueAt(sound, index)
+    secondSoundValue = getSampleValueAt(secondSound, index)
+    #thirdValue = getSampleValueAt(thirdSound, index)
+    total = soundValue + secondSoundValue # + thirdValue
+    setSampleValueAt(chord, index, total)
+  play(chord)
+  explore(chord)
+  return chord
+
+#SPLICE AND SWAP 3   
+#splice different parts of the sound together        
+def splice():
+  bikeHorn = makeSound("Bikehorn.wav")  
+  target = makeEmptySoundBySeconds(9)  
+  targetIndex = 0
+  
+  for sourceIndex in range(4000, 14000):
+    value = getSampleValueAt(bikeHorn, sourceIndex)
+    setSampleValueAt(target, targetIndex, value)
+    targetIndex = targetIndex + 1
+    
+  for sourceIndex in range(14000, 24000):
+    value = getSampleValueAt(bikeHorn, sourceIndex)
+    setSampleValueAt(target, targetIndex, value)
+    targetIndex = targetIndex + 1
+    
+  for index in range(0, 1000):
+    setSampleValueAt(target, targetIndex, 0)
+    targetIndex = targetIndex + 1  
+    
+  play(target)
+  print "Did it play?"
+  return target
+
+#SPLICE AND SWAP 3
+#splice 1/2 of sound1 with 1/2 of sound2       
+def spliceSounds(sound1, sound2): 
+  target = makeEmptySoundBySeconds(9)  
+  targetIndex = 0
+  
+  for sourceIndex in range(0, getLength(sound1)/2):
+    value = getSampleValueAt(sound1, sourceIndex)
+    setSampleValueAt(target, targetIndex, value)
+    targetIndex = targetIndex + 1
+    
+  for sourceIndex in range(getLength(sound2)/2, getLength(sound2)):
+    value = getSampleValueAt(sound2, sourceIndex)
+    setSampleValueAt(target, targetIndex, value)
+    targetIndex = targetIndex + 1
+    
+  for index in range(0, 1000):
+    setSampleValueAt(target, targetIndex, 0)
+    targetIndex = targetIndex + 1  
+    
+  play(target)
+  print "Did it play?"
+  return target
+  
+#ECHO 4
+#the delay should be around 10,000 - 20,000
+def echo(delay, sound):
+  secondSound = duplicateSound(sound)
+  for index in range(delay, getLength(sound)):
+    #set delay value to original value + delayed value * 0.4
+    echoSample = 0.4 * getSampleValueAt(secondSound, index - delay)
+    comboSample = getSampleValueAt(sound, index) + echoSample
+    setSampleValueAt(sound, index, comboSample)
+  play(sound)
+  return sound
+
+#ECHO 4
+#the delay should be around 10,000 - 20,000
+#make the empty sound the size of the sound length, plus the delay factored by the number of echoes
+def echoNumber(delay, sound, number):
+  endOne = getLength(sound)
+  endTwo = endOne + (delay * number)
+  secondSound = makeEmptySound(endTwo)
+  
+  #make amplitude a float
+  echoAmplitude = 1.0
+  
+  #check the number echo and loop through from 1-n
+  #set amplitude to 40%
+  for echoCount in range(1, number):
+    echoAmplitude = echoAmplitude * 0.4
+    
+    #for the positions in original sound length
+    #the second position start is the original start plus the delay factored by the number of echoes
+    for positionOne in range(0, endOne):
+      positionTwo = positionOne + (delay * echoCount)
+      valuesOne = getSampleValueAt(sound, positionOne) * echoAmplitude
+      valuesTwo = getSampleValueAt(secondSound, positionTwo)
+      
+      #set the secondSound(sound), to the positionTwo(index), with the added value sample of value One and Two(value)
+      setSampleValueAt(secondSound, positionTwo, valuesOne + valuesTwo)
+          
+  play(secondSound)
+  explore(secondSound)
+  print "Is the echo working?"
+  return secondSound
+
+  play(sound)
+  return sound
+ 
+#ECHO FEEDBACK
+def echoFeedback(sound):
+  delay = 4000
+  soundSamples = getSamples(sound)
+  length=len(soundSamples)
+  for index in range(0, length - delay):
+    value = getSampleValue(soundSamples[index])
+    valueTwo = getSampleValue(soundSamples[index + delay])
+    setSampleValue(soundSamples[index + delay], value + valueTwo)
+  explore(sound) 
+  
+#RANDOM NOTE AUDIO GENERATION 6
+def randomNote():
+  import random
+  intensity = 64
+  dur = 100
+  note = random.randint(44, 99)
+  playNote(note, dur, intensity)
+  
+###############################################################################################################
+
+#ADDITIONAL FUNCTIONS
+
+#play sound
+def playSound():
+  print sound
+  blockingPlay(sound)
+  
+#adding sounds together alternative
+def addSounds(sound, secondSound):
+  for index in range(0, getLength(sound)):
+    soundSample = getSampleValueAt(sound, index)
+    secondSoundSample = getSampleValueAt(secondSound, index)
+    setSampleValueAt(secondSound, index, soundSample + secondSoundSample)
+    
+#explore the sound backwards    
+def reverse(sound):
+  explore(sound)
+  target=makeEmptySound(getLength(sound))
+  sourceIndex = getLength(sound)-1
+  for targetIndex in range(0, getLength(target)):
+    sourceValue = getSampleValueAt(sound, sourceIndex)
+    setSampleValueAt(target, targetIndex, sourceValue)
+    sourceIndex = sourceIndex - 1
+  explore(target)
+  
+#mirror at the middle
+def mirrorSound(sound):
+  explore(sound)
+  soundLength = getLength(sound)
+  mirrorPoint = soundLength/2
+  for index in range(0, mirrorPoint):
+    left = getSampleObjectAt(sound, index)
+    right = getSampleObjectAt(sound, soundLength - index - 1)
+    value = getSampleValue(left)
+    setSampleValue(right, value)
+  explore(sound)
+
+#play at a different rate (1=normal), (2=fast), (0.5=slow)    
+def playRate(rate):
+  playAtRate(sound, rate)
+  
+#this compares the sound wave of the original sound with whatever "sound" is0  
+def compareOriginal(sound):
+  sOriginal=makeSound("Airhorn.wav")
+  explore(sOriginal)
+  explore(sound)  
+  
+#increase the volume by doubling the sample value  
+def increaseVolume(sound):
+  for sample in getSamples(sound):
+    value = getSampleValue(sample)
+    setSampleValue(sample, value * 2)
+
+#decrease the volume by doubling the sample value        
+def decreaseVolume(sound):
+  for sample in getSamples(sound):
+    value = getSampleValue(sample)
+    setSampleValue(sample, value * 0.5)
+
+#the volume change is dependent on factor      
+def changeVolume(sound, factor):
+  for sample in getSample(sound):
+    value = getSampleValue(sample)
+    setSampleValue(sample, value * factor)
+    
+#find the multiplier that makes the largest sample equal the loudest possible amplitude    
+def normalise(sound):
+  largest = 0
+  for sample in getSamples(sound):
+    largest = max(largest, getSampleValue(sample))
+  multiplier = 32767.0 / largest
+  print "Largest sample value in original sound was", largest
+  print "Multiplier is", multiplier
+    
+  for sample in getSamples(sound):
+    louder = multiplier * getSampleValue(sample)
+    setSampleValue(sample, louder)
+
+#make amplitude max value
+def onlyMaximise(sound):
+  for sample in getSamples(sound):
+    value = getSampleValue(sample)
+    if value >= 0:
+      setSampleValue(sample, 32767)
+    if value < 0:
+      setSampleValue(sample, -32767)
+
+#merge two sounds together      
+def merge():
+  bikeHorn = makeSound("Bikehorn.wav")
+  bikeLength = getLength(bikeHorn)
+  airHorn = makeSound("Airhorn.wav")
+  airLength = getLength(airHorn)
+  print "The length of the bike horn sound is", bikeLength
+  print "The length of the air horn sound is", airLength
+  
+  target = makeEmptySoundBySeconds(9)
+  index = 0
+  
+  #copy in the airhorn sound into the empty target
+  for source in range(0, airLength):
+    value = getSampleValueAt(airHorn, source)
+    setSampleValueAt(target, index, value)
+    index = index + 1
+
+  #copy in 0.1 second pause     
+  for source in range(0, int(0.1 * getSamplingRate(target))):
+    setSampleValueAt(target, index, 0)
+    index += 1
+    
+  #copy in the bikehorn sound into the empty target     
+  for source in range(0, bikeLength):
+    value = getSampleValueAt(bikeHorn, source)
+    setSampleValueAt(target, index, value)
+    index = index + 1
+  play(target)
+  return target
+
+#clip sound
+def clipSound(start, end):
+  bikeHorn=makeSound("Bikehorn.wav")
+  bikeLength=getLength(bikeHorn)
+  explore(bikeHorn)    
+  def clip(bikeHorn):
+    
+    print "The start is", start
+    print "The end is", end
+    target = makeEmptySound(end - start)
+    targetIndex = 0
+  
+    for sourceIndex in range(start, end):
+      sourceValue=getSampleValueAt(bikeHorn, sourceIndex)
+      setSampleValueAt(target, targetIndex, sourceValue)
+      targetIndex = targetIndex + 1
+    return target
+  bikeClip=clip(bikeHorn)
+  explore(bikeClip)
+
+#copy the sound into an empty sound
+def copy(target, sound, start):  
+  #target=makeEmptySoundBySeconds(seconds)
+  #start point of the target to copy new sound into
+  targetIndex=start
+  for sourceIndex in range(0, getLength(sound)):
+    sourceValue=getSampleValueAt(sound, sourceIndex)
+    setSampleValueAt(target, targetIndex, sourceValue)
+    targetIndex=targetIndex+1
+  #play(target)
+  #print "Did it play?"  
+  #explore(target)
+
+#request file name and save location and save sound                
+def writeSound(sound):
+  folder = setMediaPath()
+  fileName = requestString("What do you want to name the file? Do not include the following characters: \ / : * < > ? | ")
+
+  saveFile = folder+fileName+".wav"
+  #print saveFile
+  writeSoundTo(sound, saveFile)
+  print "Sound was saved as: ", fileName, " in this location:", saveFile
