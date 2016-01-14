@@ -138,6 +138,7 @@ class Tone(object):
 
         # The A above middle C
         BASE_FREQUENCY = 440
+        # Used to calculate frequency increment between semitones
         INTERVAL = 2.0**(1.0/12.0)
         frequency = BASE_FREQUENCY * INTERVAL ** note
         return frequency
@@ -272,10 +273,25 @@ class HarmonicSawTone(Tone):
             frequency += self.frequency
         return sample, phase
 
+
 class Noise(Tone):
+    def __init__(self, note, amplitude, seconds, freq_filter=None, amplitude_env=None, frequency_env=None):
+        super(Noise, self).__init__(note, amplitude, seconds, amplitude_env, frequency_env)
+        self.freq_filter = freq_filter
+
     def _create_sample(self, sampling_rate, sample_index, previous_phase):
         """Return a random sample value to create white noise."""
         raw_sample = random.uniform(0, 1)
         amplitude = self._get_amplitude(sampling_rate, sample_index)
         sample = int(raw_sample * amplitude)
+        sample_total = sampling_rate * self.seconds
+        sample = self.freq_filter.process(sample, sample_total, self.frequency_env)
         return sample, None
+
+
+    # def _create_sample(self, sampling_rate, sample_index, previous_phase):
+    #     """Return a random sample value to create white noise."""
+    #     raw_sample = random.uniform(0, 1)
+    #     amplitude = self._get_amplitude(sampling_rate, sample_index)
+    #     sample = int(raw_sample * amplitude)
+    #     return sample, None

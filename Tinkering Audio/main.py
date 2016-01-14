@@ -2,6 +2,7 @@ __author__ = 'Hat'
 
 import os
 
+import filter
 import envelope
 import melody
 import sound
@@ -11,46 +12,62 @@ OUTPUT_DIR = 'output'
 
 # Temporary function for testing purposes and experimentation
 def test():
-    my_env = envelope.Envelope(0.25, 0.25, 500, 0.25, 0.25)
+    new = sound.Sound()
 
-    fenv = envelope.Envelope(0, 0, 0, 0, 1)
+    fenv = envelope.Envelope(envelope.EnvelopeType.frequency, 3, 0.25, 0.25, 0.25, 0.25)
 
-    sine_tone = tone.SineTone(0, 2000, 10, None, fenv)
-    square_tone = tone.SquareTone(0, 2000, 10, None, fenv)
-    saw_tone = tone.HarmonicSawTone(0, 2000, 10, 10, None, fenv)
+    filt = filter.Peaking(new, 1000, 3, -6)
+    noise = tone.Noise(0, 2000, 5, filt, None, fenv)
 
-    test = sound.Sound()
-    saw_tone.add_tone(test)
-    test.save("test.wav")
+    noise.add_tone(new)
 
-    upscale = sound.Sound()
-    downscale = sound.Sound()
+    new.save(OUTPUT_DIR, "testy.wav")
 
-    for i in range(13):
-        square_tone.note = i
-        square_tone.add_tone(upscale)
 
-    for i in range(0, -13, -1):
-        sine_tone.note = i
-        sine_tone.add_tone(downscale)
 
-    scale = upscale + downscale
-    scale.echo(5000)
-    scale.save("scale.wav")
-
-    bah = melody.Melody(120, '4/4')
-    birthday = bah.create_melody("C:4:8 C:4:8 D:4:4 C:4:4 F:4:4 E:4:2 " +
-                               "C:4:8 C:4:8 D:4:4 C:4:4 G:4:4 F:4:2 " +
-                               "C:4:8 C:4:8 C:5:4 A:4:4 F:4:4 E:4:4 D:4:2", square_tone)
-    birthday.save("bd.wav")
+    # my_env = envelope.Envelope(0.25, 0.25, 500, 0.25, 0.25)
+    #
+    # fenv = envelope.Envelope(0, 0, 0, 0, 1)
+    #
+    # sine_tone = tone.SineTone(0, 2000, 10, None, fenv)
+    # square_tone = tone.SquareTone(0, 2000, 10, None, fenv)
+    # saw_tone = tone.HarmonicSawTone(0, 2000, 10, 10, None, fenv)
+    #
+    # test = sound.Sound()
+    # saw_tone.add_tone(test)
+    # test.save("test.wav")
+    #
+    # upscale = sound.Sound()
+    # downscale = sound.Sound()
+    #
+    # for i in range(13):
+    #     square_tone.note = i
+    #     square_tone.add_tone(upscale)
+    #
+    # for i in range(0, -13, -1):
+    #     sine_tone.note = i
+    #     sine_tone.add_tone(downscale)
+    #
+    # scale = upscale + downscale
+    # scale.echo(5000)
+    # scale.save("scale.wav")
+    #
+    # bah = melody.Melody(120, '4/4')
+    # birthday = bah.create_melody("C:4:8 C:4:8 D:4:4 C:4:4 F:4:4 E:4:2 " +
+    #                            "C:4:8 C:4:8 D:4:4 C:4:4 G:4:4 F:4:2 " +
+    #                            "C:4:8 C:4:8 C:5:4 A:4:4 F:4:4 E:4:4 D:4:2", square_tone)
+    # birthday.save("bd.wav")
 
 
 def make_bg_music():
+
+    # The entire sound is release phase to make it fade out quickly
     short_sound_env = envelope.Envelope(envelope.EnvelopeType.amplitude, 0, 0, 0, 0, 1)
 
     main_instrument = tone.SquareTone(0, 1000, 0, short_sound_env)
     little_instrument = tone.SquareTone(0, 1000, 0)
 
+    # 120bpm, 6/8 compound time signature to emulate triplets
     music = melody.Melody(120, '6/8')
 
     first_bar_string = ("E:3:16 E:3:16 E:3:16 "
@@ -88,36 +105,40 @@ def make_bg_music():
     song = intro.copy()
     song.append_sound(main_part)
 
-    song.save(os.path.join(OUTPUT_DIR, "song.wav"))
+    song.save(OUTPUT_DIR, "song.wav")
 
 
 def make_eating_sound():
+    # These are just arbitrary numbers that I played around with until it sounded good
     chomp_fenv = envelope.Envelope(envelope.EnvelopeType.frequency, -5, 0.5, 0.5, 0, 0)
     chomp_env = envelope.Envelope(envelope.EnvelopeType.amplitude, 0, 0, 0, 0.5, 0.5)
 
     chomp_high = sound.Sound()
+    # -17 makes tone play a low E
     chomp_tone_high = tone.SquareTone(-17, 2000, 0.1, chomp_env, chomp_fenv)
 
     chomp_low = sound.Sound()
+    # -22 makes tone play the B below the previous E
     chomp_tone_low = tone.SquareTone(-22, 2000, 0.1, chomp_env, chomp_fenv)
 
     chomp_tone_high.add_tone(chomp_high)
     chomp_tone_low.add_tone(chomp_low)
 
-    chomp_high.save(os.path.join(OUTPUT_DIR, "chomp_high.wav"))
-    chomp_low.save(os.path.join(OUTPUT_DIR, "chomp_low.wav"))
+    chomp_high.save(OUTPUT_DIR, "chomp_high.wav")
+    chomp_low.save(OUTPUT_DIR, "chomp_low.wav")
 
 
 def make_start_sound():
-    music = melody.Melody(120, '6/8')
+
     jingle_env = envelope.Envelope(envelope.EnvelopeType.amplitude, 0, 0, 0, 0, 1)
     instrument = tone.SquareTone(0, 2000, 0, jingle_env)
 
+    # 120bpm, 6/8 compound time signature to emulate triplets
+    music = melody.Melody(120, '6/8')
     jingle = music.create_melody("C:2:8 C:2:16 D:2:8 C:2:16 "
                                  "Eb:2:8 C:2:4 F#:2:6 F#:2:8 G:2:2", instrument)
 
-    jingle.save(os.path.join(OUTPUT_DIR, "jingle.wav"))
-
+    jingle.save(OUTPUT_DIR, "jingle.wav")
 
 def make_death_sound():
     pass
@@ -126,13 +147,28 @@ def make_powerup_sound():
     pass
 
 def make_frightened_sound():
-    pass
+    frightened_fenv = envelope.Envelope(envelope.EnvelopeType.frequency, 0, 0, 0, 0, 1)
+    frightened_tone = tone.SineTone(0, 2000, 1, None, frightened_fenv)
+
+    frightened_sound = sound.Sound()
+    frightened_tone.add_tone(frightened_sound)
+
+    frightened_sound.save(OUTPUT_DIR, "frightened.wav")
 
 def make_retreating_sound():
-    pass
+    retreat_fenv = envelope.Envelope(envelope.EnvelopeType.frequency, 0, 1, 0, 0, 0)
+    retreat_tone = tone.SineTone(25, 2000, 1.5, None, retreat_fenv)
+
+    retreat_sound = sound.Sound()
+    retreat_tone.add_tone(retreat_sound)
+
+    retreat_sound.save(OUTPUT_DIR, "retreat.wav")
 
 
 if __name__ == '__main__':
+    test()
     make_bg_music()
     make_eating_sound()
     make_start_sound()
+    make_frightened_sound()
+    make_retreating_sound()

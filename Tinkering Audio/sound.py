@@ -10,6 +10,7 @@ Sound -- class for managing sound
 
 import array
 import math
+import os
 import wave
 
 
@@ -72,10 +73,10 @@ class Sound(object):
     def sampling_rate(self, rate):
         self.__sampling_rate = rate
 
-    def save(self, filename):
+    def save(self, directory, filename):
         """Save the sound to a wav file of the given filename."""
 
-        sound = wave.open(filename, 'wb')
+        sound = wave.open(os.path.join(directory, filename), 'wb')
         sound.setnchannels(self.channels)
         sound.setsampwidth(self.sample_width)
         sound.setframerate(self.sampling_rate)
@@ -104,10 +105,12 @@ class Sound(object):
 
     def set_sample_at_index(self, value, index):
         """Set the value of the sample at the specified index"""
+
         self.samples[index] = value
 
     def combine_sample(self, value, index):
         """Add the value to the sample at the specified index"""
+
         if len(self.samples) > index:
             self.samples[index] += value
         else:
@@ -121,6 +124,7 @@ class Sound(object):
 
         repeats -- number of additional times sound should repeat
         """
+
         original_sound = self.copy()
         for i in range(repeats):
             self.append_sound(original_sound)
