@@ -18,7 +18,7 @@ class Filter(object):
         self.gain = gain
         self.center_frequency = center_frequency
         self.bandwidth = bandwidth
-        self.memory = {'xmem1':0, 'xmem2':0, 'ymem1':0, 'ymem2':0}
+        self.memory = {'previous_input':0, 'second_previous_input':0, 'previous_output':0, 'second_previous_output':0}
         self.sample_number = 0
 
     @property
@@ -43,7 +43,7 @@ class Filter(object):
 
     @center_frequency.setter
     def center_frequency(self, value):
-        self.__center_frequency = value
+        self.__center_frequency = float(value)
 
     @property
     def bandwidth(self):
@@ -55,7 +55,7 @@ class Filter(object):
 
     @property
     def A(self):
-        return 10 ** (self.gain/40)
+        return 10 ** (float(self.gain/40))
 
     @property
     def w0(self):
@@ -73,33 +73,23 @@ class Filter(object):
     def alpha(self):
         return self.w0_sine * math.sinh(math.log(2)/2 * self.bandwidth * self.w0 / self.w0_sine)
 
-    # def __recalculate_intermediate_values(self):
-    #     # Named these intermediate values the  same as in Audio EQ Cookbook
-    #     # http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt
-    #     # as I don't know what a suitable name is since I don't know what they represent
-    #     self.__A = 10 ** (self.gain/40)
-    #     self.__w0 = 2 * math.pi * self.center_frequency / self.sampling_rate
-    #     self.__w0_cosine = math.cos(self.w0)
-    #     self.__w0_sine = math.sin(self.w0)
-    #     self.__alpha = self.w0_sine * math.sinh(math.log(2)/2 * self.bandwidth * self.w0 / self.w0_sine)
-
     def _recalculate_coefficients(self):
         pass
 
     def process(self, orig_sample, sample_total, envelope=None):
         self._recalculate_coefficients()
 
-        new_sample = int(self.b0 * orig_sample + self.b1 * self.memory['xmem1'] +
-                      self.b2 * self.memory['xmem2'] - self.a1 * self.memory['ymem1'] -
-                      self.a2 * self.memory['ymem2'])
-
         # if envelope != None:
-        #      self.center_frequency = envelope.get_value(self.center_frequency, self.sample_number, sample_total)
+        #     self.center_frequency = envelope.get_value(self.center_frequency, self.sample_number, sample_total)
 
-        self.memory['xmem2'] = self.memory['xmem1']
-        self.memory['xmem1'] = orig_sample
-        self.memory['ymem2'] = self.memory['ymem1']
-        self.memory['ymem1'] = new_sample
+        new_sample = int(self.b0 * orig_sample + self.b1 * self.memory['previous_input'] +
+                      self.b2 * self.memory['second_previous_input'] - self.a1 * self.memory['previous_output'] -
+                      self.a2 * self.memory['second_previous_output'])
+
+        self.memory['second_previous_input'] = self.memory['previous_input']
+        self.memory['previous_input'] = orig_sample
+        self.memory['second_previous_output'] = self.memory['previous_output']
+        self.memory['previous_output'] = new_sample
 
         self.sample_number += 1
 

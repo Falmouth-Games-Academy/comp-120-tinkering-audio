@@ -14,9 +14,9 @@ OUTPUT_DIR = 'output'
 def test():
     new = sound.Sound()
 
-    fenv = envelope.Envelope(envelope.EnvelopeType.frequency, 3, 0.25, 0.25, 0.25, 0.25)
+    fenv = envelope.Envelope(envelope.EnvelopeType.frequency, -1, 0.25, 0.25, 0.25, 0.25)
 
-    filt = filter.Peaking(new, 1000, 3, -6)
+    filt = filter.Peaking(new, 5000, 1, 1)
     noise = tone.Noise(0, 2000, 5, filt, None, fenv)
 
     noise.add_tone(new)
@@ -127,7 +127,6 @@ def make_eating_sound():
     chomp_high.save(OUTPUT_DIR, "chomp_high.wav")
     chomp_low.save(OUTPUT_DIR, "chomp_low.wav")
 
-
 def make_start_sound():
 
     jingle_env = envelope.Envelope(envelope.EnvelopeType.amplitude, 0, 0, 0, 0, 1)
@@ -146,14 +145,19 @@ def make_death_sound():
 def make_powerup_sound():
     pass
 
+
 def make_frightened_sound():
-    frightened_fenv = envelope.Envelope(envelope.EnvelopeType.frequency, 0, 0, 0, 0, 1)
-    frightened_tone = tone.SineTone(0, 2000, 1, None, frightened_fenv)
+    frightened_fenv = envelope.Envelope(envelope.EnvelopeType.frequency, -3, 0.25, 0.25, 0.25, 0.25)
+    frightened_aenv = envelope.Envelope(envelope.EnvelopeType.amplitude, 1786, 0.25, 0.25, 0.25, 0.25)
+    frightened_tone = tone.SineTone(25, 2000, 1, None, frightened_fenv)
 
     frightened_sound = sound.Sound()
     frightened_tone.add_tone(frightened_sound)
 
+    frightened_fenv.file.close()
+
     frightened_sound.save(OUTPUT_DIR, "frightened.wav")
+
 
 def make_retreating_sound():
     retreat_fenv = envelope.Envelope(envelope.EnvelopeType.frequency, 0, 1, 0, 0, 0)
@@ -162,12 +166,13 @@ def make_retreating_sound():
     retreat_sound = sound.Sound()
     retreat_tone.add_tone(retreat_sound)
 
+    retreat_sound.feedback_echo(5000, 0.6)
+
     retreat_sound.save(OUTPUT_DIR, "retreat.wav")
 
 
 if __name__ == '__main__':
     test()
-    make_bg_music()
     make_eating_sound()
     make_start_sound()
     make_frightened_sound()
