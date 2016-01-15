@@ -46,10 +46,10 @@ def audio_splice(tone1, tone2, seconds):
  
 #Algorithm Four: Echo
 """This function takes a sound and then echoes it by however many seconds specified"""
-def echo(delay, sound):
+def echo_sound(delay, sound):
   echo = duplicateSound(sound)
   for index in range(delay, getLength(sound)):
-    echo_sample = 0.6*getSampleValueAt(echo, index-delay)
+    echo_sample = 0.6*getSampleValueAt(echo, (index-delay))
     combined_sample = getSampleValueAt(sound,index) + echo_sample
     setSampleValueAt(sound, index, combined_sample)
   return sound
@@ -82,6 +82,11 @@ def random_audio(audio_length, note_length):
     the_tone = combine
   return combine
   
+def import_audio():
+  file = pickAFile()
+  sound = makeSound(file)
+  return sound
+
 def export_audio(audio):
   """This function exports the audio as a .wav file so it can be used as gameplay audio"""
   path = setMediaPath()
