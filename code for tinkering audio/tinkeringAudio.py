@@ -22,13 +22,13 @@ def sound():
   
 #this function takes the sound files and merges them together. 
 def toneCombination():
-  s1 = makeSound(pickAFile())                                                            #gets a sound file
-  s2 = makeSound(pickAFile())
+  firstSoundFile = makeSound(pickAFile())                                                            #gets a sound file
+  secondSoundFile = makeSound(pickAFile())
   canvas = makeEmptySoundBySeconds(5)                                                    #makes a blank sound
-  for index in range(0, getLength(s1)):                                                  #gets the length of sound1
-    combinationSoundSample1 = getSampleValueAt(s1, index)                                #gets value of sound samples
-  for index in range(0, getLength(s2)):
-    combinationSoundSample2 = getSampleValueAt(s2, index)
+  for index in range(0, getLength(firstSoundFile)):                                                  #gets the length of sound1
+    combinationSoundSample1 = getSampleValueAt(firstSoundFile, index)                                #gets value of sound samples
+  for index in range(0, getLength(secondSoundFile)):
+    combinationSoundSample2 = getSampleValueAt(secondSoundFile, index)
     setSampleValueAt(canvas, index, combinationSoundSample1 + combinationSoundSample2)   #combines the sounds together
   play(canvas)
   return canvas
@@ -56,22 +56,22 @@ def echoes(delay, num):
 #function for splicing and swapping audio.
 
 def spliceAndSwap():
-  s1 = makeSound(pickAFile())                           
-  s2 = makeEmptySoundBySeconds(10)                     #This creates a blank canvas
+  soundFile = makeSound(pickAFile())                         
+  soundCanvas = makeEmptySoundBySeconds(5)                      #This creates a blank canvas
   targetIndex = 1
-  for sourceIndex in range (20000, 40000):             #gets the sample values between the ranges
-    value = getSampleValueAt(s1, sourceIndex)
-    setSampleValueAt(s2, targetIndex, value)           #sets the value to the blank canvas
-    targetIndex = targetIndex + 1                      #moves the target index
-  for sourceIndex in range (70000, 80000):
-    value = getSampleValueAt(s1, sourceIndex)
-    setSampleValueAt(s2, targetIndex, value)
+  for sourceIndex in range (20000, 90000):                      #gets the sample values between the ranges to select a specifc part of the beat
+    value = getSampleValueAt(soundFile, sourceIndex)
+    setSampleValueAt(soundCanvas, targetIndex, value)                    #sets the value to the blank canvas
+    targetIndex = targetIndex + 1                               #moves the target index
+  for sourceIndex in range (70000, 80000):                      #ranges choosen to select a specifc part of the beat
+    value = getSampleValueAt(soundFile, sourceIndex)
+    setSampleValueAt(soundCanvas, targetIndex, value)
     targetIndex = targetIndex + 1
   for index in range(0, 10000):
-    setSampleValueAt(s2, targetIndex, 0)               #creates blank sound after
+    setSampleValueAt(soundCanvas, targetIndex, 0)               #creates blank sound after
     targetIndex = targetIndex + 1            
-  explore(s2)
-  return s2
+  explore(soundCanvas)
+  return soundCanvas
 
 
 #token parsing
