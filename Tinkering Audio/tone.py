@@ -1,12 +1,25 @@
-"""Module for tone classes. Tones can be seen as 'instruments'"""
+"""Contain classes related to tone generation.
 
+This module contains classes related to tone generation that can
+be used to generate a variety of different tones with different
+properties.
+
+Classes:
+Tone -- class that all tones inherit from
+SineTone(Tone) -- class for generating a sine tone
+SquareTone(Tone) -- class for generating a square tone
+HarmonicSawTone(Tone) -- class for generating a sawtooth tone
+Noise(Tone) -- class for generating white noise
+"""
+
+# Standard Python libraries
 import math
 import random
 
+# Own modules
 import sound
 import envelope
 
-MAX_AMPLITUDE = 32768
 
 class Tone(object):
 
@@ -145,6 +158,7 @@ class Tone(object):
 
     def __convert_secs_to_samples(self, sound, seconds):
         """Convert seconds into sample number and return as an integer."""
+
         return int(sound.sampling_rate * seconds)
 
     def __generate(self, sound):
@@ -285,7 +299,8 @@ class Noise(Tone):
         amplitude = self._get_amplitude(sampling_rate, sample_index)
         sample = int(raw_sample * amplitude)
         sample_total = sampling_rate * self.seconds
-        sample = self.freq_filter.process(sample, sample_total, self.frequency_env)
+        if self.freq_filter != None:
+            sample = self.freq_filter.process(sample, sample_total)
         return sample, None
 
 

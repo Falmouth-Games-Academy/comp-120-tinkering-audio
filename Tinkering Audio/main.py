@@ -14,12 +14,15 @@ OUTPUT_DIR = 'output'
 def test():
     new = sound.Sound()
 
-    fenv = envelope.Envelope(envelope.EnvelopeType.frequency, -1, 0.25, 0.25, 0.25, 0.25)
+    fenv = envelope.Envelope(envelope.EnvelopeType.frequency, 0, 0.5, 0.5, 0, 0)
 
-    filt = filter.Peaking(new, 5000, 1, 1)
-    noise = tone.Noise(0, 2000, 5, filt, None, fenv)
+    filt = filter.Peaking(new, 1000 , 1, -10, fenv)
+    noise = tone.Noise(0, 2000, 1, filt, None, None)
 
     noise.add_tone(new)
+
+
+    fenv.file.close()
 
     new.save(OUTPUT_DIR, "testy.wav")
 
@@ -60,6 +63,7 @@ def test():
 
 
 def make_bg_music():
+    """Produce a song to be used for the title screen."""
 
     # The entire sound is release phase to make it fade out quickly
     short_sound_env = envelope.Envelope(envelope.EnvelopeType.amplitude, 0, 0, 0, 0, 1)
@@ -109,6 +113,8 @@ def make_bg_music():
 
 
 def make_eating_sound():
+    """Create sounds to be used for collecting a pellet."""
+
     # These are just arbitrary numbers that I played around with until it sounded good
     chomp_fenv = envelope.Envelope(envelope.EnvelopeType.frequency, -5, 0.5, 0.5, 0, 0)
     chomp_env = envelope.Envelope(envelope.EnvelopeType.amplitude, 0, 0, 0, 0.5, 0.5)
@@ -127,7 +133,9 @@ def make_eating_sound():
     chomp_high.save(OUTPUT_DIR, "chomp_high.wav")
     chomp_low.save(OUTPUT_DIR, "chomp_low.wav")
 
+
 def make_start_sound():
+    """Create a sound to be used when the game begins."""
 
     jingle_env = envelope.Envelope(envelope.EnvelopeType.amplitude, 0, 0, 0, 0, 1)
     instrument = tone.SquareTone(0, 2000, 0, jingle_env)
@@ -139,17 +147,40 @@ def make_start_sound():
 
     jingle.save(OUTPUT_DIR, "jingle.wav")
 
+
 def make_death_sound():
-    pass
+    """Create a sound to be played upon death."""
+
+    death_env = envelope.Envelope(envelope.EnvelopeType.amplitude, 0, 0, 0, 0, 1)
+    instrument = tone.SquareTone(0, 2000, 0, death_env)
+
+    # 120bpm, 6/8 compound time signature to emulate triplets
+    music = melody.Melody(120, '6/8')
+    death = music.create_melody("F#:2:6 F#:2:8 G:2:6 F:2:16 Eb:2:8 D:2:16 C:2:4", instrument)
+
+    death.save(OUTPUT_DIR, "death.wav")
+
 
 def make_powerup_sound():
+    """Create a sound to be played when a power-up is collected."""
+
     pass
 
 
 def make_frightened_sound():
-    frightened_fenv = envelope.Envelope(envelope.EnvelopeType.frequency, -3, 0.25, 0.25, 0.25, 0.25)
-    frightened_aenv = envelope.Envelope(envelope.EnvelopeType.amplitude, 1786, 0.25, 0.25, 0.25, 0.25)
-    frightened_tone = tone.SineTone(25, 2000, 1, None, frightened_fenv)
+    """Create a sound to be played when the enemy is frightened."""
+
+    frightened_fenv = envelope.Envelope(envelope.EnvelopeType.frequency, -3, 0.25, 0.5, 0, 0.25)
+    frightened_aenv = envelope.Envelope(envelope.EnvelopeType.amplitude, 0, 0, 0.9, 0, 0.1)
+    frightened_tone = tone.SineTone(31, 2000, 0.5, frightened_aenv, frightened_fenv)
+
+    music = melody.Melody(240, '4/4')
+    notes = "E:4:8 C:4:8 B:4:8 Eb:4:8 G:4:8 "
+    notes *=3
+    thing = music.create_shuffled_melody(notes, frightened_tone)
+    thing.repeat(5)
+
+    thing.save(OUTPUT_DIR, "thing.wav")
 
     frightened_sound = sound.Sound()
     frightened_tone.add_tone(frightened_sound)
@@ -160,6 +191,8 @@ def make_frightened_sound():
 
 
 def make_retreating_sound():
+    """Create a sound to be played when the enemy is retreating."""
+
     retreat_fenv = envelope.Envelope(envelope.EnvelopeType.frequency, 0, 1, 0, 0, 0)
     retreat_tone = tone.SineTone(25, 2000, 1.5, None, retreat_fenv)
 
@@ -172,8 +205,8 @@ def make_retreating_sound():
 
 
 if __name__ == '__main__':
-    test()
     make_eating_sound()
     make_start_sound()
     make_frightened_sound()
     make_retreating_sound()
+    make_death_sound()

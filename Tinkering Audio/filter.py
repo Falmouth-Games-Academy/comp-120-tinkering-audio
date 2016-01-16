@@ -13,13 +13,15 @@ class Filter(object):
     as I don't know what a suitable name was since I don't know what they represent
     """
 
-    def __init__(self, sound, center_frequency, bandwidth, gain):
+    def __init__(self, sound, starting_frequency, bandwidth, gain, envelope=None):
         self.sampling_rate = sound.sampling_rate
         self.gain = gain
-        self.center_frequency = center_frequency
+        self.starting_frequency = starting_frequency
         self.bandwidth = bandwidth
+        self.envelope = envelope
         self.memory = {'previous_input':0, 'second_previous_input':0, 'previous_output':0, 'second_previous_output':0}
         self.sample_number = 0
+
 
     @property
     def sampling_rate(self):
@@ -38,12 +40,13 @@ class Filter(object):
         self.__gain = value
 
     @property
-    def center_frequency(self):
-        return self.__center_frequency
+    def starting_frequency(self):
+        return self.__starting_frequency
 
-    @center_frequency.setter
-    def center_frequency(self, value):
-        self.__center_frequency = float(value)
+    @starting_frequency.setter
+    def starting_frequency(self, value):
+        self.__starting_frequency = value
+        self.__center_frequency = value
 
     @property
     def bandwidth(self):
@@ -52,6 +55,14 @@ class Filter(object):
     @bandwidth.setter
     def bandwidth(self, value):
         self.__bandwidth = value
+
+    @property
+    def center_frequency(self):
+        return self.__center_frequency
+
+    @center_frequency.setter
+    def center_frequency(self, value):
+        self.__center_frequency = value
 
     @property
     def A(self):
@@ -76,11 +87,11 @@ class Filter(object):
     def _recalculate_coefficients(self):
         pass
 
-    def process(self, orig_sample, sample_total, envelope=None):
+    def process(self, orig_sample, sample_total):
         self._recalculate_coefficients()
 
-        # if envelope != None:
-        #     self.center_frequency = envelope.get_value(self.center_frequency, self.sample_number, sample_total)
+        if self.envelope != None:
+            self.center_frequency = self.envelope.get_value(self.starting_frequency, self.sample_number, sample_total)
 
         new_sample = int(self.b0 * orig_sample + self.b1 * self.memory['previous_input'] +
                       self.b2 * self.memory['second_previous_input'] - self.a1 * self.memory['previous_output'] -

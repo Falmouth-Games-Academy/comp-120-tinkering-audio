@@ -8,6 +8,7 @@ Classes:
 Sound -- class for managing sound
 """
 
+
 import array
 import math
 import os
@@ -15,6 +16,29 @@ import wave
 
 
 class Sound(object):
+
+    """Contain methods and fields for storing and processing audio.
+
+    This class contains method for creating and manipulating sound.
+    Samples can be added and manipulated before saving the sound as
+    a wav file.
+
+    Public methods:
+    save --
+    add_sample --
+    append_sound --
+    insert_sound_at_time --
+    layer_sound_at_time --
+    set_sample_at_index --
+    combine_sample --
+    repeat --
+    reverse --
+    copy --
+    echo --
+    feedback_echo --
+    convert_secs_to_samples --
+    """
+
     def __init__(self, channels=1, sample_width=2, sampling_rate=44100, samples=None):
         """Initialise the fields.
 
@@ -94,11 +118,31 @@ class Sound(object):
         self.samples.extend(sound.samples)
 
     def insert_sound_at_time(self, sound, seconds):
+        """Insert a sound at the given time.
+
+        This method inserts the supplied Sound into this Sound instance
+        at the time specified in seconds.
+
+        Arguments:
+        sound -- sound to be inserted as a Sound
+        seconds -- time it should be inserted at
+        """
+
         start_position = seconds * self.sampling_rate
         for i in range(start_position, start_position + len(sound.samples)):
             self.samples.insert(i, sound.samples[i-start_position])
 
     def layer_sound_at_time(self, sound, seconds):
+        """Overlay a sound at the given time.
+
+        This method layers the supplied Sound over this Sound instance
+        at the time specified in seconds.
+
+        Arguments:
+        sound -- sound to be overlayed as a Sound
+        seconds -- time it should be added at
+        """
+
         start_position = int(seconds * self.sampling_rate)
         for i in range(start_position, start_position + len(sound.samples)):
             self.combine_sample(sound.samples[i - start_position], i)
@@ -164,6 +208,11 @@ class Sound(object):
 
         for i in range(len(self.samples)):
             self.combine_sample(int(vol_reduction * self.samples[i]), i + delay)
+
+    def convert_secs_to_samples(self, seconds):
+        """Convert seconds into sample number and return as an integer."""
+
+        return int(self.sampling_rate * seconds)
 
     def __add__(self, other):
         sound = Sound()

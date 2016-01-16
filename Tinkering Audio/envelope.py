@@ -8,6 +8,9 @@ EnvelopeType(Enum) -- enum to store the type of an envelope
 
 from enum import Enum
 
+# Minimum threshold of human hearing
+MIN_FREQUENCY = 20
+
 class Envelope(object):
 
     """Contain fields and methods relating to audio envelopes.
@@ -53,11 +56,14 @@ class Envelope(object):
         sample_index -- the index of the sample the envelope will be applied to
         number_of_samples -- the total number of samples in the tone
         """
+
         phase = self.__get_envelope_phase(sample_index, number_of_samples)
 
         if phase == EnvelopePhase.attack:
             envelope = self.get_attack(sample_index, number_of_samples)
             new_value = default_value * envelope
+            if self.type == EnvelopeType.frequency and new_value < MIN_FREQUENCY:
+                new_value = MIN_FREQUENCY
 
             self.file.write(str(new_value) + '\n')
             return new_value
@@ -65,6 +71,9 @@ class Envelope(object):
         if phase == EnvelopePhase.decay:
             envelope = self.get_decay(sample_index, number_of_samples, default_value)
             new_value = default_value * envelope
+            if self.type == EnvelopeType.frequency and new_value < MIN_FREQUENCY:
+                new_value = MIN_FREQUENCY
+
             self.file.write(str(new_value) + '\n')
             return new_value
 
@@ -88,6 +97,7 @@ class Envelope(object):
         level.
         It returns this value as a float.
         """
+
         attack_length = self.get_attack_length(number_of_samples)
         envelope = float(sample_index / float(attack_length))
         return envelope
@@ -100,12 +110,13 @@ class Envelope(object):
         it ends at the sustain level.
         It returns this value as a float.
         """
+
         decay_length = self.get_decay_length(number_of_samples)
         decay_start = self.get_attack_length(number_of_samples)
         decay_end = decay_start + decay_length
         sustain_level = self.get_sustain(default_value)
 
-        # Values worked out from solving simultaneous equation
+        # Values worked out from solving simultaneous equations for line through 2 points
         m = (1.0 - (float(sustain_level) / default_value)) / (decay_start - decay_end)
         c = 1.0 - m * decay_start
         envelope = m * sample_index + c
@@ -115,7 +126,9 @@ class Envelope(object):
         """Return the value for the sustain phase of the envelope.
 
         This method returns the absolute value to be used for the sustain phase
-        of the envelope."""
+        of the envelope.
+        """
+
         if self.type == EnvelopeType.amplitude:
             # If sustain level is entered as 0, sustain tone's default amplitude
             if self.sustain_level == 0:
@@ -134,6 +147,7 @@ class Envelope(object):
         It will result in the volume or frequency tending towards 0.
         It returns this value as a float.
         """
+
         release_length = self.get_release_length(number_of_samples)
         release_start = (self.get_attack_length(number_of_samples) + self.get_decay_length(number_of_samples) +
                           self.get_sustain_length(number_of_samples))
@@ -191,6 +205,7 @@ class EnvelopePhase(Enum):
     decay = 1
     sustain = 2
     release = 3
+
 
 class EnvelopeType(Enum):
     """Enum for different envelope types"""

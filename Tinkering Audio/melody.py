@@ -1,12 +1,26 @@
 """Contain a class for creating melodies.
 
 This module contains a class for creating Sound objects containing
- melodies by parsing strings."""
+ melodies by parsing strings.
 
+ Classes:
+ Melody -- class for creating melodies
+ """
+
+# Standard Python library
 import random
+
+# Own module
 import sound
 
 class Melody(object):
+
+    """Contain methods for creating a melody.
+
+    This class contains methods that allow strings to be
+    parsed in order to create melodies as sound.Sound objects.
+    """
+
     def __init__(self, beats_per_minute, time_sig):
         """Intialise the fields.
 
@@ -14,6 +28,7 @@ class Melody(object):
         beats_per_minute -- the number of beats per minute (int)
         time_sig -- time signature as a string, e.g. '4/4'
         """
+
         self.beats_per_minute = beats_per_minute
         self.time_sig = time_sig
 
@@ -70,8 +85,9 @@ class Melody(object):
         The length of the default note type will be equal to the beat length.
         """
 
+        SECONDS_PER_MINUTE = 60.0
         self.__beats_per_minute = value
-        self.__beat_length = 60.0 / self.beats_per_minute
+        self.__beat_length = SECONDS_PER_MINUTE / self.beats_per_minute
 
     def create_melody(self, note_string, tone):
         """Create a melody from a string and return it as a Sound object
@@ -114,6 +130,7 @@ class Melody(object):
 
     def get_time_at_beat(self, beat_number):
         """Return the time in seconds of a given beat."""
+
         return self.bar_length / self.default_note_type * beat_number
 
     def __parse_notes(self, note_string):
@@ -129,7 +146,9 @@ class Melody(object):
         note_string -- string in the format notename:octave:notetype, separated by spaces.
         """
 
+        # 4 will be the octave of middle C, as in most audio packages
         BASE_OCTAVE = 4
+        # 12 semitones in an octave
         NOTES_IN_OCTAVE = 12
         notes = {'C': -9, 'C#': -8, 'Db': -8, 'D': -7, 'D#': -6, 'Eb': -6,
                  'E': -5, 'F': -4, 'F#': -3, 'Gb': -3, 'G': -2, 'G#': -1,
