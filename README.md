@@ -17,7 +17,7 @@ This algorithms implemented for the assignment are used in this program to creat
 ###Tone Generation
 |Module|Class|Method(s)|
 |---|---|---|
-|tone|Tone|__generate|
+|tone|Tone|create_tone, __generate|
 |tone|SineTone, SquareTone, HarmonicSawTone|_create_sample|
 
 ###Tone Combination
