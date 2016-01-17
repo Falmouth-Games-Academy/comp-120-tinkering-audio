@@ -60,7 +60,7 @@ class Envelope(object):
         phase = self.__get_envelope_phase(sample_index, number_of_samples)
 
         if phase == EnvelopePhase.attack:
-            envelope = self.get_attack(sample_index, number_of_samples)
+            envelope = self.__get_attack(sample_index, number_of_samples)
             new_value = default_value * envelope
             if self.type == EnvelopeType.frequency and new_value < MIN_FREQUENCY:
                 new_value = MIN_FREQUENCY
@@ -69,7 +69,7 @@ class Envelope(object):
             return new_value
 
         if phase == EnvelopePhase.decay:
-            envelope = self.get_decay(sample_index, number_of_samples, default_value)
+            envelope = self.__get_decay(sample_index, number_of_samples, default_value)
             new_value = default_value * envelope
             if self.type == EnvelopeType.frequency and new_value < MIN_FREQUENCY:
                 new_value = MIN_FREQUENCY
@@ -78,17 +78,17 @@ class Envelope(object):
             return new_value
 
         if phase == EnvelopePhase.sustain:
-            new_value = self.get_sustain(default_value)
+            new_value = self.__get_sustain(default_value)
             self.file.write(str(new_value) + '\n')
             return new_value
 
         if phase == EnvelopePhase.release:
-            envelope = self.get_release(sample_index, number_of_samples)
-            new_value = envelope * self.get_sustain(default_value)
+            envelope = self.__get_release(sample_index, number_of_samples)
+            new_value = envelope * self.__get_sustain(default_value)
             self.file.write(str(new_value) + '\n')
             return new_value
 
-    def get_attack(self, sample_index, number_of_samples):
+    def __get_attack(self, sample_index, number_of_samples):
         """Return the multiplier for the attack phase of the envelope
 
         This method calculates the multiplier that the amplitude or frequency
@@ -98,11 +98,11 @@ class Envelope(object):
         It returns this value as a float.
         """
 
-        attack_length = self.get_attack_length(number_of_samples)
+        attack_length = self.__get_attack_length(number_of_samples)
         envelope = float(sample_index / float(attack_length))
         return envelope
 
-    def get_decay(self, sample_index, number_of_samples, default_value):
+    def __get_decay(self, sample_index, number_of_samples, default_value):
         """Return the multiplier for the decay phase of the envelope.
 
         This method calculates the multiplier that the amplitude or frequency
@@ -111,10 +111,10 @@ class Envelope(object):
         It returns this value as a float.
         """
 
-        decay_length = self.get_decay_length(number_of_samples)
-        decay_start = self.get_attack_length(number_of_samples)
+        decay_length = self.__get_decay_length(number_of_samples)
+        decay_start = self.__get_attack_length(number_of_samples)
         decay_end = decay_start + decay_length
-        sustain_level = self.get_sustain(default_value)
+        sustain_level = self.__get_sustain(default_value)
 
         # Values worked out from solving simultaneous equations for line through 2 points
         m = (1.0 - (float(sustain_level) / default_value)) / (decay_start - decay_end)
@@ -122,7 +122,7 @@ class Envelope(object):
         envelope = m * sample_index + c
         return envelope
 
-    def get_sustain(self, default_value):
+    def __get_sustain(self, default_value):
         """Return the value for the sustain phase of the envelope.
 
         This method returns the absolute value to be used for the sustain phase
@@ -139,7 +139,7 @@ class Envelope(object):
             # Frequency sustain works relative to default frequency
             return self.__get_frequency_sustain_level(default_value)
 
-    def get_release(self, sample_index, number_of_samples):
+    def __get_release(self, sample_index, number_of_samples):
         """Return the multiplier for the release phase of the envelope.
 
         This method calculates the multiplier that the amplitude or
@@ -148,25 +148,25 @@ class Envelope(object):
         It returns this value as a float.
         """
 
-        release_length = self.get_release_length(number_of_samples)
-        release_start = (self.get_attack_length(number_of_samples) + self.get_decay_length(number_of_samples) +
-                          self.get_sustain_length(number_of_samples))
+        release_length = self.__get_release_length(number_of_samples)
+        release_start = (self.__get_attack_length(number_of_samples) + self.__get_decay_length(number_of_samples) +
+                          self.__get_sustain_length(number_of_samples))
         envelope = 1.0 - (float(sample_index - release_start) / float(release_length))
         return envelope
 
-    def get_attack_length(self, number_of_samples):
+    def __get_attack_length(self, number_of_samples):
         """Return the length of the attack in samples"""
         return self.attack_length * number_of_samples
 
-    def get_decay_length(self, number_of_samples):
+    def __get_decay_length(self, number_of_samples):
         """Return the length of the decay in samples"""
         return self.decay_length * number_of_samples
 
-    def get_sustain_length(self, number_of_samples):
+    def __get_sustain_length(self, number_of_samples):
         """Return the length of the sustain in samples"""
         return self.sustain_length * number_of_samples
 
-    def get_release_length(self, number_of_samples):
+    def __get_release_length(self, number_of_samples):
         """Return the length of the release in samples"""
         return self.release_length * number_of_samples
 
@@ -175,6 +175,7 @@ class Envelope(object):
         if self.sustain_level == 0:
             return default_frequency
         else:
+            # Used to calculate frequency increment between semitones
             INTERVAL = 2.0**(1.0/12.0)
             frequency = default_frequency * INTERVAL ** self.sustain_level
             return frequency

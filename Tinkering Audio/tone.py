@@ -149,7 +149,7 @@ class Tone(object):
         note -- the note number to convert to a frequency
         """
 
-        # The A above middle C
+        # The frequency of the A above middle C
         BASE_FREQUENCY = 440
         # Used to calculate frequency increment between semitones
         INTERVAL = 2.0**(1.0/12.0)

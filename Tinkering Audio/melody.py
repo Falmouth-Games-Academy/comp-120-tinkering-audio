@@ -7,11 +7,13 @@ This module contains a class for creating Sound objects containing
  Melody -- class for creating melodies
  """
 
+
 # Standard Python library
 import random
 
 # Own module
 import sound
+
 
 class Melody(object):
 
@@ -19,6 +21,13 @@ class Melody(object):
 
     This class contains methods that allow strings to be
     parsed in order to create melodies as sound.Sound objects.
+
+    Puclic Methods:
+    create_melody --
+    create_shuffled_melody --
+    get_time_at_beat --
+    get_time_at_bar --
+    get_time_at_beat_of_bar --
     """
 
     def __init__(self, beats_per_minute, time_sig):
@@ -52,8 +61,8 @@ class Melody(object):
     def time_sig(self, time_sig):
         """Set the time signature and related properties.
 
-        Set up the time signature and related properties including beats
-        per bar, default note type, and the length of the bar (in seconds).
+        Set up the time signature and related properties including the length of
+        the bar (in seconds), beats per bar and default note type.
         Default note type is given in terms of musical value, derived from the
         time signature, e.g. a crotchet is 4, a quaver is 8.
         Beats per bar is the number of this note type in a bar, similarly derived
@@ -129,9 +138,19 @@ class Melody(object):
         return self.create_melody(shuffled_note_string, tone)
 
     def get_time_at_beat(self, beat_number):
-        """Return the time in seconds of a given beat."""
+        """Return the time in seconds of a the start of given beat."""
 
-        return self.bar_length / self.default_note_type * beat_number
+        return self.beat_length * beat_number
+
+    def get_time_at_bar(self, bar_number):
+        """Return the time in seconds of the start of a given bar."""
+
+        return self.bar_length * bar_number
+
+    def get_time_at_beat_of_bar(self, bar_number, beat_number):
+        """Return the time in seconds of the start of a given beat of a given bar."""
+
+        return self.get_time_at_bar(bar_number) + self.get_time_at_beat(beat_number)
 
     def __parse_notes(self, note_string):
         """Parse the note string and return the note values and lengths.

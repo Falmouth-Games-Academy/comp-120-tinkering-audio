@@ -1,65 +1,25 @@
 __author__ = 'Hat'
 
+# Standard Python library
 import os
 
+# Own modules
 import filter
 import envelope
 import melody
 import sound
 import tone
 
+
 OUTPUT_DIR = 'output'
 
-# Temporary function for testing purposes and experimentation
-def test():
-    new = sound.Sound()
 
-    fenv = envelope.Envelope(envelope.EnvelopeType.frequency, 0, 0.5, 0.5, 0, 0)
-
-    filt = filter.Peaking(new, 1000 , 1, -10, fenv)
-    noise = tone.Noise(0, 2000, 1, filt, None, None)
-
-    noise.add_tone(new)
-
-
-    fenv.file.close()
-
-    new.save(OUTPUT_DIR, "testy.wav")
-
-
-
-    # my_env = envelope.Envelope(0.25, 0.25, 500, 0.25, 0.25)
-    #
-    # fenv = envelope.Envelope(0, 0, 0, 0, 1)
-    #
-    # sine_tone = tone.SineTone(0, 2000, 10, None, fenv)
-    # square_tone = tone.SquareTone(0, 2000, 10, None, fenv)
-    # saw_tone = tone.HarmonicSawTone(0, 2000, 10, 10, None, fenv)
-    #
-    # test = sound.Sound()
-    # saw_tone.add_tone(test)
-    # test.save("test.wav")
-    #
-    # upscale = sound.Sound()
-    # downscale = sound.Sound()
-    #
-    # for i in range(13):
-    #     square_tone.note = i
-    #     square_tone.add_tone(upscale)
-    #
-    # for i in range(0, -13, -1):
-    #     sine_tone.note = i
-    #     sine_tone.add_tone(downscale)
-    #
-    # scale = upscale + downscale
-    # scale.echo(5000)
-    # scale.save("scale.wav")
-    #
-    # bah = melody.Melody(120, '4/4')
-    # birthday = bah.create_melody("C:4:8 C:4:8 D:4:4 C:4:4 F:4:4 E:4:2 " +
-    #                            "C:4:8 C:4:8 D:4:4 C:4:4 G:4:4 F:4:2 " +
-    #                            "C:4:8 C:4:8 C:5:4 A:4:4 F:4:4 E:4:4 D:4:2", square_tone)
-    # birthday.save("bd.wav")
+def create_gameplay_audio():
+    make_eating_sound()
+    make_start_sound()
+    make_frightened_sound()
+    make_retreating_sound()
+    make_death_sound()
 
 
 def make_bg_music():
@@ -91,8 +51,10 @@ def make_bg_music():
 
     extra_bit = music.create_melody("E:4:8 D:4:16", little_instrument)
 
+    background = music.create_melody("E:4:12 B:4:12 D:4:12 A:4:12 E:4:12 B:3:12 D:4:12")
+
     # Time that the extra bit should be overlayed
-    overlap_time = music.get_time_at_beat(10.5)
+    overlap_time = music.get_time_at_beat_of_bar(2, 4.5)
 
     first_part.append_sound(extra_bit)
     second_part.layer_sound_at_time(extra_bit, overlap_time)
@@ -137,6 +99,7 @@ def make_eating_sound():
 def make_start_sound():
     """Create a sound to be used when the game begins."""
 
+    # Entire tone is release phase to make it fade out quickly
     jingle_env = envelope.Envelope(envelope.EnvelopeType.amplitude, 0, 0, 0, 0, 1)
     instrument = tone.SquareTone(0, 2000, 0, jingle_env)
 
@@ -151,6 +114,7 @@ def make_start_sound():
 def make_death_sound():
     """Create a sound to be played upon death."""
 
+    # Entire tone is release phase to make it fade out quickly
     death_env = envelope.Envelope(envelope.EnvelopeType.amplitude, 0, 0, 0, 0, 1)
     instrument = tone.SquareTone(0, 2000, 0, death_env)
 
@@ -175,19 +139,18 @@ def make_frightened_sound():
     frightened_tone = tone.SineTone(31, 2000, 0.5, frightened_aenv, frightened_fenv)
 
     music = melody.Melody(240, '4/4')
-    notes = "E:4:8 C:4:8 B:4:8 Eb:4:8 G:4:8 "
-    notes *=3
-    thing = music.create_shuffled_melody(notes, frightened_tone)
-    thing.repeat(5)
 
-    thing.save(OUTPUT_DIR, "thing.wav")
-
-    frightened_sound = sound.Sound()
-    frightened_tone.add_tone(frightened_sound)
-
-    frightened_fenv.file.close()
+    notes = "D:4:8 Eb:4:8 C:4:8 F#:4:8 G:4:8 "
+  # notes = "E:4:8 C:4:8 B:4:8 Eb:4:8 G:4:8 "
+    # So that notes can be used more than once (arbitrary number)
+    notes *=5
+    frightened_sound = music.create_shuffled_melody(notes, frightened_tone)
+    # Sound should last a while (arbitrary number)
+    frightened_sound.repeat(5)
 
     frightened_sound.save(OUTPUT_DIR, "frightened.wav")
+
+    frightened_fenv.file.close()
 
 
 def make_retreating_sound():
@@ -205,8 +168,4 @@ def make_retreating_sound():
 
 
 if __name__ == '__main__':
-    make_eating_sound()
-    make_start_sound()
-    make_frightened_sound()
-    make_retreating_sound()
-    make_death_sound()
+    create_gameplay_audio()
