@@ -11,5 +11,6 @@ The algorithms are:
    
 There is also a function for importing audio to be used in the algorithms and another to export audio ready for use in the Kivy App.
 
-The Trello boards and cards folder contains screenshots of my trello board which contains the user stories and sprint plans I used when planning this assignment.
+The Trello boards and cards folder contains screenshots of my trello board which contains the user stories and sprint plans I used when planning this assignment.  
+The Gameplay Audio folder contains a couple of audio files I've created using the algorithms in main.py.
 
