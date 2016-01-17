@@ -31,6 +31,8 @@ This algorithms implemented for the assignment are used in this program to creat
 |Module|Class|Method(s)|
 |---|---|---|
 |sound|Sound|insert_sound_at_time|
+|sound|Sound|append_sound (when combined with other things)|
+|sound|Sound|reverse|
 
 ###Audio Envelopes/Echo
 |Module|Class|Method(s)|
