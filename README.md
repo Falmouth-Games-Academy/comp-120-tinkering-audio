@@ -1,5 +1,14 @@
 # COMP120 Tinkering Audio
 
+This algorithms implemented for the assignment are used in this program to create the following sounds for the Kivy game:
+* Title music
+* Level start sound
+* Pellet eating sound
+* Frightened enemy sound
+* Retreating enemy sound
+* Player death sound
+
+
 ##Additional Libraries Used
 [enum34](https://pypi.python.org/pypi/enum34)
 
