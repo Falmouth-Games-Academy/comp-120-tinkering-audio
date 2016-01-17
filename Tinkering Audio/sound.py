@@ -47,6 +47,7 @@ class Sound(object):
         sampling_rate -- samples per second. Defaults to 44100 (CD quality)
         samples -- list of samples that the sound should begin with. Defaults to None.
         """
+
         self.samples = samples
         self.sample_width = sample_width
         self.channels = channels
@@ -97,7 +98,12 @@ class Sound(object):
         self.__sampling_rate = rate
 
     def save(self, directory, filename):
-        """Save the sound to a wav file of the given filename."""
+        """Save the sound to a wav file of the given filename.
+
+        Arguments:
+        directory -- the directory file should be saved in as a string
+        filename -- the name of the file + .wav as a string
+        """
 
         sound = wave.open(os.path.join(directory, filename), 'wb')
         sound.setnchannels(self.channels)
@@ -189,7 +195,7 @@ class Sound(object):
 
         Arguments:
         delay -- amount of time that the echo will be delayed by in seconds
-        vol_reduction -- percentage of the original volume that the echo will be
+        vol_reduction -- fraction of the original volume that the echo will be (float between 0 and 1)
         """
 
         echo = Sound()
@@ -202,14 +208,17 @@ class Sound(object):
 
         Arguments:
         delay -- amount of time that the echo will be delayed by in seconds
-        vol_reduction -- percentage of the original volume that the echo will be
+        vol_reduction -- percentage of the original volume that the echo will be (float between 0 and 1)
         """
 
         for i in range(len(self.samples)):
             self.combine_sample_at_index(int(vol_reduction * self.samples[i]), i + delay)
 
     def convert_secs_to_samples(self, seconds):
-        """Convert seconds into sample number and return as an integer."""
+        """Convert seconds into sample number and return as an integer.
+
+        Arguments:
+        seconds -- the number of seconds to convert"""
 
         return int(self.sampling_rate * seconds)
 

@@ -114,7 +114,7 @@ def make_start_sound():
     jingle_env = envelope.Envelope(envelope.EnvelopeType.amplitude, 0, 0, 0, 0, 1)
     instrument = tone.SquareTone(0, 2000, 0, jingle_env)
 
-    # 120bpm, 6/8 compound time signature to emulate triplets
+    # 180bpm, 6/8 compound time signature to emulate triplets
     music = melody.Melody(180, '6/8')
     jingle = music.create_melody("C:2:8 C:2:16 D:2:8 C:2:16 "
                                  "Eb:2:8 C:2:4 F#:2:8. F#:2:8 G:2:2", instrument)
@@ -129,7 +129,7 @@ def make_death_sound():
     death_env = envelope.Envelope(envelope.EnvelopeType.amplitude, 0, 0, 0, 0, 1)
     instrument = tone.SquareTone(0, 2000, 0, death_env)
 
-    # 120bpm, 6/8 compound time signature to emulate triplets
+    # 180bpm, 6/8 compound time signature to emulate triplets
     music = melody.Melody(180, '6/8')
     death = music.create_melody("F#:2:8. F#:2:8 G:2:8. F:2:16 Eb:2:8 D:2:16 C:2:4.", instrument)
     bong = music.create_melody("C:3:2", instrument)
@@ -149,6 +149,7 @@ def make_powerup_sound():
     # 31 is a high E
     power_tone = tone.SineTone(31, 2000, 0.25, None, power_env)
     power_sound = power_tone.create_tone()
+
     power_sound.save(OUTPUT_DIR, "power_up.wav")
 
 

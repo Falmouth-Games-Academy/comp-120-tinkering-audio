@@ -12,13 +12,13 @@ HarmonicSawTone(Tone) -- class for generating a sawtooth tone
 Noise(Tone) -- class for generating white noise
 """
 
+
 # Standard Python libraries
 import math
 import random
 
 # Own modules
 import sound
-import envelope
 
 
 class Tone(object):
@@ -80,12 +80,17 @@ class Tone(object):
             self.__frequency = self.__convert_note_to_freq(self.note)
 
     def create_tone(self):
+        """Create a tone in a new Sound object instance"""
         new_tone = sound.Sound()
         self.add_tone(new_tone)
         return new_tone
 
     def add_tone(self, sound):
-        """Add a tone to the end of given Sound object instance"""
+        """Add a tone to the end of given Sound object instance.
+
+        Arguments:
+        sound -- Sound object tone should be added to
+        """
         for sample in self.__generate(sound):
             sound.add_sample(sample)
 
@@ -177,6 +182,7 @@ class Tone(object):
         """
 
         sample_count = sound.convert_secs_to_samples(self.seconds)
+        # No previous sample so start at 0
         previous_phase = 0
         for i in xrange(sample_count):
             sample, previous_phase = self._create_sample(sound.sampling_rate, i, previous_phase)
@@ -191,9 +197,9 @@ class Tone(object):
         These values are returned as a tuple.
 
         Arguments:
-        sampling_rate(int) -- the sampling rate of the sound
-        sample_index(int) -- the position of the sample to be used in the calculation
-        previous_phase(float) -- the previous phase, to be used in the calculation
+        sampling_rate -- the sampling rate of the sound
+        sample_index -- the position of the sample to be used in the calculation
+        previous_phase -- the previous phase, to be used in the calculation
         """
 
         frequency = self._get_frequency(sampling_rate, sample_index)
@@ -211,6 +217,14 @@ class Tone(object):
 
 
 class SineTone(Tone):
+
+    """
+    Store a method for creating square tone samples.
+
+    This class has one method that is called by its parent
+    to create samples for a sine tone sound.
+    """
+
     def _create_sample(self, sampling_rate, sample_index, previous_phase):
         """Return a sample value using a sine wave.
 
@@ -227,6 +241,14 @@ class SineTone(Tone):
 
 
 class SquareTone(Tone):
+
+    """
+    Store a method for creating square tone samples.
+
+    This class has one method that is called by its parent
+    to create samples for a square tone sound.
+    """
+
     def _create_sample(self, sampling_rate, sample_index, previous_phase):
         """Return a sample value using a square wave.
 
@@ -248,7 +270,14 @@ class SquareTone(Tone):
 
 
 class HarmonicSawTone(Tone):
-    """Class that has methods to create a sawtooth tone through layering sine waves."""
+
+    """Store methods to generate a sawtooth tone.
+
+    This class has a method that is called by its parent to
+    create samples for a sawtooth tone through the layering
+    of harmonic sine waves.
+    """
+
     def __init__(self, note, amplitude, seconds, levels, amplitude_env=None, frequency_env=None):
         """Initialises the fields for the class.
 
@@ -293,9 +322,18 @@ class HarmonicSawTone(Tone):
 
 
 class Noise(Tone):
+
+    """
+    Store a method for creating noise samples.
+
+    This class has a method that is called by its parent that
+    generates random noise samples.
+    Only seconds and amplitude are used by this class.
+    """
+
     # Overriding init and setting a default value for the note was the only way I could
-    # find to not require it but still subclass in Python
-    def __init__(self, seconds, amplitude, note=None ,amplitude_env=None, frequency_env=None):
+    # find to not require parameters but still subclass in Python
+    def __init__(self, amplitude, seconds, note=None ,amplitude_env=None, frequency_env=None):
         """Initialises the fields.
 
         Arguments:
@@ -306,7 +344,13 @@ class Noise(Tone):
         super(Noise, self).__init__(note, amplitude, seconds, amplitude_env, frequency_env)
 
     def _create_sample(self, sampling_rate, sample_index, previous_phase):
-        """Return a random sample value to create white noise."""
+        """Return a random sample value to create white noise.
+
+        This method creates a random sample in order to create noise.
+        It returns None in place of sine wave phase as Tone.__generate
+        still requires a tuple to unpack.
+        """
+
         # Initial value between 0 and 1 so it can be multiplied by amplitude
         raw_sample = random.uniform(0, 1)
         amplitude = self.amplitude
