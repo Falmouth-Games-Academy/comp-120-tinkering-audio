@@ -14,3 +14,7 @@ There is also a function for importing audio to be used in the algorithms and an
 The Trello boards and cards folder contains screenshots of my trello board which contains the user stories and sprint plans I used when planning this assignment.  
 The Gameplay Audio folder contains a couple of audio files I've created using the algorithms in main.py.
 
+####Resources used:
+* Introduction to Computing and Programming in Python: A Mulitmedia Approach
+* PowerPoints from the Learning Space
+
