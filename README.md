@@ -24,7 +24,7 @@ This algorithms implemented for the assignment are used in this program to creat
 |Module|Class|Method(s)|
 |---|---|---|
 |tone|Tone|combine_tone|
-|sound|Sound|combine_sample, layer_sound_at_time, \__add__ (operator overload)|
+|sound|Sound|combine_sample_at_index, layer_sound_at_time, \__add__ (operator overload)|
 
 ###Audio Splice/Swap
 |Module|Class|Method(s)|
