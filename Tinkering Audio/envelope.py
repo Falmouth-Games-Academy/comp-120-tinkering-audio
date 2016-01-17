@@ -43,7 +43,6 @@ class Envelope(object):
         self.sustain_level = sustain_level
         self.sustain_length = sustain_length
         self.release_length = release_length
-        self.file = open('debug.txt', 'w')
 
     def get_value(self, default_value, sample_index, number_of_samples):
         """Return the appropriate amplitude or frequency value according to the envelope phase times.
@@ -65,7 +64,6 @@ class Envelope(object):
             if self.type == EnvelopeType.frequency and new_value < MIN_FREQUENCY:
                 new_value = MIN_FREQUENCY
 
-            self.file.write(str(new_value) + '\n')
             return new_value
 
         if phase == EnvelopePhase.decay:
@@ -74,18 +72,18 @@ class Envelope(object):
             if self.type == EnvelopeType.frequency and new_value < MIN_FREQUENCY:
                 new_value = MIN_FREQUENCY
 
-            self.file.write(str(new_value) + '\n')
             return new_value
 
         if phase == EnvelopePhase.sustain:
             new_value = self.__get_sustain(default_value)
-            self.file.write(str(new_value) + '\n')
             return new_value
 
         if phase == EnvelopePhase.release:
             envelope = self.__get_release(sample_index, number_of_samples)
             new_value = envelope * self.__get_sustain(default_value)
-            self.file.write(str(new_value) + '\n')
+            if self.type == EnvelopeType.frequency and new_value < MIN_FREQUENCY:
+                new_value = MIN_FREQUENCY
+
             return new_value
 
     def __get_attack(self, sample_index, number_of_samples):
@@ -202,6 +200,7 @@ class Envelope(object):
 
 class EnvelopePhase(Enum):
     """Enum for different envelope phases"""
+    # Arbitrary numbers for enum
     attack = 0
     decay = 1
     sustain = 2
@@ -210,5 +209,6 @@ class EnvelopePhase(Enum):
 
 class EnvelopeType(Enum):
     """Enum for different envelope types"""
+    # Arbitrary numbers for enum
     amplitude = 0
     frequency = 1

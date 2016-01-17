@@ -75,8 +75,14 @@ class Tone(object):
 
     @note.setter
     def note(self, value):
-        self.__note = value
-        self.__frequency = self.__convert_note_to_freq(self.note)
+        if not isinstance(self, Noise):
+            self.__note = value
+            self.__frequency = self.__convert_note_to_freq(self.note)
+
+    def create_tone(self):
+        new_tone = sound.Sound()
+        self.add_tone(new_tone)
+        return new_tone
 
     def add_tone(self, sound):
         """Add a tone to the end of given Sound object instance"""
@@ -97,10 +103,10 @@ class Tone(object):
         start_position -- start position in seconds
         """
 
-        index = self.__convert_secs_to_samples(sound, start_position)
+        index = sound.convert_secs_to_samples(start_position)
         for sample in self.__generate(sound):
             if index < len(sound.samples):
-                sound.combine_sample(sample, index)
+                sound.combine_sample_at_index(sample, index)
             else:
                 sound.add_sample(sample)
             index += 1
@@ -117,7 +123,8 @@ class Tone(object):
         """
 
         if self.amplitude_env != None:
-            return self.amplitude_env.get_value(self.amplitude, sample_index, (self.seconds * sampling_rate))
+            amplitude = self.amplitude_env.get_value(self.amplitude, sample_index, (self.seconds * sampling_rate))
+            return amplitude
         else:
             return self.amplitude
 
@@ -156,22 +163,22 @@ class Tone(object):
         frequency = BASE_FREQUENCY * INTERVAL ** note
         return frequency
 
-    def __convert_secs_to_samples(self, sound, seconds):
-        """Convert seconds into sample number and return as an integer."""
-
-        return int(sound.sampling_rate * seconds)
-
     def __generate(self, sound):
         """Generate samples for the tone.
 
         This generator yields samples corresponding to the tones properties.
         The sound object the tone is being applied to is supplied to ensure
         that the matching sampling rate is used.
+        The previous sine wave phase is tracked in order to calculate the
+        next value.
+
+        Arguments:
+        sound -- the sound.Sound object the tone is being generated for
         """
 
-        sample_number = self.__convert_secs_to_samples(sound, self.seconds)
+        sample_count = sound.convert_secs_to_samples(self.seconds)
         previous_phase = 0
-        for i in xrange(sample_number):
+        for i in xrange(sample_count):
             sample, previous_phase = self._create_sample(sound.sampling_rate, i, previous_phase)
             yield sample
 
@@ -190,13 +197,10 @@ class Tone(object):
         """
 
         frequency = self._get_frequency(sampling_rate, sample_index)
-        try:
-            seconds_per_cycle = 1.0/frequency
-        except ZeroDivisionError:
-            # Minimum threshold of human hearing
-            seconds_per_cycle = 1.0/20
+        seconds_per_cycle = 1.0/frequency
         samples_per_cycle = seconds_per_cycle * sampling_rate
         cycle_size = 2.0 * math.pi
+
         phase_increment = cycle_size / samples_per_cycle
         phase = previous_phase + phase_increment
         sine_value = math.sin(phase)
@@ -289,24 +293,22 @@ class HarmonicSawTone(Tone):
 
 
 class Noise(Tone):
-    def __init__(self, note, amplitude, seconds, freq_filter=None, amplitude_env=None, frequency_env=None):
+    # Overriding init and setting a default value for the note was the only way I could
+    # find to not require it but still subclass in Python
+    def __init__(self, seconds, amplitude, note=None ,amplitude_env=None, frequency_env=None):
+        """Initialises the fields.
+
+        Arguments:
+        amplitude -- integer defining the volume
+        seconds -- float or integer defining how long the tone will be
+        """
+
         super(Noise, self).__init__(note, amplitude, seconds, amplitude_env, frequency_env)
-        self.freq_filter = freq_filter
 
     def _create_sample(self, sampling_rate, sample_index, previous_phase):
         """Return a random sample value to create white noise."""
+        # Initial value between 0 and 1 so it can be multiplied by amplitude
         raw_sample = random.uniform(0, 1)
-        amplitude = self._get_amplitude(sampling_rate, sample_index)
+        amplitude = self.amplitude
         sample = int(raw_sample * amplitude)
-        sample_total = sampling_rate * self.seconds
-        if self.freq_filter != None:
-            sample = self.freq_filter.process(sample, sample_total)
         return sample, None
-
-
-    # def _create_sample(self, sampling_rate, sample_index, previous_phase):
-    #     """Return a random sample value to create white noise."""
-    #     raw_sample = random.uniform(0, 1)
-    #     amplitude = self._get_amplitude(sampling_rate, sample_index)
-    #     sample = int(raw_sample * amplitude)
-    #     return sample, None

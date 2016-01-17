@@ -10,7 +10,6 @@ Sound -- class for managing sound
 
 
 import array
-import math
 import os
 import wave
 
@@ -24,19 +23,19 @@ class Sound(object):
     a wav file.
 
     Public methods:
-    save --
-    add_sample --
-    append_sound --
-    insert_sound_at_time --
-    layer_sound_at_time --
-    set_sample_at_index --
-    combine_sample --
-    repeat --
-    reverse --
-    copy --
-    echo --
-    feedback_echo --
-    convert_secs_to_samples --
+    save -- saves the sound as a wav file
+    add_sample -- adds a sample to the sound
+    append_sound -- adds a sound to the end of the sound
+    insert_sound_at_time -- adds a sound in the middle of the sound
+    layer_sound_at_time -- layers a sound over the sound
+    set_sample_at_index -- sets the value of the sample at specified index
+    combine_sample_at_index -- combines the value of the sample at index with another sample
+    repeat -- makes the sound repeat the specified number of times
+    reverse -- reverses the sound
+    copy -- makes a copy of the Sound instance
+    echo -- adds an echo to the sound
+    feedback_echo -- adds a feedback echo to the sound
+    convert_secs_to_samples -- converts number of seconds to number of samples
     """
 
     def __init__(self, channels=1, sample_width=2, sampling_rate=44100, samples=None):
@@ -145,14 +144,14 @@ class Sound(object):
 
         start_position = int(seconds * self.sampling_rate)
         for i in range(start_position, start_position + len(sound.samples)):
-            self.combine_sample(sound.samples[i - start_position], i)
+            self.combine_sample_at_index(sound.samples[i - start_position], i)
 
     def set_sample_at_index(self, value, index):
         """Set the value of the sample at the specified index"""
 
         self.samples[index] = value
 
-    def combine_sample(self, value, index):
+    def combine_sample_at_index(self, value, index):
         """Add the value to the sample at the specified index"""
 
         if len(self.samples) > index:
@@ -196,7 +195,7 @@ class Sound(object):
         echo = Sound()
         echo.samples = self.samples
         for i in range(len(echo.samples)):
-            self.combine_sample(int(vol_reduction * echo.samples[i]), i + delay)
+            self.combine_sample_at_index(int(vol_reduction * echo.samples[i]), i + delay)
 
     def feedback_echo(self, delay, vol_reduction):
         """Add an echo effect with feedback to the sound.
@@ -207,7 +206,7 @@ class Sound(object):
         """
 
         for i in range(len(self.samples)):
-            self.combine_sample(int(vol_reduction * self.samples[i]), i + delay)
+            self.combine_sample_at_index(int(vol_reduction * self.samples[i]), i + delay)
 
     def convert_secs_to_samples(self, seconds):
         """Convert seconds into sample number and return as an integer."""

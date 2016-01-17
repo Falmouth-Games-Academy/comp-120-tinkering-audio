@@ -1,7 +1,7 @@
 """Contain a class for creating melodies.
 
 This module contains a class for creating Sound objects containing
- melodies by parsing strings.
+melodies by parsing strings.
 
  Classes:
  Melody -- class for creating melodies
@@ -22,7 +22,7 @@ class Melody(object):
     This class contains methods that allow strings to be
     parsed in order to create melodies as sound.Sound objects.
 
-    Puclic Methods:
+    Public Methods:
     create_melody -- creates a melody in a Sound object
     create_shuffled_melody -- creates a shuffled melody in a Sound object
     get_time_at_beat -- returns the time at the given beat number
@@ -113,7 +113,6 @@ class Melody(object):
 
         melody = sound.Sound()
         note_values = self.__parse_notes(note_string)
-        print note_values
         for note in note_values:
             tone.note, tone.seconds = note
             tone.add_tone(melody)
@@ -169,30 +168,59 @@ class Melody(object):
         note_string -- string in the format notename:octave:notetype, separated by spaces.
         """
 
+        note_values = []
+        for note in note_string.split(' '):
+            note_letter, octave, length = note.split(':')
+            note_length = self.__get_note_length(length)
+            note = self.__get_note_number(note_letter, int(octave))
+            note_values.append((note, note_length))
+
+        return note_values
+
+    def __get_note_length(self, length):
+        """Return the length of the note in seconds.
+
+        This method converts the relative musical length of a note into
+        an absolute length in seconds. It returns the length as a float.
+        A '.' can be added to the end of the length string for dotted notes.
+
+        Arguments:
+        length -- the musical length of the note as a string
+        """
+
+        # Process dotted notes
+        if length.endswith('.'):
+            length.strip('.')
+            note_length = self.default_note_type / float(length) * self.beat_length
+            # Because a dotted note is 1.5 times the length of original
+            note_length *= 1.5
+        else:
+            note_length = self.default_note_type / float(length) * self.beat_length
+
+        return note_length
+
+    def __get_note_number(self, note_letter, octave):
+        """Return the number of a note for frequency calculation.
+
+        This method converts a note letter and octave into a number to be
+        used for calculating frequency.
+
+        Arguments:
+        note_letter -- note letter as a string
+        octave -- octave of the note as a string (or int)
+        """
+
+        notes = {'C': -9, 'C#': -8, 'Db': -8, 'D': -7, 'D#': -6, 'Eb': -6,
+                 'E': -5, 'F': -4, 'F#': -3, 'Gb': -3, 'G': -2, 'G#': -1,
+                 'Ab': -1, 'A': 0, 'A#': 1, 'Bb': 1, 'B': 2}
+
         # 4 will be the octave of middle C, as in most audio packages
         BASE_OCTAVE = 4
         # 12 semitones in an octave
         NOTES_IN_OCTAVE = 12
-        notes = {'C': -9, 'C#': -8, 'Db': -8, 'D': -7, 'D#': -6, 'Eb': -6,
-                 'E': -5, 'F': -4, 'F#': -3, 'Gb': -3, 'G': -2, 'G#': -1,
-                 'Ab': -1, 'A': 0, 'A#': 1, 'Bb': 1, 'B': 2}
-        note_values = []
-
-        for note in note_string.split(' '):
-            note_value, octave, length = note.split(':')
-            octave_shift = NOTES_IN_OCTAVE * (int(octave) - BASE_OCTAVE)
-
-            # Process dotted notes
-            if length.endswith('.'):
-                length.strip('.')
-                note_length = self.default_note_type / float(length) * self.beat_length
-                note_length *= 1.5
-            else:
-                note_length = self.default_note_type / float(length) * self.beat_length
-
-            note_value = notes[note_value] + octave_shift
-            note_values.append((note_value, note_length))
-        return note_values
+        octave_shift = NOTES_IN_OCTAVE * (int(octave) - BASE_OCTAVE)
+        note = notes[note_letter] + octave_shift
+        return note
 
 
 
