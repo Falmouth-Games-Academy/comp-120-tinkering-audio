@@ -4,6 +4,7 @@ This algorithms implemented for the assignment are used in this program to creat
 * Title music
 * Level start sound
 * Pellet eating sound
+* Power-up sound
 * Frightened enemy sound
 * Retreating enemy sound
 * Player death sound
