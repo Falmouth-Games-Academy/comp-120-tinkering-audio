@@ -4,7 +4,6 @@ __author__ = 'Hat'
 import os
 
 # Own modules
-import filter
 import envelope
 import melody
 import sound
@@ -15,11 +14,13 @@ OUTPUT_DIR = 'output'
 
 
 def create_gameplay_audio():
+    make_bg_music()
     make_eating_sound()
     make_start_sound()
     make_frightened_sound()
     make_retreating_sound()
     make_death_sound()
+    make_powerup_sound()
 
 
 def make_bg_music():
@@ -28,11 +29,12 @@ def make_bg_music():
     # The entire sound is release phase to make it fade out quickly
     short_sound_env = envelope.Envelope(envelope.EnvelopeType.amplitude, 0, 0, 0, 0, 1)
 
-    main_instrument = tone.SquareTone(0, 1000, 0, short_sound_env)
+    main_instrument = tone.SquareTone(0, 2000, 0, short_sound_env)
     little_instrument = tone.SquareTone(0, 1000, 0)
+    background_instrument = tone.HarmonicSawTone(0, 1000, 0, 10)
 
     # 120bpm, 6/8 compound time signature to emulate triplets
-    music = melody.Melody(120, '6/8')
+    music = melody.Melody(180, '6/8')
 
     first_bar_string = ("E:3:16 E:3:16 E:3:16 "
                        "B:2:16 B:2:16 B:2:16 "
@@ -51,10 +53,10 @@ def make_bg_music():
 
     extra_bit = music.create_melody("E:4:8 D:4:16", little_instrument)
 
-    background = music.create_melody("E:4:12 B:4:12 D:4:12 A:4:12 E:4:12 B:3:12 D:4:12")
+    background = music.create_melody("E:4:8. B:3:8. D:4:8. A:3:8. E:4:8. B:3:8. D:4:8.", background_instrument)
 
     # Time that the extra bit should be overlayed
-    overlap_time = music.get_time_at_beat_of_bar(2, 4.5)
+    overlap_time = music.get_time_at_beat_of_bar(2, 5.5)
 
     first_part.append_sound(extra_bit)
     second_part.layer_sound_at_time(extra_bit, overlap_time)
@@ -65,6 +67,8 @@ def make_bg_music():
 
     main_part = first_part.copy()
     main_part.append_sound(second_part)
+    main_part.layer_sound_at_time(background, 0)
+    main_part.layer_sound_at_time(background, music.get_time_at_bar(3))
 
     main_part.repeat(3)
 
@@ -104,9 +108,9 @@ def make_start_sound():
     instrument = tone.SquareTone(0, 2000, 0, jingle_env)
 
     # 120bpm, 6/8 compound time signature to emulate triplets
-    music = melody.Melody(120, '6/8')
+    music = melody.Melody(180, '6/8')
     jingle = music.create_melody("C:2:8 C:2:16 D:2:8 C:2:16 "
-                                 "Eb:2:8 C:2:4 F#:2:6 F#:2:8 G:2:2", instrument)
+                                 "Eb:2:8 C:2:4 F#:2:8. F#:2:8 G:2:2", instrument)
 
     jingle.save(OUTPUT_DIR, "jingle.wav")
 
@@ -119,11 +123,10 @@ def make_death_sound():
     instrument = tone.SquareTone(0, 2000, 0, death_env)
 
     # 120bpm, 6/8 compound time signature to emulate triplets
-    music = melody.Melody(120, '6/8')
-    death = music.create_melody("F#:2:6 F#:2:8 G:2:6 F:2:16 Eb:2:8 D:2:16 C:2:4", instrument)
+    music = melody.Melody(180, '6/8')
+    death = music.create_melody("F#:2:8. F#:2:8 G:2:8. F:2:16 Eb:2:8 D:2:16 C:2:4", instrument)
 
     death.save(OUTPUT_DIR, "death.wav")
-
 
 def make_powerup_sound():
     """Create a sound to be played when a power-up is collected."""

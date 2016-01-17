@@ -23,11 +23,11 @@ class Melody(object):
     parsed in order to create melodies as sound.Sound objects.
 
     Puclic Methods:
-    create_melody --
-    create_shuffled_melody --
-    get_time_at_beat --
-    get_time_at_bar --
-    get_time_at_beat_of_bar --
+    create_melody -- creates a melody in a Sound object
+    create_shuffled_melody -- creates a shuffled melody in a Sound object
+    get_time_at_beat -- returns the time at the given beat number
+    get_time_at_bar -- returns the time at the given bar
+    get_time_at_beat_of_bar -- returns the time at the given beat of the given bar
     """
 
     def __init__(self, beats_per_minute, time_sig):
@@ -125,6 +125,7 @@ class Melody(object):
         This method shuffles a string of notes and created a melody which is returned as a
         Sound object. The notes in the string should be in the form
         notename:octave:notetype and each note should be separated by a space.
+        Dotted notes can be formed by adding '.' after notetype.
         The Tone object used for the melody can be seen as the 'instrument'.
 
         Arguments:
@@ -140,12 +141,14 @@ class Melody(object):
     def get_time_at_beat(self, beat_number):
         """Return the time in seconds of a the start of given beat."""
 
-        return self.beat_length * beat_number
+        # Subtract 1 so time as at beginning of the given beat number
+        return self.beat_length * (beat_number-1)
 
     def get_time_at_bar(self, bar_number):
         """Return the time in seconds of the start of a given bar."""
 
-        return self.bar_length * bar_number
+        # Subtract 1 so time is at beginning of the given bar number
+        return self.bar_length * (bar_number-1)
 
     def get_time_at_beat_of_bar(self, bar_number, beat_number):
         """Return the time in seconds of the start of a given beat of a given bar."""
@@ -158,6 +161,7 @@ class Melody(object):
         This method parses a string of notes given in the form
         notename:octave:notetype, separated by spaces into numbers to be
         used for frequency conversion. Octave number 4 is middle C.
+        Dotted notes can be formed by adding '.' after notetype.
         This method returns a list of tuples containing the note value and note
         length.
 
@@ -177,8 +181,16 @@ class Melody(object):
         for note in note_string.split(' '):
             note_value, octave, length = note.split(':')
             octave_shift = NOTES_IN_OCTAVE * (int(octave) - BASE_OCTAVE)
+
+            # Process dotted notes
+            if length.endswith('.'):
+                length.strip('.')
+                note_length = self.default_note_type / float(length) * self.beat_length
+                note_length *= 1.5
+            else:
+                note_length = self.default_note_type / float(length) * self.beat_length
+
             note_value = notes[note_value] + octave_shift
-            note_length = self.bar_length / float(length)
             note_values.append((note_value, note_length))
         return note_values
 
