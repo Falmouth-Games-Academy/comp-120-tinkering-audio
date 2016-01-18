@@ -96,7 +96,7 @@ def random_Notes(note_Length):
 '''The main function to write the sounds to file'''  
 def main():
   setMediaPath()
-  final_song_1 = melody(1)
+  final_song_1 = echo(melody(1), 5000, 4)
   final_song_2 = random_Notes(5)
   writeSoundTo(final_song_1, "Final_Song_1")
   writeSoundTo(final_song_2, "Final_Song_2")
