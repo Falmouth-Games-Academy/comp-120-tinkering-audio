@@ -6,3 +6,4 @@
 ##Audio Echo - DONE
 ##Parsing Tokens - DONE
 ##Random Tone generation - DONE
+##Intergrated with kivy app - DONE
