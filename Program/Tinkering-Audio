@@ -1,0 +1,169 @@
+import random
+
+
+bitDepth = 2000                                                 #2000 is the bitdepth I used to create a clean sine wave
+sampleRate = 44100                                              #Sample Rate is set to 44100(44.1kHZ) because that's the sample rate of standard audio CDs
+seconds = 3
+volume = 0.5
+frequency = 1000
+
+#Allows the user to set the media path of the programs audio folder
+setMediaPath()
+LongSound = makeSound("LongWAV.wav")                             #Loads longWav.wav into LongSound varaible
+DisconnectSound = makeSound("disconnect.wav")                    #Loads disconnect.wav into the DisconnectSound
+
+
+#Tone Generation
+def FirstToneGen():
+  tone = makeEmptySoundBySeconds(seconds)
+  for x in range(0, getLength(tone)):
+    setSampleValueAt(tone, x, int(bitDepth*sin(x)))
+  play(tone)
+  return tone
+
+
+#Second tone generation where sin is devided by 4 to produce a lower frequency sound
+def SecondToneGen():
+  tonetwo = makeEmptySoundBySeconds(seconds)
+  for x in range(0, getLength(tonetwo)):
+    setSampleValueAt(tonetwo, x, int(bitDepth*sin(x/4)))
+  play(tonetwo)
+  return(tonetwo)
+
+
+#Tone Combination
+def combine(ToneOne,ToneTwo):
+  outTone = makeEmptySound(int(sampleRate * seconds), sampleRate)
+  for i in range(0, getLength(ToneOne)):
+    firstTone = getSampleValueAt(ToneOne, i)
+    secondTone = getSampleValueAt(ToneTwo, i)
+    newSample = firstTone + secondTone
+    setSampleValueAt(outTone, i, newSample)
+  explore(outTone)
+
+
+#Audio splice and swap
+def SliceNSwap():
+  seconds = 18
+  targetIndex = 1
+  targetSound = makeEmptySound(int(sampleRate * seconds), sampleRate)
+
+  #Get the second half of the sound and paste it into the start of the empty target sound
+  for i in range(getLength(LongSound)/2, getLength(LongSound)):
+    value = getSampleValueAt(LongSound, i)
+    setSampleValueAt (targetSound, targetIndex, value)
+    targetIndex = targetIndex +1
+    
+  #Get the disconnect sound and paste it into the middle of the empty target sound
+  for i in range(0, getLength(DisconnectSound)):
+    value = getSampleValueAt(DisconnectSound, i)
+    setSampleValueAt (targetSound, targetIndex, value)
+    targetIndex = targetIndex +1
+
+  #Get the first half of the sound and paste it into the end of the empty target sound
+  for i in range(0, getLength(LongSound)/2):
+    value = getSampleValueAt(LongSound, i)
+    setSampleValueAt (targetSound, targetIndex, value)
+    targetIndex = targetIndex +1
+  explore(targetSound)
+  play(targetSound)
+  
+
+#Audio envilopes and echos
+def Echo(delay, sound):                                  #Delay in miliseconds and sound that you want to echo
+  soundsamples = getSamples(sound)
+  for index in range(len(soundsamples)-delay,0,-1):
+    value1 = getSampleValue(soundsamples[index])
+    value2 = getSampleValue(soundsamples[index-delay])
+    setSampleValue(soundsamples[index], value1+value2)
+  explore(sound)
+
+
+#ADS envelope
+def Envelope(tone, length, frequency, volume):             #Envelope(tone1(), 3, frequency, volume)
+  targetIndex = 1
+  interval = 1.0 / frequency
+  samplesPerCycle = interval * sampleRate
+  maxCycle = 2 * pi
+  tone = makeEmptySoundBySeconds(length)
+  
+#Get the first 10th of the tone and increase amplitude
+  for pos in range(0, getLength(tone)/10):
+    rawSample = sin((pos / samplesPerCycle) * maxCycle)
+    sampleVal = int(volume * rawSample)
+    volume = volume +1
+    setSampleValueAt(tone, pos, sampleVal)    
+
+#Between the first 10th and 8th of the tone decrease amplitude
+  for pos in range(getLength(tone)/10, getLength(tone)/8):
+    rawSample = sin((pos / samplesPerCycle) * maxCycle)
+    sampleVal = int(volume * rawSample)
+    volume = volume -1
+    setSampleValueAt(tone, pos, sampleVal)
+
+#From an 8th till the end play the same amplitude
+  for pos in range(getLength(tone)/8, getLength(tone)):
+    rawSample = sin((pos / samplesPerCycle) * maxCycle)
+    sampleVal = int(volume * rawSample)
+    setSampleValueAt(tone, pos, sampleVal)
+  explore(tone)
+  play(tone)
+  
+
+  
+#Parsing tokens into audio
+def parser():
+  notes = requestString("Please enter up to 10 notes such as; C, D, E, F, G, A, B") #Requests the user to input some notes
+  noteiteration = 0
+  maxCycle = 2 * pi
+  targetIndex = 0  
+  ToneLength = 1                                                                    #set all the tones to a length of 1 sec 
+  
+  #Sets the length of the melody to the number of chars in notes 
+  MelodyLength = 0
+  for x in notes:
+    MelodyLength = MelodyLength +1
+  melody = makeEmptySoundBySeconds(MelodyLength)                                    #all the tones are put into the melody
+                                                        
+ 
+  #frequency is equal to the value in the dictionary for that char                                                       
+  for x in notes:
+    frequency = search(noteNum, notes[noteiteration])                              #Iterates through the notes and sets the freqency to the value of the key in the dictonary 
+    noteiteration = noteiteration +1
+    
+    interval = 1.0 / frequency
+    samplesPerCycle = interval * sampleRate
+    tone = makeEmptySoundBySeconds(ToneLength)
+    for x in range(0, getLength(tone)):
+      setSampleValueAt(melody, targetIndex, int(sin(x / samplesPerCycle * maxCycle) * frequency*10))
+      targetIndex = targetIndex +1
+  explore(melody)
+  writeSoundTo(melody, 'Melody.wav')                                              #Outputs a customised melody for the game audio
+  
+#dictionary of notes
+noteNum = {'C': 440, 'D': 500, 'E': 600, 'F': 650, 'G': 750, 'A': 850, 'B': 950}  
+
+#searches the notes to see if the numbers inputted are the same as any in the dictionary.
+def search(noteNum, searchfor):
+  for key, value in noteNum.items():              #loop through the dictionary
+    for v in key:                                 #loop through all the keys in the dictonary
+      if searchfor in v:                          #if the value being searched for is in the keys return the value for that key
+        return value
+
+
+#Random tone generation
+def Randtone():
+  frequency = random.randrange(500, 3000)          #sets frequency to a random value between 500 and 3000
+  targetIndex = 0
+  interval = 1.0 / frequency
+  samplesPerCycle = interval * sampleRate
+  maxCycle = 2 * pi
+  randtone = makeEmptySoundBySeconds(1)            #Length of the tone will be 1 second
+  samplerate = getSamplingRate(randtone)
+  
+  print frequency
+  for x in range(0, getLength(randtone)):
+    setSampleValueAt(randtone, targetIndex, int(sin(x / samplesPerCycle * maxCycle) * frequency*10))
+    targetIndex = targetIndex +1
+  play(randtone)
+  writeSoundTo(randtone, 'Randtone.wav')          #Writes the random tone to the media path location (sounds)
