@@ -2,13 +2,13 @@ import random
 
 
 bitDepth = 2000                                                 #2000 is the bitdepth I used to create a clean sine wave
-sampleRate = 44100                                              #Sample Rate is set to 44.1kHZ because that's the sample rate of standard audio CDs
+sampleRate = 44100                                              #Sample Rate is set to 44100(44.1kHZ) because that's the sample rate of standard audio CDs
 seconds = 3
 volume = 0.5
 frequency = 1000
 
 #Allows the user to set the media path of the programs audio folder
-#setMediaPath()
+setMediaPath()
 LongSound = makeSound("LongWAV.wav")                             #Loads longWav.wav into LongSound varaible
 DisconnectSound = makeSound("disconnect.wav")                    #Loads disconnect.wav into the DisconnectSound
 
@@ -24,11 +24,11 @@ def FirstToneGen():
 
 #Second tone generation where sin is devided by 4 to produce a lower frequency sound
 def SecondToneGen():
-  tone2 = makeEmptySoundBySeconds(seconds)
-  for x in range(0, getLength(tone2)):
-    setSampleValueAt(tone2, x, int(bitDepth*sin(x/4)))
-  play(tone2)
-  return(tone2)
+  tonetwo = makeEmptySoundBySeconds(seconds)
+  for x in range(0, getLength(tonetwo)):
+    setSampleValueAt(tonetwo, x, int(bitDepth*sin(x/4)))
+  play(tonetwo)
+  return(tonetwo)
 
 
 #Tone Combination
@@ -138,7 +138,7 @@ def parser():
       setSampleValueAt(melody, targetIndex, int(sin(x / samplesPerCycle * maxCycle) * frequency*10))
       targetIndex = targetIndex +1
   explore(melody)
-  writeSoundTo(melody, 'Melody.wav')
+  writeSoundTo(melody, 'Melody.wav')                                              #Outputs a customised melody for the game audio
   
 #dictionary of notes
 noteNum = {'C': 440, 'D': 500, 'E': 600, 'F': 650, 'G': 750, 'A': 850, 'B': 950}  
