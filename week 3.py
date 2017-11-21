@@ -42,10 +42,10 @@ def echo(sound1,sound2, sound3, delay,sample_length):
         values.append(sound1[i])
         if i>delay:
             echo=sound2[i]*0.6
-            values.append(echo+sound2[i])
+            values.append(echo+sound1[i])
         if i>delay*2:
-            echo=sound3[i]*0.6
-            values.append(echo+sound3[1])
+            echo2=sound3[i]*0.6
+            values.append(echo2+sound2[1]+sound1[i])
     return values
 
 tone_values_one=generate_sine_wave(4000.0,SAMPLE_RATE,132000,1000.0)
