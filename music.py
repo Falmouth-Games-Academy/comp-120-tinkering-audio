@@ -1,64 +1,60 @@
-import pygame as pg
-import numpy
 import wave
 import math
 import struct
-'''pg.init()
-pg.mixer.init()
+import random
 
-pg.display.set_mode((800,600))
-# load in some music (filename)
-pg.mixer.music.load('410735__greek555__sample-126-bpm')
+SAMPLE_WIDTH=2
+SAMPLE_RATE=44100.0
+BIT_DEPTH=2.0
+CHANNELS=2
 
-# plays the music for (loops, start)
-pg.mixer.music.play()
-
-# sets an sound to an variable
-expolision_sound = pg.mixer.Soundound('410735__greek555__sample-126-bpm')
-
-# takes in an sound and give an array of samples
-expolision_samples= pg.sndarray.samples('410735__greek555__sample-126-bpm')
-
-#prints out samples
-for sample in expolision_samples:
-    print (sample)
-
-# go though a list of samples and then does somehthing
-def change_volume(samples,colume_change):
-    for samples in sample:
-'''
-song ='410735__greek555__sample-126-bpm'
-SAMPLE_LENGTH = 93
-FREQUENCY = 500
-SAMPLE_RATE = 50
-VOLUME= 50
-BIT_DEPTH = 32000
-CHANNELS = 2
-
-noise_out = wave.open(song,'w')
-values = []
-for i in range(0, SAMPLE_LENGTH):
-    value = math.sin(2.0 * math.pi*FREQUENCY*( i / SAMPLE_RATE)) * (VOLUME * BIT_DEPTH)
-
-    packaged_value = struct.pack('<h', value)
-
-    for j in xrange(0, CHANNELS):
-        values.append(packaged_value)
-
-value_str = ''.join(values)
-noise_out.write(value_str)
-noise_out.close()
+def combine_tones(tone_one,tone_two,sample_length):
+    values = []
+    for i in range(0, sample_length):
+        values.append(tone_one[i]+tone_two[i])
+    return values
 
 
-done = False
-while not done:
-    for event in pg.event.get():
-        if event.type==pg.QUIT:
-            done=True
-        '''if event.key == pg.K_SPACE:
-            # plays a sound (-1) make it play forever
-            expolision_sound.play()
- #       if event.key ==pg.K_UP'''
-    pg.display.set_mode((800, 600))
+def generate_sine_wave(frequency, sample_rate, sample_length, volume):
+    values = []
+    for i in range(0, sample_length):
+        value = math.sin(2 * math.pi * frequency * (i / sample_rate)) * (volume * BIT_DEPTH)
+        for j in xrange(0, CHANNELS):
+            values.append(value)
 
-pg.quit()
+    return values
+
+
+def save_wave_file(filename, wav_data, sample_rate):
+    packed_values=[]
+    for i in range(0,len(wav_data)):
+        packed_value = struct.pack('h', wav_data[i])
+        packed_values.append(packed_value)
+
+    noise_out = wave.open(filename, 'w')
+    noise_out.setparams((CHANNELS, SAMPLE_WIDTH, sample_rate, 0, 'NONE', 'not compressed'))
+    value_str = ''.join((str(n) for n in packed_values))
+    noise_out.writeframes(value_str)
+    noise_out.close()
+
+def echo(sound1,sound2, sound3, delay,sample_length):
+    values=[]
+    for i in range(0,sample_length):
+        values.append(sound1[i])
+        if i>delay:
+            echo=sound2[i]*0.6
+            values.append(echo+sound1[i])
+        if i>delay*2:
+            echo2=sound3[i]*0.6
+            values.append(echo2+sound2[1]+sound1[i])
+    return values
+
+tone_values_one=generate_sine_wave(random.randint(4000.0,5000.0),SAMPLE_RATE,random.randint(132000,142000),random.randint(500.0,10000.0))
+tone_values_two=generate_sine_wave(random.randint(5000.0,5000.0),SAMPLE_RATE,random.randint(132000,142000),random.randint(500.0,10000.0))
+tone_values_three=generate_sine_wave(random.randint(30.0,100.0),SAMPLE_RATE,random.randint(132000,142000),random.randint(500.0,10000.0))
+
+save_wave_file('Tone1.wav',tone_values_one,SAMPLE_RATE)
+save_wave_file('Tone2.wav',tone_values_two,SAMPLE_RATE)
+echo_values=echo(tone_values_one,tone_values_two, tone_values_three,40000,132000)
+
+save_wave_file('Echo.wav',echo_values,SAMPLE_RATE)
