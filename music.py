@@ -2,17 +2,28 @@ import wave
 import math
 import struct
 import random
+import pygame
 
-SAMPLE_WIDTH=2
-SAMPLE_RATE=44100.0
-BIT_DEPTH=2.0
-CHANNELS=2
+SAMPLE_WIDTH = 3
+SAMPLE_RATE = 44100.0
+BIT_DEPTH = 2.0
+CHANNELS = 2
 
-def combine_tones(tone_one,tone_two,sample_length):
+'''when running this file it will create/alter the Echo.wav file to contain the new sound that was just created
+by running this'''
+
+
+# combines the two tones into one sample
+
+
+def combine_tones(tone_one, tone_two, sample_length):
     values = []
     for i in range(0, sample_length):
         values.append(tone_one[i]+tone_two[i])
     return values
+
+
+# Generates a new sine wave based on the variables above
 
 
 def generate_sine_wave(frequency, sample_rate, sample_length, volume):
@@ -25,9 +36,12 @@ def generate_sine_wave(frequency, sample_rate, sample_length, volume):
     return values
 
 
+# here the new sound gets saved as a wav file
+
+
 def save_wave_file(filename, wav_data, sample_rate):
-    packed_values=[]
-    for i in range(0,len(wav_data)):
+    packed_values = []
+    for i in range(0, len(wav_data)):
         packed_value = struct.pack('h', wav_data[i])
         packed_values.append(packed_value)
 
@@ -37,24 +51,42 @@ def save_wave_file(filename, wav_data, sample_rate):
     noise_out.writeframes(value_str)
     noise_out.close()
 
-def echo(sound1,sound2, sound3, delay,sample_length):
-    values=[]
-    for i in range(0,sample_length):
+
+# This creates a simple echo like file by adding the sound to itself
+
+
+def echo(sound1, sound2, sound3, delay, sample_length):
+    values = []
+    for i in range(0, sample_length):
         values.append(sound1[i])
-        if i>delay:
-            echo=sound2[i]*0.6
+        if i > delay:
+            echo = sound2[i]*0.6
             values.append(echo+sound1[i])
-        if i>delay*2:
-            echo2=sound3[i]*0.6
-            values.append(echo2+sound2[1]+sound1[i])
+        if i > delay*2:
+            echo2 = sound3[i]*0.6
+            values.append(echo2 + sound2[1] + sound1[i])
     return values
 
-tone_values_one=generate_sine_wave(random.randint(4000.0,5000.0),SAMPLE_RATE,random.randint(132000,142000),random.randint(500.0,10000.0))
-tone_values_two=generate_sine_wave(random.randint(5000.0,5000.0),SAMPLE_RATE,random.randint(132000,142000),random.randint(500.0,10000.0))
-tone_values_three=generate_sine_wave(random.randint(30.0,100.0),SAMPLE_RATE,random.randint(132000,142000),random.randint(500.0,10000.0))
 
-save_wave_file('Tone1.wav',tone_values_one,SAMPLE_RATE)
-save_wave_file('Tone2.wav',tone_values_two,SAMPLE_RATE)
-echo_values=echo(tone_values_one,tone_values_two, tone_values_three,40000,132000)
+tone_values_one = generate_sine_wave(random.randint(4000.0, 5000.0),
+                                     SAMPLE_RATE,
+                                     random.randint(132000, 142000),
+                                     random.randint(500.0, 10000.0))
 
-save_wave_file('Echo.wav',echo_values,SAMPLE_RATE)
+tone_values_two = generate_sine_wave(random.randint(5000.0, 5000.0),
+                                     SAMPLE_RATE,
+                                     random.randint(132000, 142000),
+                                     random.randint(500.0, 10000.0))
+
+tone_values_three = generate_sine_wave(random.randint(30.0, 100.0),
+                                       SAMPLE_RATE,
+                                       random.randint(132000, 142000),
+                                       random.randint(500.0, 10000.0))
+
+save_wave_file('Tone1.wav', tone_values_one, SAMPLE_RATE)
+save_wave_file('Tone2.wav', tone_values_two, SAMPLE_RATE)
+
+echo_values = echo(tone_values_one, tone_values_two, tone_values_three, 40000, 132000)
+
+save_wave_file('Echo.wav', echo_values, SAMPLE_RATE)
+
