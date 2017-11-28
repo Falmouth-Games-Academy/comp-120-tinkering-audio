@@ -2,11 +2,10 @@ import wave
 import math
 import struct
 import random
-import pygame
 
-SAMPLE_WIDTH = 3
-SAMPLE_RATE = 44100.0
-BIT_DEPTH = 2.0
+SAMPLE_WIDTH = random.randint(3, 5)
+SAMPLE_RATE = random.randint(44100.0, 54100.0)
+BIT_DEPTH = random.randint(2.0, 6.0)
 CHANNELS = 2
 
 '''when running this file it will create/alter the Echo.wav file to contain the new sound that was just created
@@ -23,7 +22,7 @@ def combine_tones(tone_one, tone_two, sample_length):
     return values
 
 
-# Generates a new sine wave based on the variables above
+# Generates a new sine wave based on the constants above
 
 
 def generate_sine_wave(frequency, sample_rate, sample_length, volume):
@@ -55,7 +54,7 @@ def save_wave_file(filename, wav_data, sample_rate):
 # This creates a simple echo like file by adding the sound to itself
 
 
-def echo(sound1, sound2, sound3, delay, sample_length):
+def sound_effect(sound1, sound2, sound3, delay, sample_length):
     values = []
     for i in range(0, sample_length):
         values.append(sound1[i])
@@ -83,10 +82,9 @@ tone_values_three = generate_sine_wave(random.randint(30.0, 100.0),
                                        random.randint(132000, 142000),
                                        random.randint(500.0, 10000.0))
 
-save_wave_file('Tone1.wav', tone_values_one, SAMPLE_RATE)
-save_wave_file('Tone2.wav', tone_values_two, SAMPLE_RATE)
+save_wave_file('sound_effect1.wav', tone_values_one, SAMPLE_RATE)
+save_wave_file('sound_effect2.wav', tone_values_two, SAMPLE_RATE)
 
-echo_values = echo(tone_values_one, tone_values_two, tone_values_three, 40000, 132000)
+echo_values = sound_effect(tone_values_one, tone_values_two, tone_values_three, 40000, 132000)
 
-save_wave_file('Echo.wav', echo_values, SAMPLE_RATE)
-
+save_wave_file('combined_sound_effect.wav', echo_values, SAMPLE_RATE)
