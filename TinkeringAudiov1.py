@@ -3,7 +3,8 @@ import math
 import numpy
 import random
 
-# This section intialises pygame and sets the resolution of the monitor used
+
+# This section initialises pygame and sets the resolution of the monitor used
 pygame.init()
 screenbox = pygame.display.set_mode((800, 600))
 pygame.mixer.init()
@@ -21,11 +22,12 @@ chan = 2
 volume = 40
 sample_length = 5
 
+
 # This sets definitions in order to calculate and figure out tones
 #Credit to Brian and his live-code repo.
 def generate_tone():
-    generate_samples = numpy.array([[1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6,6]], dtype="int8")
     return generate_samples
+
 
 def generate_sine_wave(frequency, samplerate, sample_length, volume):
     values = []
@@ -42,14 +44,14 @@ def make_chord(sound1,sound2,sound3,sample_length):
     values=[]
     for i in range(0,sample_length):
         values.append(sound1[i])
-        if i>4000:
+        if i > 4000:
             values.append(sound1[i]+sound2[i])
-        if i>8000:
+        if i > 8000:
             values.append(sound1[i]+sound2[i]+sound3[i])
     return values
 
-samples=generate_tone()
-current_a=pygame.sndarray.make_sound(samples)
+samples = generate_tone()
+current_a = pygame.sndarray.make_sound(samples)
 
 #This exits the aapplicaiyon upon pressing the exit button and on pressing a key plays the tone
 done=False
@@ -64,7 +66,7 @@ while not done:
     pygame.display.update()
 
 # This generates a sine wave and a sound and then exits the application
-tone_values_one=generate_sine_wave(4000.0,samplerate,132000,1000.0)
-chord_values=make_chord(generate_tone, 132000)
+tone_values_one = generate_sine_wave(4000.0, samplerate, 132000, 1000.0)
+chord_values = make_chord(generate_tone, 132000)
 pygame.mixer.quit()
 pygame.quit()
