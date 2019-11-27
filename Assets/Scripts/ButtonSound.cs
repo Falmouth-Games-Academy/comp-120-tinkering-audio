@@ -1,13 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-//using NaughtyAttributes;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
+
 
 
 // The button audio manipulation script.
@@ -16,11 +13,8 @@ public class ButtonSound : MonoBehaviour
 {
     private AudioSource audioSource;
     private AudioClip outAudioClip;
-   
-    public System.Random randomized = new System.Random();
     public int freq_click=300; // a higher pitch whenever the button is clicked.
     public int freq_hover = 200; // The frequency of key 'A'
-    public float timer = 0f;
     private Button button { get { return GetComponent<Button>(); } }
 
     // Start is called before the first frame update
@@ -71,7 +65,6 @@ public class ButtonSound : MonoBehaviour
     {
         int sampleDurationSecs = 1;
         int sampleRate = 44100;
-        // int sampleLength = sampleRate * sampleDurationSecs;
         int sampleLength = 15000;
         float maxValue = 1f / 4f;
 
@@ -90,13 +83,5 @@ public class ButtonSound : MonoBehaviour
     }
 
 
-#if UNITY_EDITOR
-    // [Button("Save Wav file")]
-    private void SaveWavFile()
-    {
-        string path = EditorUtility.SaveFilePanel("Where do you want the wav file to go?", "", "", "wav");
-        var audioClip = CreateToneAudioClip(1500);
-        //SaveWavUtil.Save(path, audioClip);
-    }
-#endif
+
 }

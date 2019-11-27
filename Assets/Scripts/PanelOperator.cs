@@ -15,5 +15,15 @@ public class PanelOperator : MonoBehaviour
             Panel.SetActive(true);
           //  button.SetActive(true);
         }
+
+    }
+
+    public void ClosePanel()
+    {
+        if (Panel != null)
+        {
+            Panel.SetActive(false);
+
+        }
     }
 }
