@@ -569,6 +569,16 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3037168750007492724, guid: ad62372732c655a4389f8d30e78d8da8,
+        type: 3}
+      propertyPath: m_Name
+      value: POPUPButtonNO
+      objectReference: {fileID: 0}
+    - target: {fileID: 5459395843374390255, guid: ad62372732c655a4389f8d30e78d8da8,
+        type: 3}
+      propertyPath: m_Name
+      value: POPUPButtonYES
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad62372732c655a4389f8d30e78d8da8, type: 3}
 --- !u!1001 &7714450644146522032
