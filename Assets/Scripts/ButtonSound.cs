@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using System;
 
 
-/* Script written by Adrian Tofan
+/* Script written by Adrian Tofan for Tinkering Audio assignment
 
 // The button audio manipulation script.
  Steven Yau's methods were used as a reference for this script. His GitHub repo can be found in the README file.
