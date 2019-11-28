@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class PanelOperator : MonoBehaviour
 {
+    //Script for opening and closing the pop-up window.
+
     public GameObject Panel;
    // public GameObject button;
 
