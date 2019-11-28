@@ -5,10 +5,12 @@ using UnityEngine.UI;
 using System;
 
 
-
+/* Script written by Adrian Tofan
 
 // The button audio manipulation script.
-// Steven Yau's methods were used as a reference for this script. His GitHub repo can be found in the README file.
+ Steven Yau's methods were used as a reference for this script. His GitHub repo can be found in the README file.
+
+ */
 public class ButtonSound : MonoBehaviour
 {
     private AudioSource audioSource;
