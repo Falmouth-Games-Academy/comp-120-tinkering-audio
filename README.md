@@ -2,7 +2,7 @@
 Team members: Adrian Tofan and Charles Handley
 Contracts:
 Contract #4 - Adrian Tofan    (separate project) |||
-Contract #4 - Charlie Handley (separate project); **!!! Charlie's Unity project can be as a folder under the name of 'UI-Charlie Handley', while Adrian's Unity project uses the rest of the folders of this repository once it is cloned. !!!**
+Contract #4 - Charlie Handley (separate project); **!!! Adrian's Unity project uses the folder of this repository as the Unity project, which contains folders such as Assets, Project settings, Packages, etc. Charlie's Unity project is also one of those subfolders under the name of UI-Charlie Handley !!!**
     
     Note on contract 4 made by Adrian:
     'BTN colour' button is meant for changing the colour of the buttons when you click it.
