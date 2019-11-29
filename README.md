@@ -2,7 +2,7 @@
 Team members: Adrian Tofan and Charles Handley
 Contracts:
 Contract #4 - Adrian Tofan
-    
+Contract #4 - Charlie Handley
     
     Note on contract 4 by Adrian:
     Buttons work on pop-up window, but there is a problem with the pop-up window's sorting order that does that issue.
@@ -12,6 +12,9 @@ Contract #4 - Adrian Tofan
 ## License picked by Adrian Tofan
 The reason for choosing the *MIT* license is mainly because of its permissive conditions, the license only requiring preservation
 of copyright and license notices.
+
+## License picked by Charlie Handley
+the reason i chose MIT was because it allows you to share your code under a copyleft license. and is open source friendly
 
 ## Rights over the methods from the reference script ('Audio Tinker' script)
 *Steven Yau has the ownership for the rights over the methods from that script. They were used as a reference for my current scripts.*
