@@ -18,7 +18,7 @@ The reason for choosing the *GNU GPLv3* license is mainly because of its restric
 the reason i chose MIT was because it allows you to share your code under a copyleft license. and is open source friendly
 
 ## Rights over the methods from the reference script ('Audio Tinker' script)
-*Steven Yau has the ownership for the rights over the methods from that script. They were used as a reference for my current scripts.*
+*Steven Yau has the ownership for the rights over the methods from the 'Audio Tinker' script which I've kept since the first Tinkering Audio lecture. They were used as a reference for my some of my methods.*
 A link to his repository: [Yaustar's repo link](https://github.com/yaustar/ACM-COMP120-Tinker-Audio-Template)
 
 [Repository link](https://github.com/PyroDevilBoi/comp120-tinkering-audio)
