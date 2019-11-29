@@ -17,13 +17,14 @@ public class ChangeColour : MonoBehaviour
 
     void Update()
     {
-        // divisor = Convert.ToInt32(randomized.Next(2, 5));
+      
+        // Get random colours for the button change option.
         red = Random.Range(0.0f, 3.0f);
         green = Random.Range(0.0f, 3.0f);
         blue = Random.Range(0.0f, 3.0f);
 
 
-        //Convert.ToSingle(randomized.Next(0, 1));
+        
     }
 
 
@@ -32,11 +33,8 @@ public class ChangeColour : MonoBehaviour
 
         newColor = new Color(red, green, blue);
 
-        //GetComponent<UnityEngine.UI.Image>().color = Color.green;
-
-        /* foreach (GameObject dynamicColourObject in DynamicColourObject.list)
-             dynamicColourObject.GetComponent<UnityEngine.UI.Image>().color = Color.green;
-             */
+      
+        //Change the colour of the buttons that have the DynamicColourObject script attached.
 
         foreach (GameObject dynamicColourObject in DynamicColourObject.list)
             dynamicColourObject.GetComponent<UnityEngine.UI.Image>().color = newColor;
