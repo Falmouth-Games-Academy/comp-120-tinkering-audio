@@ -1,17 +1,18 @@
 # comp-120-tinkering-audio Team 28
 Team members: Adrian Tofan and Charles Handley
 Contracts:
-Contract #4 - Adrian Tofan
-Contract #4 - Charlie Handley
+Contract #4 - Adrian Tofan    (separate project) |||
+Contract #4 - Charlie Handley (separate project)
     
-    Note on contract 4 by Adrian:
-    Buttons work on pop-up window, but there is a problem with the pop-up window's sorting order that does that issue.
-    Ignore the script 'Audio Tinker' it is just the reference from the first lesson.
-    The audio is not yet randomly generated, but will be.
+    Note on contract 4 made by Adrian:
+    'BTN colour' button is meant for changing the colour of the buttons when you click it.
+    'BTN volume' increases the volume when clicking and decreases the volume when scrolling.
+    'BTN sound' is meant for testing the changes that have been made to the sound of the buttons.
+    Once you press a key note from the piano above, the sound of the buttons will change.
+    
    
 ## License picked by Adrian Tofan
-The reason for choosing the *MIT* license is mainly because of its permissive conditions, the license only requiring preservation
-of copyright and license notices.
+The reason for choosing the *GNU GPLv3* license is mainly because of its restrictive conditions against uncredited work. The Software that I provided should be used mainly for educational purposes only, its copyleft nature allowing the contribution of other people as long as my work is credited through all its 'derivatives'.
 
 ## License picked by Charlie Handley
 the reason i chose MIT was because it allows you to share your code under a copyleft license. and is open source friendly
